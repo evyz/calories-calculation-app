@@ -7,4 +7,17 @@
 -  [Backend](https://github.com/evyz/calories-calculation-app/tree/backend)
 -  [Mobile](https://github.com/evyz/calories-calculation-app/tree/mobile)
 
-<img width="1200" alt="banner-stack" src="https://user-images.githubusercontent.com/73714921/147505066-eb682d2a-ce17-4f73-ae7d-6ba6b7c0a507.png">
+## Technology stack
+
+### Mobile: 
+
+- [React Native](https://reactnative.dev)
+- [Mobx](https://mobx.js.org/)
+
+### Backend: 
+
+- [Express](https://expressjs.com/)
+- [PostgreSQL](https://www.postgresql.org/)
+- [JWT](https://jwt.io)
+
+<img width="1200" alt="banner-stack (1)" src="https://user-images.githubusercontent.com/73714921/147505193-3c082f1b-0e46-4cb4-95d7-0aaf80124238.png">
