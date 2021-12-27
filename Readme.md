@@ -1,5 +1,7 @@
 # Мобильное приложение проекта "Расчёт калорий"
 
+<img width="1200" alt="banner-mobile-rep" src="https://user-images.githubusercontent.com/73714921/147504306-f8995c86-0032-44e3-97ae-76f6b99d93b2.png">
+
 ## СТЕК:
 
 -   [@react-navigation](https://reactnavigation.org/docs/getting-started/)
@@ -30,5 +32,4 @@ git pull origin mobile
 npm run testing
 > <название>
 ```
-<img width="1200" alt="banner-mobile-rep" src="https://user-images.githubusercontent.com/73714921/147504306-f8995c86-0032-44e3-97ae-76f6b99d93b2.png">
 
