@@ -1,0 +1,30 @@
+{
+    "components": [
+        {
+           "name": "login",
+           "ru": {
+               "title": "Авторизация",
+               "form": {
+                   "login": "Введите свой логин",
+                   "password": "Введите свой пароль"
+               }
+           },
+           "en": {
+               "title": "Login",
+               "form": {
+                "login": "Write your login",
+                "password": "Write your password"
+            }
+           } 
+        },
+        {
+            "name": "error",
+            "ru": {
+                "title": "Ошибка"
+            },
+            "en": {
+                "title": "Error"
+            } 
+        }
+    ]
+}

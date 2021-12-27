@@ -22,7 +22,6 @@ export default AppRouter = observer(() => {
 
     return (
         <NavigationContainer>
-
             {user.isAuth ?
                 <AuthStack.Navigator>
                     {AuthComponents.map(i =>
@@ -33,6 +32,7 @@ export default AppRouter = observer(() => {
                             // tabBarIcon: ({})
                             headerShown: false,
                             headerTitle: null,
+                            tabBarLabel: () => { return null },
                         }}
                             key={i.name}
                             name={i.name}

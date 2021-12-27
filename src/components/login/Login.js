@@ -3,6 +3,10 @@ import { useContext, useEffect } from "react";
 import { View, Text, StyleSheet, Button } from "react-native"
 import { AppContext } from "../../store";
 
+import { useRoute } from "@react-navigation/native";
+
+import language from '../../utils/language.json'
+
 export default LoginComponent = observer(({ navigation }) => {
 
     const { user } = useContext(AppContext)
@@ -11,9 +15,17 @@ export default LoginComponent = observer(({ navigation }) => {
         user.setIsAuth(true)
     }
 
+    useEffect(() => {
+        language.components.forEach(y => {
+            if (y.name === useRoute().name) {
+                console.log(y.ru)
+            }
+        })
+    }, [])
+
     return (
         <View style={styles.container}>
-            <Text>LoginComponent</Text>
+            {/* <Text>{info.title}</Text> */}
             <Button onPress={() => authChangeHandler()} title="Авторизоваться" />
         </View>
     )
