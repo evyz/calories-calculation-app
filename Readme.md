@@ -2,9 +2,9 @@
 
 ## СТЕК:
 
--   @react-navigation
--   expo
--   mobx, mobx-react-lite
+-   [@react-navigation](https://reactnavigation.org/docs/getting-started/)
+-   [expo](https://expo.dev/home)
+-   [mobx](https://mobx.js.org/README.html), [mobx-react-lite](https://mobx.js.org/react-integration.html#tips)
 
 ## Настройка и запуск кода
 
