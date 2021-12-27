@@ -20,4 +20,4 @@
 - [PostgreSQL](https://www.postgresql.org/)
 - [JWT](https://jwt.io)
 
-<img width="1200" alt="banner-stack (1)" src="https://user-images.githubusercontent.com/73714921/147505193-3c082f1b-0e46-4cb4-95d7-0aaf80124238.png">
+<img width="1200" alt="banner-stack (2)" src="https://user-images.githubusercontent.com/73714921/147505511-3d40818a-95a8-4bdc-b97f-ba619a2c3f73.png">
