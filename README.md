@@ -1,5 +1,7 @@
 # calories-calculation-app
 
+> branches with code:
+
 -  [Backend](https://github.com/evyz/calories-calculation-app/tree/backend)
 -  [Mobile](https://github.com/evyz/calories-calculation-app/tree/mobile)
 
