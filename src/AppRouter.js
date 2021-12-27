@@ -34,6 +34,11 @@ export default AppRouter = observer(() => {
                             headerTitle: null,
                             tabBarLabel: () => { return null },
                         }}
+                            // ЗАДАЧА: Настроить language.json со всеми компонентами
+                            //          для русификации.
+                            //          Также настроить поиск в массиве нужного  
+                            //          компонента с русификацией и передавать 
+                            //          объект с выбранным языком из AsyncStorage
                             key={i.name}
                             name={i.name}
                             component={i.component}

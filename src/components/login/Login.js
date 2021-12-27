@@ -15,17 +15,9 @@ export default LoginComponent = observer(({ navigation }) => {
         user.setIsAuth(true)
     }
 
-    useEffect(() => {
-        language.components.forEach(y => {
-            if (y.name === useRoute().name) {
-                console.log(y.ru)
-            }
-        })
-    }, [])
-
     return (
         <View style={styles.container}>
-            {/* <Text>{info.title}</Text> */}
+            <Text>Авторизация</Text>
             <Button onPress={() => authChangeHandler()} title="Авторизоваться" />
         </View>
     )

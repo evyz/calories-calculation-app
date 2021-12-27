@@ -1,16 +1,11 @@
-import { useEffect } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { containerStyles } from "../../../styles/default/container";
-import { useDrawerStatus } from '@react-navigation/drawer';
-
 
 export default MainProfileComponent = ({ navigation }) => {
 
-    // useEffect(() => {
-    //     const isDrawerOpen = useDrawerStatus() === 'open';
-    //     console.log(isDrawerOpen)
-
-    // }, [navigation])
+    // ЗАДАЧА: Сверстать по макету профиль здесь.
+    //          Ссылка - https://www.figma.com/file/vdoWbzCxWCbAnRcUBaNmJS/LZ-calories-(MAIN)?node-id=0%3A1
+    //          Стили разрабатывать ниже в styles
 
     return (
         <View style={{ ...containerStyles.container }}>
@@ -21,3 +16,10 @@ export default MainProfileComponent = ({ navigation }) => {
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    block: {
+        width: '100%',
+        height: '100%'
+    },
+})
