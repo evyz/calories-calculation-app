@@ -7,4 +7,4 @@
 -  [Backend](https://github.com/evyz/calories-calculation-app/tree/backend)
 -  [Mobile](https://github.com/evyz/calories-calculation-app/tree/mobile)
 
-<!-- ![banner](https://user-images.githubusercontent.com/73714921/147475694-ea833ba1-8234-40cf-8cd0-24763be0da6c.jpg) -->
+<img width="1200" alt="banner-stack" src="https://user-images.githubusercontent.com/73714921/147505066-eb682d2a-ce17-4f73-ae7d-6ba6b7c0a507.png">
