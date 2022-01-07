@@ -1,0 +1,5 @@
+export const GREEN_COLOR = '#01B075'
+export const LIGHT_GREEN_COLOR = '#A3E2CD'
+export const DARK_GREY_COLOR = '#221E1B'
+export const RED_COLOR = '#EA6363'
+export const GREY_COLOR = '#E5E5E5'
