@@ -19,9 +19,9 @@ export default function App() {
       setIsReady(true)
     })
 
-    return (
-      <LoaderComponent />
-    )
+    // return (
+    //   <LoaderComponent />
+    // )
   }
 
   return (
