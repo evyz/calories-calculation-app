@@ -3,7 +3,7 @@ import AppProvider from './src/store';
 import { useState } from 'react';
 
 import * as Font from 'expo-font';
-import Loader from './src/components/loader/Loader';
+import LoaderComponent from './src/components/loader/Loader';
 
 async function loadAppAplication() {
   await Font.loadAsync({
@@ -20,7 +20,7 @@ export default function App() {
     })
 
     return (
-      <Loader />
+      <LoaderComponent />
     )
   }
 
