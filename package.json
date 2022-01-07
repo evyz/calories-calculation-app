@@ -15,6 +15,7 @@
     "@react-navigation/native-stack": "^6.2.5",
     "console-read-write": "^0.1.1",
     "expo": "~44.0.0",
+    "expo-font": "^10.0.4",
     "expo-status-bar": "~1.2.0",
     "mobx": "^6.3.10",
     "mobx-react-lite": "^3.2.2",
