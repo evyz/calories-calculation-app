@@ -1,7 +1,9 @@
 import AppRouter from './src/AppRouter';
 import AppProvider from './src/store';
-import * as Font from 'expo-font';
 import { useState } from 'react';
+
+import * as Font from 'expo-font';
+import Loader from './src/components/loader/Loader';
 
 async function loadAppAplication() {
   await Font.loadAsync({
@@ -16,6 +18,10 @@ export default function App() {
     loadAppAplication().then(data => {
       setIsReady(true)
     })
+
+    return (
+      <Loader />
+    )
   }
 
   return (
