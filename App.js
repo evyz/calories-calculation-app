@@ -3,11 +3,12 @@ import AppProvider from './src/store';
 import { useState } from 'react';
 
 import * as Font from 'expo-font';
-// import LoaderComponent from './src/components/loader/Loader';
+import LoaderComponent from './src/components/loader/Loader';
 
 async function loadAppAplication() {
   await Font.loadAsync({
     'montserrat-black': require('./vendors/Montserrat-Black.ttf'),
+    'montserrat-bold': require('./vendors/Montserrat-Bold.ttf'),
   });
 }
 
@@ -16,12 +17,13 @@ export default function App() {
 
   if (!isReady) {
     loadAppAplication().then(data => {
-      setIsReady(true)
+      // setIsReady(true)
+      console.log(data)
     })
 
-    // return (
-    //   <LoaderComponent />
-    // )
+    return (
+      <LoaderComponent />
+    )
   }
 
   return (
