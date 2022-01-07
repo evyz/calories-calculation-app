@@ -17,8 +17,7 @@ export default function App() {
 
   if (!isReady) {
     loadAppAplication().then(data => {
-      // setIsReady(true)
-      console.log(data)
+      setIsReady(true)
     })
 
     return (
