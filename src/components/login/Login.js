@@ -37,6 +37,25 @@ export default LoginComponent = observer(({ navigation }) => {
         user.setIsAuth(true);
     };
 
+    const blurHandler = (event) => {
+        console.log(event.nativeEvent.text)
+
+        // ЗАДАЧА: Разработать обработчик ошибок и
+        //           выполнить проверку через switch 
+        //           case. 
+        //           Т.к. событие onBlur не работает, то
+        //           юзаем onEndEditing.
+
+        //           Тутор по обработчику тут 
+        //           https://www.youtube.com/watch?v=WADswtZB-qg&t=84s
+
+
+        // switch(e.target.name){
+        //     case
+        // }
+    }
+
+
     return (
         <View style={styles.main}>
             <View style={styles.block}>
@@ -58,6 +77,8 @@ export default LoginComponent = observer(({ navigation }) => {
                     </View>
                     <View style={styles.input2}>
                         <TextInput
+                            // onBlur={e => blurHandler(e)}
+                            onEndEditing={(event) => blurHandler(event)}
                             secureTextEntry={security}
                             onChangeText={setValue1}
                             value={value1}
