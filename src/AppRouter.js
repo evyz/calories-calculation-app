@@ -21,38 +21,45 @@ export default AppRouter = observer(() => {
     }, [user])
 
     return (
-        <NavigationContainer>
-            {user.isAuth ?
-                <AuthStack.Navigator>
-                    {AuthComponents.map(i =>
-                        <AuthStack.Screen options={{
-                            // ЗАДАЧА: Настроить иконки для каждой компоненты из меню 
-                            //          и пропихнуть их в authComponent, после чего
-                            //          перебрать их также, как компоненты массива.
-                            // tabBarIcon: ({})
-                            headerShown: false,
-                            headerTitle: null,
-                            tabBarLabel: () => { return null },
-                        }}
-                            // ЗАДАЧА: Настроить language.json со всеми компонентами
-                            //          для русификации.
-                            //          Также настроить поиск в массиве нужного  
-                            //          компонента с русификацией и передавать 
-                            //          объект с выбранным языком из AsyncStorage
-                            key={i.name}
-                            name={i.name}
-                            component={i.component}
-                        />
-                    )}
-                </AuthStack.Navigator>
-                :
-                <Stack.Navigator>
-                    {PublicComponents.map(i =>
-                        <Stack.Screen key={i.name} name={i.name} component={i.component} />
-                    )}
-                </Stack.Navigator>
-            }
-        </NavigationContainer>
+        <View style={{ width: '100%', height: '100%', }}>
+
+            <View style={styles.notif}>
+                <Text>Посмотрите видео на ютуб</Text>
+            </View>
+
+            <NavigationContainer>
+                {user.isAuth ?
+                    <AuthStack.Navigator>
+                        {AuthComponents.map(i =>
+                            <AuthStack.Screen options={{
+                                // ЗАДАЧА: Настроить иконки для каждой компоненты из меню 
+                                //          и пропихнуть их в authComponent, после чего
+                                //          перебрать их также, как компоненты массива.
+                                // tabBarIcon: ({})
+                                headerShown: false,
+                                headerTitle: null,
+                                tabBarLabel: () => { return null },
+                            }}
+                                // ЗАДАЧА: Настроить language.json со всеми компонентами
+                                //          для русификации.
+                                //          Также настроить поиск в массиве нужного  
+                                //          компонента с русификацией и передавать 
+                                //          объект с выбранным языком из AsyncStorage
+                                key={i.name}
+                                name={i.name}
+                                component={i.component}
+                            />
+                        )}
+                    </AuthStack.Navigator>
+                    :
+                    <Stack.Navigator>
+                        {PublicComponents.map(i =>
+                            <Stack.Screen key={i.name} name={i.name} component={i.component} />
+                        )}
+                    </Stack.Navigator>
+                }
+            </NavigationContainer>
+        </View>
     )
 })
 
@@ -63,5 +70,17 @@ const styles = StyleSheet.create({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    notif: {
+        width: '80%',
+        height: 100,
+
+        backgroundColor: 'red',
+
+        position: 'absolute',
+        // bottom: '10%',
+        // left: '10%',
+
+        zIndex: 10,
     }
 })
