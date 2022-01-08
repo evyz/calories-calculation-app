@@ -1,12 +1,13 @@
 import { observer } from "mobx-react-lite";
 import { useContext } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TextInput } from "react-native";
 import { Shadow } from "react-native-shadow-2";
 import { AppContext } from "../../../store";
-import { DARK_GREY_COLOR, GREEN_COLOR, RED_COLOR } from "../../../styles/colors";
 import { containerStyles } from "../../../styles/default/container";
 import { shadowOpt } from "../../loader/Loader";
 import Buttons from "./components/Buttons";
+
+import { GREEN_COLOR } from '../../../styles/colors'
 
 const MainProfileComponent = observer(({ navigation }) => {
 
@@ -22,15 +23,26 @@ const MainProfileComponent = observer(({ navigation }) => {
 
             <Shadow {...shadowOpt}>
                 <View style={styles.block}>
-                    <Text>MainProfileComponent</Text>
-                    <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+
+                    <View style={styles.avatar}>
+
+                    </View>
+
+                    <Text style={styles.nickname}>Никнейм</Text>
+
+                    <View style={styles.emailView}>
+                        <Shadow {...shadowOpt} startColor="#F3F3F3">
+                            <TextInput style={styles.emailInput} placeholder="Ваша почта" />
+                        </Shadow>
+                    </View>
+
+                    {/* <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
                         <Text>Открыть</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
 
                     <Buttons />
 
                 </View>
-
             </Shadow>
 
         </View>
@@ -49,6 +61,43 @@ const styles = StyleSheet.create({
 
         backgroundColor: 'white',
         borderRadius: 25,
+    },
+
+    nickname: {
+        fontFamily: 'montserrat-bold',
+        fontSize: 18,
+    },
+
+    emailView: {
+        marginTop: 30,
+        marginBottom: 200, // --- Убрать потом!
+    },
+
+    emailInput: {
+        width: 250,
+        height: 35,
+
+        padding: 10,
+        fontSize: 12,
+
+        backgroundColor: "white",
+        borderRadius: 15,
+    },
+
+    avatar: {
+        width: 160,
+        height: 160,
+
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+
+        borderRadius: 160,
+
+        borderWidth: 5,
+        borderColor: GREEN_COLOR,
+
+        marginBottom: 20,
     },
 })
 

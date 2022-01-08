@@ -82,7 +82,7 @@ export default WellcomeComponent = ({ isFinish, setIsFinish }) => {
                     </TouchableOpacity>
                     <Text style={styles.textPage}>{page.current}\{page.end}</Text>
                     <TouchableOpacity onPress={() => click(1)} style={[page.current === page.end ? styles.offButton : styles.activeButton, styles.button]}>
-                        <Text style={styles.textButton}>{page.current === page.end ? "Готово" : "Далее"}</Text>
+                        <Text style={styles.textButton}>{page.current === page.end ? "Открыть" : "Далее"}</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -94,10 +94,6 @@ export default WellcomeComponent = ({ isFinish, setIsFinish }) => {
                     <Image width={0} height={0} style={{ width: 0, height: 0 }} source={i.image} />
                 )}
             </View>
-
-            <TouchableOpacity onPress={() => setIsFinish(false)}>
-                <Text>Открыть</Text>
-            </TouchableOpacity>
         </View>
     )
 }
