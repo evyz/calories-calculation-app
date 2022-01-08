@@ -6,7 +6,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "testing": "node ./scripts/function.js"
+    "testing": "node ./scripts/function.js",
+    "test": "node ./scripts/function.js"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.15.14",
