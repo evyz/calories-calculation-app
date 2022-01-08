@@ -43,14 +43,14 @@ export default LoginComponent = observer(({ navigation }) => {
                 <View style={styles.image} />
                 <View style={styles.form}>
                     <Text style={{ fontSize: 24, fontFamily: "montserrat-black" }}>
-                        РђРІС‚РѕСЂРёР·Р°С†РёСЏ
+                        Авторизация
                     </Text>
                     {/* fontFamily: 'montserrat-black', */}
                     <View style={styles.input}>
                         <TextInput
                             onChangeText={setValue}
                             value={value}
-                            placeholder="Р’РІРµРґРёС‚Рµ РїРѕС‡С‚Сѓ"
+                            placeholder="Введите почту"
                             autoCorrect={false}
                             autoCapitalize={"none"}
                             keyboardType="default"
@@ -61,7 +61,7 @@ export default LoginComponent = observer(({ navigation }) => {
                             secureTextEntry={security}
                             onChangeText={setValue1}
                             value={value1}
-                            placeholder="Р’РІРµРґРёС‚Рµ РїР°СЂРѕР»СЊ"
+                            placeholder="Введите пароль"
                             autoCorrect={false}
                             autoCapitalize={"none"}
                             keyboardType="default"
@@ -69,22 +69,22 @@ export default LoginComponent = observer(({ navigation }) => {
                     </View>
                     <View style={styles.questions}>
                         <TouchableOpacity>
-                            <Text style={{ fontSize: 10 }}>Р—Р°Р±С‹Р»Рё РїР°СЂРѕР»СЊ?</Text>
+                            <Text style={{ fontSize: 10 }}>Забыли пароль?</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.question2} onPress={() => setIsRemember(!isRemember)}>
                             <View style={isRemember ? styles.activeMiniButton : styles.miniButton} />
-                            <Text style={{ fontSize: 10 }}> Р—Р°РїРѕРјРЅРёС‚СЊ РјРµРЅСЏ</Text>
+                            <Text style={{ fontSize: 10 }}> Запомнить меня</Text>
                         </TouchableOpacity>
                     </View>
                     <TouchableOpacity></TouchableOpacity>
                     <TouchableOpacity>
-                        {/* <Button color="#32CD32" onPress={() => authChangeHandler()} title="РђРІС‚РѕСЂРёР·РѕРІР°С‚СЊСЃСЏ" /> */}
+                        {/* <Button color="#32CD32" onPress={() => authChangeHandler()} title="Авторизоваться" /> */}
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={styles.button}
                         onPress={() => authChangeHandler()}
                     >
-                        <Text style={{ color: LIGHT_COLOR }}>Р’РѕР№С‚Рё</Text>
+                        <Text style={{ color: LIGHT_COLOR }}>Войти</Text>
                     </TouchableOpacity>
                 </View>
             </View>
