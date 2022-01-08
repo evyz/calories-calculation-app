@@ -1,32 +1,202 @@
+import React, { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { useContext, useEffect } from "react";
-import { View, Text, StyleSheet, Button } from "react-native"
+import {
+    View,
+    Text,
+    StyleSheet,
+    Button,
+    TextInput,
+    TouchableOpacity,
+} from "react-native";
 import { AppContext } from "../../store";
-
 import { useRoute } from "@react-navigation/native";
+import language from "../../utils/language.json";
+import { GREEN_COLOR, LIGHT_COLOR } from "../../styles/colors";
+
+let symbols = /[0-9a-zA-Z!@#$%^&*]{6,}/g;
 
 export default LoginComponent = observer(({ navigation }) => {
-
-    const { user } = useContext(AppContext)
-
+    const [value, setValue] = useState("");
+    const [value1, setValue1] = useState("");
+    const [isRemember, setIsRemember] = useState(false);
+    const [security, setSecurity] = useState(true);
+    const { user } = useContext(AppContext);
+    const shadowOpt = {
+        width: 100,
+        height: 100,
+        color: "#000",
+        border: 2,
+        radius: 3,
+        opacity: 0.2,
+        x: 0,
+        y: 3,
+        style: { marginVertical: 5 },
+    };
     const authChangeHandler = () => {
-        user.setIsAuth(true)
-    }
+        user.setIsAuth(true);
+    };
 
     return (
-        <View style={styles.container}>
-            <Text>Авторизация</Text>
-            <Button onPress={() => authChangeHandler()} title="Авторизоваться" />
+        <View style={styles.main}>
+            <View style={styles.block}>
+                <View style={styles.image} />
+                <View style={styles.form}>
+                    <Text style={{ fontSize: 24, fontFamily: "montserrat-black" }}>
+                        РђРІС‚РѕСЂРёР·Р°С†РёСЏ
+                    </Text>
+                    {/* fontFamily: 'montserrat-black', */}
+                    <View style={styles.input}>
+                        <TextInput
+                            onChangeText={setValue}
+                            value={value}
+                            placeholder="Р’РІРµРґРёС‚Рµ РїРѕС‡С‚Сѓ"
+                            autoCorrect={false}
+                            autoCapitalize={"none"}
+                            keyboardType="default"
+                        />
+                    </View>
+                    <View style={styles.input2}>
+                        <TextInput
+                            secureTextEntry={security}
+                            onChangeText={setValue1}
+                            value={value1}
+                            placeholder="Р’РІРµРґРёС‚Рµ РїР°СЂРѕР»СЊ"
+                            autoCorrect={false}
+                            autoCapitalize={"none"}
+                            keyboardType="default"
+                        />
+                    </View>
+                    <View style={styles.questions}>
+                        <TouchableOpacity>
+                            <Text style={{ fontSize: 10 }}>Р—Р°Р±С‹Р»Рё РїР°СЂРѕР»СЊ?</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.question2} onPress={() => setIsRemember(!isRemember)}>
+                            <View style={isRemember ? styles.activeMiniButton : styles.miniButton} />
+                            <Text style={{ fontSize: 10 }}> Р—Р°РїРѕРјРЅРёС‚СЊ РјРµРЅСЏ</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <TouchableOpacity></TouchableOpacity>
+                    <TouchableOpacity>
+                        {/* <Button color="#32CD32" onPress={() => authChangeHandler()} title="РђРІС‚РѕСЂРёР·РѕРІР°С‚СЊСЃСЏ" /> */}
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => authChangeHandler()}
+                    >
+                        <Text style={{ color: LIGHT_COLOR }}>Р’РѕР№С‚Рё</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
         </View>
-    )
-})
+    );
+});
 
 const styles = StyleSheet.create({
-    container: {
+    main: {
         width: "100%",
-        height: '100%',
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
+        height: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    form: {
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        height: 400,
+    },
+    block: {
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        alignItems: "center",
+        width: 300,
+        height: 500,
+        borderRadius: 15,
+        backgroundColor: "#FFFFFF",
+        overflow: "hidden",
+        // borderColor: '#FFB6C1',
+        // backgroundColor:'white'
+    },
+    miniButton: {
+        borderWidth: 1,
+        width: 10,
+        height: 10,
+        borderRadius: 15,
+        borderColor: GREEN_COLOR
+
+    },
+    activeMiniButton: {
+        width: 10,
+        height: 10,
+        borderWidth: 1,
+        borderRadius: 15,
+        backgroundColor: GREEN_COLOR,
+        borderColor: GREEN_COLOR
+    },
+    image: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: GREEN_COLOR,
+        width: 300,
+        height: 100,
+    },
+    questions: {
+        display: "flex",
+        flexDirection: "row",
+        height: 20,
+        width: 250,
+        margin: 5,
+        justifyContent: 'space-between',
+        alignItems: 'center'
+
+
+    },
+    question2: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: 'center'
+    },
+    input: {
+        width: 250,
+        height: 36,
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 10,
+        borderStyle: "solid",
+        borderWidth: 1,
+        borderColor: GREEN_COLOR,
+        borderRadius: 15,
+        margin: 20,
+        fontSize: 12,
+    },
+    input2: {
+        width: 250,
+        height: 36,
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 10,
+        borderStyle: "solid",
+        borderWidth: 1,
+        borderColor: GREEN_COLOR,
+        borderRadius: 15,
+        marginTop: 20,
+    },
+    button: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: 142,
+        height: 31,
+        borderWidth: 1,
+        borderRadius: 15,
+        borderColor: GREEN_COLOR,
+        backgroundColor: GREEN_COLOR,
+        margin: 20
+
+
     },
 });
