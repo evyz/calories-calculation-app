@@ -5,8 +5,6 @@ import { AppContext } from "../../store";
 
 import { useRoute } from "@react-navigation/native";
 
-import language from '../../utils/language.json'
-
 export default LoginComponent = observer(({ navigation }) => {
 
     const { user } = useContext(AppContext)

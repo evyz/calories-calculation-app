@@ -7,12 +7,12 @@ import LoaderComponent from './src/components/loader/Loader';
 import WellcomeComponent from './src/components/wellcome/Wellcome';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useEffect } from 'react/cjs/react.development';
 
 async function loadAppAplication() {
   await Font.loadAsync({
     'montserrat-black': require('./vendors/Montserrat-Black.ttf'),
     'montserrat-bold': require('./vendors/Montserrat-Bold.ttf'),
+    'montserrat-ligth': require('./vendors/Montserrat-Light.ttf'),
   });
 }
 
@@ -29,18 +29,18 @@ export default function App() {
   const [isReady, setIsReady] = useState(false);
   const [isFirst, setIsFirst] = useState(false)
 
+  isWellcome().then(data => {
+    if (data === 'true') {
+      setIsFirst(true)
+    }
+    if (data === 'false') {
+      setIsFirst(false)
+    }
+  })
+
   if (!isReady) {
     loadAppAplication().then(data => {
       setIsReady(true)
-    })
-
-    isWellcome().then(data => {
-      if (data === 'true') {
-        setIsFirst(true)
-      }
-      if (data === 'false') {
-        setIsFirst(false)
-      }
     })
 
     return (
@@ -48,9 +48,11 @@ export default function App() {
     )
   }
 
-  // if (isFirst) {
-  //   return <WellcomeComponent isFinish={isFirst} setIsFinish={setIsFirst} />
-  // }
+  if (isFirst) {
+    return (
+      <WellcomeComponent isFinish={isFirst} setIsFinish={setIsFirst} />
+    )
+  }
 
   return (
     <AppProvider>
