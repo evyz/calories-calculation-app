@@ -4,7 +4,7 @@ import { GREY_COLOR, LIGHT_COLOR } from "../../styles/colors";
 import { Shadow } from 'react-native-shadow-2';
 
 export const shadowOpt = {
-    startColor: "#D4D4D4",
+    startColor: "#E8E8E8",
     offset: [0, 8],
     radius: 24,
     distance: 24
