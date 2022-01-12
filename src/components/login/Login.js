@@ -37,7 +37,6 @@ export default LoginComponent = observer(({ navigation }) => {
         style: { marginVertical: 5 },
     };
     const authChangeHandler = () => {
-        // user.setIsAuth(true);
         if(passwordDirty) { 
         user.setIsAuth(false)
         } else {
@@ -54,22 +53,7 @@ export default LoginComponent = observer(({ navigation }) => {
         } else {
           setPasswordError('')
           setPasswordDirty(false)
-    }
-
-        // ЗАДАЧА: Разработать обработчик ошибок и
-        //           выполнить проверку через switch 
-        //           case. 
-        //           Т.к. событие onBlur не работает, то
-        //           юзаем onEndEditing.
-
-        //           Тутор по обработчику тут 
-        //           https://www.youtube.com/watch?v=WADswtZB-qg&t=84s
-
-
-        // switch(e.target.name){
-        //     case
-        // }
-    }
+    } }
 
 
     return (
