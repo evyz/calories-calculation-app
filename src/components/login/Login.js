@@ -37,7 +37,12 @@ export default LoginComponent = observer(({ navigation }) => {
         style: { marginVertical: 5 },
     };
     const authChangeHandler = () => {
-        user.setIsAuth(true);
+        // user.setIsAuth(true);
+        if(passwordDirty) { 
+        user.setIsAuth(false)
+        } else {
+            user.setIsAuth(true)
+        }
     };
 
     const blurHandler = (e) => {
@@ -72,7 +77,7 @@ export default LoginComponent = observer(({ navigation }) => {
             <View style={styles.block}>
                 <View style={styles.image} />
                 <View style={styles.form}>
-                    <Text style={{ fontSize: 24, fontFamily: "montserrat-black" }}>
+                    <Text style={{ fontSize: 24, fontFamily: "montserrat-bold" }}>
                         Авторизация
                     </Text>
                     {/* fontFamily: 'montserrat-black', */}
@@ -87,7 +92,7 @@ export default LoginComponent = observer(({ navigation }) => {
                         />
                     </View >
                     <View style = {styles.error}>
-                    {passwordDirty && <Text style = {{color: RED_COLOR}}>{passwordError}</Text>}
+                    {passwordDirty && <Text style = {{color: RED_COLOR, fontSize: 9}}>{passwordError}</Text>}
                     </View>
                     <View style={[styles.input2,{borderColor: passwordDirty ? RED_COLOR : GREEN_COLOR,}]}>
 
@@ -149,7 +154,8 @@ const styles = StyleSheet.create({
         height: 36,
         display: "flex",
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'flex-end',
+        // backgroundColor: 'grey'
 
     },
     block: {
@@ -215,7 +221,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: GREEN_COLOR,
         borderRadius: 15,
-        margin: 10,
+        marginTop: 20,
         fontSize: 12,
     },
     input2: {
@@ -228,7 +234,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         // borderColor: passwordDirty ? RED_COLOR : GREEN_COLOR,
         borderRadius: 15,
-        // marginTop: 20,
+        marginTop: 7,
     },
     button: {
         display: "flex",
