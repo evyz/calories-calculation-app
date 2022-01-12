@@ -12,7 +12,7 @@ import {
 import { AppContext } from "../../store";
 import { useRoute } from "@react-navigation/native";
 import language from "../../utils/language.json";
-import { GREEN_COLOR, LIGHT_COLOR } from "../../styles/colors";
+import { GREEN_COLOR, LIGHT_COLOR, RED_COLOR } from "../../styles/colors";
 
 let symbols = /[0-9a-zA-Z!@#$%^&*]{6,}/g;
 
@@ -22,6 +22,9 @@ export default LoginComponent = observer(({ navigation }) => {
     const [isRemember, setIsRemember] = useState(false);
     const [security, setSecurity] = useState(true);
     const { user } = useContext(AppContext);
+    const [password, setPassword] = useState('')
+    const [passwordDirty, setPasswordDirty] = useState(false)
+    const [passwordError, setPasswordError] = useState('Пароль не может быть пустым')
     const shadowOpt = {
         width: 100,
         height: 100,
@@ -37,8 +40,16 @@ export default LoginComponent = observer(({ navigation }) => {
         user.setIsAuth(true);
     };
 
-    const blurHandler = (event) => {
-        console.log(event.nativeEvent.text)
+    const blurHandler = (e) => {
+        console.log(e.nativeEvent.text)
+        setPassword(e.nativeEvent.text)
+        if (e.nativeEvent?.text.length < 6) {
+            setPasswordError('Вы не ввели пароль')
+            setPasswordDirty(true)
+        } else {
+          setPasswordError('')
+          setPasswordDirty(false)
+    }
 
         // ЗАДАЧА: Разработать обработчик ошибок и
         //           выполнить проверку через switch 
@@ -74,11 +85,16 @@ export default LoginComponent = observer(({ navigation }) => {
                             autoCapitalize={"none"}
                             keyboardType="default"
                         />
+                    </View >
+                    <View style = {styles.error}>
+                    {passwordDirty && <Text style = {{color: RED_COLOR}}>{passwordError}</Text>}
                     </View>
-                    <View style={styles.input2}>
+                    <View style={[styles.input2,{borderColor: passwordDirty ? RED_COLOR : GREEN_COLOR,}]}>
+
                         <TextInput
                             // onBlur={e => blurHandler(e)}
-                            onEndEditing={(event) => blurHandler(event)}
+                            onEndEditing={(e) => blurHandler(e)}
+                            value={password}
                             secureTextEntry={security}
                             onChangeText={setValue1}
                             value={value1}
@@ -127,6 +143,14 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         height: 400,
+    },
+    error: {
+        width: 250,
+        height: 36,
+        display: "flex",
+        flexDirection: 'row',
+        alignItems: 'center'
+
     },
     block: {
         display: "flex",
@@ -191,7 +215,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: GREEN_COLOR,
         borderRadius: 15,
-        margin: 20,
+        margin: 10,
         fontSize: 12,
     },
     input2: {
@@ -202,9 +226,9 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         borderStyle: "solid",
         borderWidth: 1,
-        borderColor: GREEN_COLOR,
+        // borderColor: passwordDirty ? RED_COLOR : GREEN_COLOR,
         borderRadius: 15,
-        marginTop: 20,
+        // marginTop: 20,
     },
     button: {
         display: "flex",
