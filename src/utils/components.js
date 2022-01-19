@@ -1,4 +1,4 @@
-import Login from "../components/login/Login"
+import Login from "../components/login/Login2"
 import Title from "../components/title/Title"
 import Profile from "../components/profile/Profile"
 import RegisterComponent from "../components/Register/Register"
