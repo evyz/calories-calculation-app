@@ -19,6 +19,7 @@ import {
   LIGHT_COLOR,
   RED_COLOR,
 } from "../../styles/colors";
+import ArrowLeft from "../Arrows/ArrowLeft";
 
 let symbols = /[0-9a-zA-Z!@#$%^&*]{6,}/g;
 export default RegisterComponent = observer(({ navigation }) => {
@@ -47,8 +48,9 @@ export default RegisterComponent = observer(({ navigation }) => {
   return (
     <View>
       <TouchableOpacity style={{ padding: 30 }} onPress={() => navigation.navigate('title')} >
-        <Text>Назад</Text>
+        <ArrowLeft />
       </ TouchableOpacity>
+
 
 
       <Text style={{ fontSize: 24 }}>
