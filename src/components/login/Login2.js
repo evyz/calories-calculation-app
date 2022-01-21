@@ -65,15 +65,19 @@ export default LoginComponent = observer(({ navigation }) => {
 
   return (
     <View style={styles.main}>
+      <TouchableOpacity style={{ padding: 30 }} onPress={() => navigation.navigate('title')} >
+        <Text>Назад</Text>
+      </ TouchableOpacity>
+
       <View style={styles.text}>
-        <Text style={{ fontSize: 24}}>
-        {/* fontFamily: "montserrat-bold" */}
+        <Text style={{ fontSize: 24 }}>
+          {/* fontFamily: "montserrat-bold" */}
           Войдите в аккаунт
         </Text>
-        <Text style={{ fontSize: 16}}>
+        <Text style={{ fontSize: 16 }}>
           С возвращением!
         </Text>
-        <Text style={{ fontSize: 16}}>
+        <Text style={{ fontSize: 16 }}>
           Войдите и пользуйтесь.
         </Text>
       </View>
@@ -104,12 +108,12 @@ export default LoginComponent = observer(({ navigation }) => {
            {passwordDirty && <Text style = {{color: RED_COLOR, fontSize: 14}}>{passwordError}</Text>}
            </View> */}
       <View style={styles.question}>
-          {passwordDirty ? <Text style = {{color: RED_COLOR, fontSize: 14}}>{passwordError}</Text> : <Text></Text>}
+        {passwordDirty ? <Text style={{ color: RED_COLOR, fontSize: 14 }}>{passwordError}</Text> : <Text></Text>}
         <TouchableOpacity>
           <Text style={{ fontSize: 14, color: GREEN_COLOR }}>
             Забыли пароль?
           </Text>
-          </TouchableOpacity>
+        </TouchableOpacity>
       </View>
       <View style={styles.login}>
         <TouchableOpacity onPress={() => authChangeHandler()}>
@@ -119,9 +123,9 @@ export default LoginComponent = observer(({ navigation }) => {
       <View style={styles.reg}>
         <Text>Нет аккаунта?</Text>
         <TouchableOpacity>
-            <Text style = {{color: GREEN_COLOR}}>
-                Зарегистрироваться
-            </Text>
+          <Text style={{ color: GREEN_COLOR }}>
+            Зарегистрироваться
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -208,9 +212,10 @@ const styles = StyleSheet.create({
   reg: {
     display: "flex",
     flexDirection: "row",
-    justifyContent:'center',
+    justifyContent: 'center',
     // marginTop: 260
     position: 'absolute',
     bottom: 10,
     width: '100%'
-}});
+  }
+});

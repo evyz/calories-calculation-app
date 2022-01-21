@@ -23,9 +23,6 @@ export default AppRouter = observer(() => {
     return (
         <View style={{ width: '100%', height: '100%', }}>
 
-            <View style={styles.notif}>
-                <Text>Посмотрите видео на ютуб</Text>
-            </View>
 
             <NavigationContainer>
                 {user.isAuth ?
@@ -54,7 +51,11 @@ export default AppRouter = observer(() => {
                     :
                     <Stack.Navigator>
                         {PublicComponents.map(i =>
-                            <Stack.Screen key={i.name} name={i.name} component={i.component} />
+                            <Stack.Screen options={{
+                                headerShown: false,
+                                headerTitle: null,
+                                tabBarLabel: () => { return null },
+                            }} key={i.name} name={i.name} component={i.component} />
                         )}
                     </Stack.Navigator>
                 }
@@ -70,17 +71,5 @@ const styles = StyleSheet.create({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
-    },
-    notif: {
-        width: '80%',
-        height: 100,
-
-        backgroundColor: 'red',
-
-        position: 'absolute',
-        // bottom: '10%',
-        // left: '10%',
-
-        zIndex: 10,
     }
 })

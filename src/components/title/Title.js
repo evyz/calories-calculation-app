@@ -1,10 +1,12 @@
-import { View, Text, StyleSheet } from "react-native"
+import { View, Text, StyleSheet, Button } from "react-native"
 
 export default TitleComponent = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
             <Text>TitleComponent</Text>
+            <Button title="АВТОРИЗАЦИЯ" onPress={() => navigation.navigate("login")} />
+            <Button title="Регистрация" onPress={() => navigation.navigate("register")} />
         </View>
     )
 }

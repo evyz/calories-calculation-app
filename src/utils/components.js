@@ -4,9 +4,9 @@ import Profile from "../components/profile/Profile"
 import RegisterComponent from "../components/Register/Register"
 
 export const PublicComponents = [
+    { name: "title", component: Title },
     { name: "login", component: Login },
     { name: "register", component: RegisterComponent },
-    { name: "title", component: Title },
 ]
 
 export const AuthComponents = [
