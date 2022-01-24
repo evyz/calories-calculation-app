@@ -1,27 +1,22 @@
-
-import React, { useState } from "react";
-import { observer } from "mobx-react-lite";
-import { useContext, useEffect } from "react";
+import React from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   View,
-  Text,
-  StyleSheet,
-  Button,
-  TextInput,
   TouchableOpacity,
+  StyleSheet,
+  TextInput,
+  Text,
 } from "react-native";
 import { AppContext } from "../../store";
-import { useRoute } from "@react-navigation/native";
-import language from "../../utils/language.json";
 import {
+  LIGHT_COLOR,
+  LIGHT_GREEN_COLOR,
   GREEN_COLOR,
   GREY_COLOR,
-  LIGHT_COLOR,
-  RED_COLOR,
 } from "../../styles/colors";
-import ArrowLeft from "../Arrows/ArrowLeft";
+import { observer } from "mobx-react-lite";
+import { useRoute } from "@react-navigation/native";
 
-let symbols = /[0-9a-zA-Z!@#$%^&*]{6,}/g;
 export default RegisterComponent = observer(({ navigation }) => {
   const [value, setValue] = useState("");
   const [value1, setValue1] = useState("");
@@ -44,18 +39,140 @@ export default RegisterComponent = observer(({ navigation }) => {
     y: 3,
     style: { marginVertical: 5 },
   };
-
   return (
-    <View>
-      <TouchableOpacity style={{ padding: 30 }} onPress={() => navigation.navigate('title')} >
-        <ArrowLeft />
-      </ TouchableOpacity>
+    <View style={styles.main}>
+      <View style={styles.topText}>
+        <Text style={{ fontSize: 24 }}>Создайте свой аккаунт</Text>
+        <Text style={{ fontSize: 16 }}>Создайте аккаунт и получите</Text>
+        <Text style={{ fontSize: 16 }}>доступ к приложению</Text>
+      </View>
+      <View style={styles.input}>
+        <TextInput
+          onChangeText={setValue}
+          value={value}
+          placeholder="Ваше имя"
+          autoCorrect={false}
+          autoCapitalize={"none"}
+          keyboardType="default"
+        />
+      </View>
 
+      <View style={styles.input}>
+        <TextInput
+          onChangeText={setValue}
+          value={value}
+          placeholder="Почта"
+          autoCorrect={false}
+          autoCapitalize={"none"}
+          keyboardType="default"
+        />
+      </View>
 
+      <View style={styles.input2}>
+        <TextInput
+          onEndEditing={(e) => blurHandler(e)}
+          value={password}
+          secureTextEntry={security}
+          onChangeText={setValue1}
+          value={value1}
+          placeholder="Пароль"
+          autoCorrect={false}
+          autoCapitalize={"none"}
+          keyboardType="default"
+        />
+      </View>
 
-      <Text style={{ fontSize: 24 }}>
-        Создайте свой аккаунт
-      </Text>
+      <View style={styles.input2}>
+        <TextInput
+          onEndEditing={(e) => blurHandler(e)}
+          value={password}
+          secureTextEntry={security}
+          onChangeText={setValue1}
+          value={value1}
+          placeholder="Подтвердите пароль"
+          autoCorrect={false}
+          autoCapitalize={"none"}
+          keyboardType="default"
+        />
+      </View>
+      <View style={styles.next}>
+        <TouchableOpacity>
+          <Text style={{ fontSize: 18, color: LIGHT_COLOR }}>Далее</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.entr}>
+        <Text>Уже есть аккаунт?</Text>
+        <TouchableOpacity>
+          <Text style={{ color: GREEN_COLOR }}>Войти</Text>
+        </TouchableOpacity>
+      </View>
     </View>
-  )
-})
+  );
+});
+const styles = StyleSheet.create({
+  main: {
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    alignItems: "center",
+    backgroundColor: LIGHT_COLOR,
+  },
+  topText: {
+    display: "flex",
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+    marginTop: 30,
+    width: "90%",
+  },
+  input: {
+    width: "90%",
+    paddingLeft: 10,
+    borderStyle: "solid",
+    borderWidth: 3,
+    borderColor: 0,
+    borderBottomColor: GREY_COLOR,
+    marginTop: 20,
+    fontSize: 12,
+    alignItems: "flex-start",
+    display: "flex",
+    flexDirection: "column",
+  },
+  input2: {
+    width: "90%",
+    paddingLeft: 10,
+    borderStyle: "solid",
+    borderWidth: 3,
+    borderColor: 0,
+    borderBottomColor: GREY_COLOR,
+    marginTop: 20,
+    fontSize: 12,
+    alignItems: "flex-start",
+    display: "flex",
+    flexDirection: "column",
+    marginTop: 30,
+  },
+  next: {
+    display: "flex",
+    flexDirection: "row",
+    height: 50,
+    width: "90%",
+    margin: 5,
+    justifyContent: "space-around",
+    alignItems: "center",
+    borderWidth: 1,
+    borderRadius: 24,
+    marginTop: 80,
+    // marginLeft: 28,
+    backgroundColor: GREEN_COLOR,
+    borderColor: GREEN_COLOR,
+  },
+  entr: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    position: "absolute",
+    bottom: 10,
+    width: "100%",
+    left: 0,
+  },
+});

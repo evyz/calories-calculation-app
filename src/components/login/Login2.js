@@ -65,21 +65,20 @@ export default LoginComponent = observer(({ navigation }) => {
 
   return (
     <View style={styles.main}>
-      <TouchableOpacity style={{ padding: 30 }} onPress={() => navigation.navigate('title')} >
+      <TouchableOpacity
+        style={{ padding: 30 }}
+        onPress={() => navigation.navigate("title")}
+      >
         <Text>Назад</Text>
-      </ TouchableOpacity>
+      </TouchableOpacity>
 
       <View style={styles.text}>
         <Text style={{ fontSize: 24 }}>
           {/* fontFamily: "montserrat-bold" */}
           Войдите в аккаунт
         </Text>
-        <Text style={{ fontSize: 16 }}>
-          С возвращением!
-        </Text>
-        <Text style={{ fontSize: 16 }}>
-          Войдите и пользуйтесь.
-        </Text>
+        <Text style={{ fontSize: 16 }}>С возвращением!</Text>
+        <Text style={{ fontSize: 16 }}>Войдите и пользуйтесь.</Text>
       </View>
       <View style={styles.input}>
         <TextInput
@@ -108,7 +107,13 @@ export default LoginComponent = observer(({ navigation }) => {
            {passwordDirty && <Text style = {{color: RED_COLOR, fontSize: 14}}>{passwordError}</Text>}
            </View> */}
       <View style={styles.question}>
-        {passwordDirty ? <Text style={{ color: RED_COLOR, fontSize: 14 }}>{passwordError}</Text> : <Text></Text>}
+        {passwordDirty ? (
+          <Text style={{ color: RED_COLOR, fontSize: 14 }}>
+            {passwordError}
+          </Text>
+        ) : (
+          <Text></Text>
+        )}
         <TouchableOpacity>
           <Text style={{ fontSize: 14, color: GREEN_COLOR }}>
             Забыли пароль?
@@ -123,9 +128,7 @@ export default LoginComponent = observer(({ navigation }) => {
       <View style={styles.reg}>
         <Text>Нет аккаунта?</Text>
         <TouchableOpacity>
-          <Text style={{ color: GREEN_COLOR }}>
-            Зарегистрироваться
-          </Text>
+          <Text style={{ color: GREEN_COLOR }}>Зарегистрироваться</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -137,15 +140,15 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     display: "flex",
-    alignItems: 'center',
-    backgroundColor: LIGHT_COLOR
+    alignItems: "center",
+    backgroundColor: LIGHT_COLOR,
   },
   text: {
     display: "flex",
     alignItems: "flex-start",
     justifyContent: "flex-start",
     marginTop: 30,
-    width: '90%'
+    width: "90%",
   },
 
   input: {
@@ -180,7 +183,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     height: 50,
-    width: '90%',
+    width: "90%",
     margin: 5,
     justifyContent: "space-around",
     alignItems: "center",
@@ -195,11 +198,11 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     // alignItems: 'fle',
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     marginRight: 16,
     marginTop: 5,
     marginLeft: 18,
-    width: '90%'
+    width: "90%",
   },
   error: {
     display: "flex",
@@ -212,10 +215,10 @@ const styles = StyleSheet.create({
   reg: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: 'center',
+    justifyContent: "center",
     // marginTop: 260
-    position: 'absolute',
+    position: "absolute",
     bottom: 10,
-    width: '100%'
-  }
+    width: "100%",
+  },
 });
