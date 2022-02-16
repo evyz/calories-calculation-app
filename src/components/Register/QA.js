@@ -19,7 +19,7 @@ import {
 import { observer } from "mobx-react-lite";
 import { useRoute } from "@react-navigation/native";
 
-const QA = observer(({ navigtation }) => {
+const QA = observer(({ navigation }) => {
   const [isChoice, setIsChoice] = useState(false);
   return (
     <View style={styles.mainBlock}>
@@ -27,9 +27,11 @@ const QA = observer(({ navigtation }) => {
         <TouchableOpacity onPress={() => navigation.navigate("title")}>
           <Text>Назад</Text>
         </TouchableOpacity>
-        <View style={[styles.basestatus, styles.activestatus]} />
-        <View style={[styles.basestatus, styles.activestatus]} />
-        <View style={[styles.basestatus, styles.activestatus]} />
+        <View style={styles.mainIcons}>
+          <View style={[styles.basestatus, styles.activestatus]} />
+          <View style={[styles.basestatus, styles.activestatus]} />
+          <View style={[styles.basestatus, styles.activestatus]} />
+        </View>
       </View>
       <View>
         <Text style={styles.text}>Откуда вы узнали о нашем</Text>
@@ -113,6 +115,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+  },
+  mainIcons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "30%",
+    marginTop: 10,
   },
 });
 export default QA;
