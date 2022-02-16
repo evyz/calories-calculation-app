@@ -127,7 +127,7 @@ export default LoginComponent = observer(({ navigation }) => {
       </View>
       <View style={styles.reg}>
         <Text>Нет аккаунта?</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("register")}>
           <Text style={{ color: GREEN_COLOR }}>Зарегистрироваться</Text>
         </TouchableOpacity>
       </View>
