@@ -33,9 +33,17 @@ const QA = observer(({ navigation }) => {
           <View style={[styles.basestatus, styles.activestatus]} />
         </View>
       </View>
+      <View style={styles.text}>
+        <Text style={{ fontSize: 24 }}>Откуда вы узнали о нашем</Text>
+        <Text style={{ fontSize: 24 }}>приложении</Text>
+      </View>
       <View>
-        <Text style={styles.text}>Откуда вы узнали о нашем</Text>
-        <Text style={styles.text}>приложении</Text>
+        <TouchableOpacity
+          style={isChoice ? styles.activeMiniButton : styles.miniButton}
+          onPress={() => setIsChoice(!isChoice)}
+        >
+          <Text>Нашел сам в Play Market</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -61,6 +69,9 @@ const styles = StyleSheet.create({
   },
   activeMiniButton: {
     width: 30,
+    display: "flex",
+    flexDirection: "row",
+    height: 30,
     borderWidth: 1,
     borderRadius: 15,
     backgroundColor: GREEN_COLOR,
@@ -68,6 +79,9 @@ const styles = StyleSheet.create({
   },
   miniButton: {
     borderWidth: 1,
+    display: "flex",
+    flexDirection: "row",
+
     width: 30,
     height: 30,
     borderRadius: 15,
@@ -77,6 +91,8 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     paddingTop: 95,
+    height: 30,
+    width: 280,
   },
   mainTopBlock: {
     width: "90%",
@@ -92,7 +108,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: 350,
     marginTop: 23,
-    fontSize: 24,
   },
   allblocks: {
     width: 62,
@@ -119,7 +134,7 @@ const styles = StyleSheet.create({
   mainIcons: {
     flexDirection: "row",
     justifyContent: "space-between",
-    width: "30%",
+    width: "20%",
     marginTop: 10,
   },
 });
