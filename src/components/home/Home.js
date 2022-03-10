@@ -18,23 +18,41 @@ import {
 } from "../../styles/colors";
 import { observer } from "mobx-react-lite";
 import { useRoute } from "@react-navigation/native";
+import { Shadow } from "react-native-shadow-2";
+import { shadowOpt } from "../loader/Loader";
 const Home = observer(({ navigation }) => {
+
+  const [news, setNews] = useState([
+    { id: 1, title: "1", path: "aaa" },
+    { id: 2, title: "2", path: "aaa" },
+    { id: 3, title: "3", path: "aaa" },
+    { id: 4, title: "4", path: "aaa" },
+    { id: 5, title: "5", path: "aaa" },
+    { id: 6, title: "6", path: "aaa" },
+    { id: 7, title: "7", path: "aaa" },
+    { id: 8, title: "8", path: "aaa" },
+    { id: 9, title: "9", path: "aaa" },
+    { id: 10, title: "10", path: "aaa" },
+  ])
+
   return (
     <View style={styles.main}>
+
+      <View style={styles.header}>
+        <Text>Что нового?</Text>
+      </View>
+
       <View style={styles.newsContainer}>
-        {/* <ScrollView contentContainerStyle={styles.newsScroller}> */}
-        <ScrollView style={styles.newsScroller}>
-          <View style={styles.news}></View>
-          <View style={styles.news}></View>
-          <View style={styles.news}></View>
-          <View style={styles.news}></View>
-          <View style={styles.news}></View>
-          <View style={styles.news}></View>
-          <View style={styles.news}></View>
-          <View style={styles.news}></View>
-          <View style={styles.news}></View>
-          <View style={styles.news}></View>
-          <View style={styles.news}></View>
+        <ScrollView contentContainerStyle={styles.newsScroller}>
+          {news.map(block =>
+            <View style={styles.outerNewsBlock}>
+              <Shadow {...shadowOpt} startColor={"#e3e3e3"}>
+                <View key={block.id} style={styles.newsBlock}>
+                  <Text>{block.title}</Text>
+                </View>
+              </Shadow>
+            </View>
+          )}
         </ScrollView>
       </View>
     </View>
@@ -48,31 +66,41 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: LIGHT_COLOR,
   },
-  newsContainer: {
-    width: "90%",
-    height: "70%",
+  header: {
+    width: '100%',
+    height: '15%',
 
-    backgroundColor: "red",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+
+  newsContainer: {
+    width: '100%',
+    height: '85%',
+
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   newsScroller: {
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    // justifyContent: "space-around",
+    paddingTop: '3%',
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
   },
-  news: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-around",
-    width: 165,
+  outerNewsBlock: {
+    marginTop: 18,
+    marginBottom: 18,
+  },
+  newsBlock: {
+    width: 164,
     height: 215,
     backgroundColor: LIGHT_GREEN_COLOR,
-    borderRadius: 25,
-    marginTop: 40,
-    flexWrap: "wrap",
+    borderRadius: 23,
   },
 });
 export default Home;
