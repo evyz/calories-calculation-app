@@ -19,7 +19,7 @@ import { observer } from "mobx-react-lite";
 import { useRoute } from "@react-navigation/native";
 import Registration from "./Registration";
 import RegIcons from "./RegIcons";
-import QA from "./QA";
+import QA from "./QA.js";
 
 const arr = [
   {
@@ -37,6 +37,6 @@ const arr = [
 ];
 
 export default RegisterComponent = observer(({ navigation }) => {
-  const [page, setPage] = useState(3);
+  const [page, setPage] = useState(2);
   return <View>{arr.map((y) => page === y.page && y.route)}</View>;
 });

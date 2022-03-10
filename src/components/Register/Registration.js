@@ -44,6 +44,7 @@ const Registration = observer(({ navigation }) => {
     y: 3,
     style: { marginVertical: 5 },
   };
+
   const comparePassword = () => {
     if (password === dublpassword) {
       setPasswordError("Пароли совпадают");
@@ -185,7 +186,9 @@ const Registration = observer(({ navigation }) => {
               placeholder="Введите код"
             ></TextInput>
             <View style={styles.confirm}>
-              <TouchableOpacity onPress={() => setIsConfirmed(false)}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("registerStep2")}
+              >
                 <Text style={{ color: LIGHT_COLOR }}>Подтвердить</Text>
               </TouchableOpacity>
             </View>

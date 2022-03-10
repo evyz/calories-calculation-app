@@ -18,9 +18,27 @@ import {
 } from "../../styles/colors";
 import { observer } from "mobx-react-lite";
 import { useRoute } from "@react-navigation/native";
-import { color } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
 
 const RegIcons = observer(({ navigation }) => {
+  const [selectedColor, setSelectedColor] = useState({});
+  const [selectedIcon, setSelectedIcon] = useState(false);
+  const [unselectedColor, setUnselectedColor] = useState([
+    { color: "#FFABAB" },
+    { color: "#FFDAAB" },
+    { color: "#DDFFAB" },
+    { color: "#ABE4FF" },
+    { color: "#D9ABFF" },
+    { color: "#ABC2FF" },
+    { color: "#ABFFB8" },
+    { color: "#FFBFAB" },
+  ]);
+  const [unselectedIcon, setUnselectedIcon] = useState([
+    { icon: "1" },
+    { icon: "2" },
+    { icon: "3" },
+    { icon: "4" },
+  ]);
+
   return (
     <View style={styles.mainBlock}>
       <View style={styles.text}>
@@ -28,47 +46,35 @@ const RegIcons = observer(({ navigation }) => {
           Редактируйте профиль
         </Text>
       </View>
-      <View style={styles.icon}></View>
+      <View style={[styles.icon, { backgroundColor: selectedColor.color }]}>
+        <Text>{selectedIcon.icon}</Text>
+      </View>
       <View style={{ marginTop: 50 }}>
         <Text style={{ fontSize: 18 }}>Выберите аватар</Text>
       </View>
       <View style={styles.mainIcons}>
-        <View style={styles.miniIcon}></View>
-        <View style={styles.miniIcon}></View>
-        <View style={styles.miniIcon}></View>
-        <View style={styles.miniIcon}></View>
+        {unselectedIcon.map((y) => (
+          <TouchableOpacity
+            style={styles.miniIcon}
+            onPress={() => setSelectedIcon(y)}
+          >
+            <Text>{y.icon}</Text>
+          </TouchableOpacity>
+        ))}
       </View>
       <View style={{ marginTop: 20 }}>
         <Text style={{ fontSize: 18 }}>Выберите цвет</Text>
       </View>
       <View style={styles.mainColors}>
-        <View
-          style={[styles.miniColors, { backgroundColor: "#FFABAB" }]}
-        ></View>
-        <View
-          style={[styles.miniColors, { backgroundColor: "#FFDAAB" }]}
-        ></View>
-        <View
-          style={[styles.miniColors, { backgroundColor: "#ABE4FF" }]}
-        ></View>
-        <View
-          style={[styles.miniColors, { backgroundColor: "#DDFFAB" }]}
-        ></View>
-        <View
-          style={[styles.miniColors, { backgroundColor: "#D9ABFF" }]}
-        ></View>
-        <View
-          style={[styles.miniColors, { backgroundColor: "#ABC2FF" }]}
-        ></View>
-        <View
-          style={[styles.miniColors, { backgroundColor: "#ABFFB8" }]}
-        ></View>
-        <View
-          style={[styles.miniColors, { backgroundColor: "#FFBFAB" }]}
-        ></View>
+        {unselectedColor.map((y) => (
+          <TouchableOpacity
+            onPress={() => setSelectedColor(y)}
+            style={[styles.miniColors, { backgroundColor: y.color }]}
+          ></TouchableOpacity>
+        ))}
       </View>
       <View style={styles.next}>
-        <TouchableOpacity onPress={() => setIsConfirmed(true)}>
+        <TouchableOpacity onPress={() => navigation.navigate("registerStep3")}>
           <Text style={{ fontSize: 18, color: LIGHT_COLOR }}>Далее</Text>
         </TouchableOpacity>
       </View>
@@ -83,6 +89,14 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     alignItems: "center",
+  },
+  mainTopBlock: {
+    width: "90%",
+    height: "10%",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   next: {
     height: 50,
@@ -143,6 +157,7 @@ const styles = StyleSheet.create({
     height: 200,
     borderWidth: 3,
     borderRadius: 150,
+    borderColor: GREEN_COLOR,
   },
 });
 export default RegIcons;
