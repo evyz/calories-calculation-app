@@ -22,7 +22,15 @@ const Home = observer(({ navigation }) => {
   return (
     <View style={styles.main}>
       <View style={styles.newsContainer}>
+        {/* <ScrollView contentContainerStyle={styles.newsScroller}> */}
         <ScrollView style={styles.newsScroller}>
+          <View style={styles.news}></View>
+          <View style={styles.news}></View>
+          <View style={styles.news}></View>
+          <View style={styles.news}></View>
+          <View style={styles.news}></View>
+          <View style={styles.news}></View>
+          <View style={styles.news}></View>
           <View style={styles.news}></View>
           <View style={styles.news}></View>
           <View style={styles.news}></View>
@@ -44,14 +52,15 @@ const styles = StyleSheet.create({
     width: "90%",
     height: "70%",
 
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
+    backgroundColor: "red",
   },
   newsScroller: {
     width: "100%",
     height: "100%",
-    backgroundColor: "red",
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    // justifyContent: "space-around",
   },
   news: {
     display: "flex",
@@ -62,7 +71,7 @@ const styles = StyleSheet.create({
     height: 215,
     backgroundColor: LIGHT_GREEN_COLOR,
     borderRadius: 25,
-    paddingTop: 40,
+    marginTop: 40,
     flexWrap: "wrap",
   },
 });
