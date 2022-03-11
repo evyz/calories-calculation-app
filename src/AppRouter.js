@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native'
 import { AuthComponents, PublicComponents } from './utils/components'
+import { LoaderComponent } from './components/loader/Loader'
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -8,6 +9,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useContext, useEffect } from 'react';
 import { AppContext } from './store';
 import { observer } from 'mobx-react-lite';
+import AlphaLoader from './components/loader/AlphaLoader';
 
 export default AppRouter = observer(() => {
 
@@ -20,22 +22,24 @@ export default AppRouter = observer(() => {
         console.log(user.isAuth)
     }, [user])
 
+
     return (
         <View style={{ width: '100%', height: '100%', }}>
 
+            {user.isLoading && <AlphaLoader />}
 
             <NavigationContainer>
                 {user.isAuth ?
-                    <AuthStack.Navigator>
+                    <AuthStack.Navigator >
                         {AuthComponents.map(i =>
                             <AuthStack.Screen options={{
-                                // ЗАДАЧА: Настроить иконки для каждой компоненты из меню 
-                                //          и пропихнуть их в authComponent, после чего
-                                //          перебрать их также, как компоненты массива.
-                                // tabBarIcon: ({})
+                                tabBarStyle: {
+                                    height: 75,
+                                },
                                 headerShown: false,
                                 headerTitle: null,
-                                tabBarLabel: () => { return null },
+                                tabBarIcon: ({ focused }) => (<i.icon focused={focused} />),
+                                tabBarLabel: () => { return null }
                             }}
                                 // ЗАДАЧА: Настроить language.json со всеми компонентами
                                 //          для русификации.

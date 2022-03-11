@@ -15,28 +15,45 @@ const Buttons = observer(() => {
     const click = (link) => {
         switch (link) {
             case 'yt':
-                Linking.canOpenURL('vnd.youtube://channel/' + channelId).then(supported => {
-                    if (supported) {
-                        return Linking.openURL('vnd.youtube://channel/' + channelId);
-                    } else {
-                        return Linking.openURL('https://www.youtube.com/channel/' + channelId);
-                    }
-                });
+                Alert.alert("Youtube канал", "Youtube канал команды, которая занималась разработкой данного проекта", [
+                    {
+                        text: "Открыть", onPress: () => Linking.canOpenURL('vnd.youtube://channel/' + channelId).then(supported => {
+                            if (supported) {
+                                return Linking.openURL('vnd.youtube://channel/' + channelId);
+                            } else {
+                                return Linking.openURL('https://www.youtube.com/channel/' + channelId);
+                            }
+                        })
+                    },
+                    {
+                        text: "Отменить", style: 'cancel'
+                    },
+                ])
                 break
             case 'gh':
-                Linking.canOpenURL('https://github.com/evyz/calories-calculation-app/tree/main').then(supported => {
-                    return Linking.openURL('https://github.com/evyz/calories-calculation-app/tree/main');
-                })
+                Alert.alert("Github проект", "Наш проект есть на github. Вы можете читать и смотреть изменения в нашем приложении", [
+                    {
+                        text: "Открыть", onPress: () => Linking.canOpenURL('https://github.com/evyz/calories-calculation-app/tree/main').then(supported => {
+                            return Linking.openURL('https://github.com/evyz/calories-calculation-app/tree/main');
+                        })
+                    },
+                    {
+                        text: "Отменить", style: 'cancel'
+                    },
+                ])
+
                 break
             case 'qr':
                 return Alert.alert('QR-код временно недоступен', 'Данная функция временно недоступа. В скором обновлении данная проблема будет решена')
                 break
             case 'logout':
+                user.setIsLoading(true)
+                user.setIsAuth(false)
+                setTimeout(() => user.setIsLoading(false),)
 
                 // TODO : добавить полный функционал 
                 //          по удалению токена из фронта и бека.
 
-                user.setIsAuth(false)
                 break
         }
     }

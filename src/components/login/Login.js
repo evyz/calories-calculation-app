@@ -37,10 +37,13 @@ export default LoginComponent = observer(({ navigation }) => {
         style: { marginVertical: 5 },
     };
     const authChangeHandler = () => {
-        if(passwordDirty) { 
-        user.setIsAuth(false)
+        user.setIsLoading(true)
+        if (passwordDirty) {
+            user.setIsAuth(false)
+            user.setIsLoading(false)
         } else {
             user.setIsAuth(true)
+            setTimeout(() => user.setIsLoading(false), 1000)
         }
     };
 
@@ -51,9 +54,10 @@ export default LoginComponent = observer(({ navigation }) => {
             setPasswordError('Вы не ввели пароль')
             setPasswordDirty(true)
         } else {
-          setPasswordError('')
-          setPasswordDirty(false)
-    } }
+            setPasswordError('')
+            setPasswordDirty(false)
+        }
+    }
 
 
     return (
@@ -75,10 +79,10 @@ export default LoginComponent = observer(({ navigation }) => {
                             keyboardType="default"
                         />
                     </View >
-                    <View style = {styles.error}>
-                    {passwordDirty && <Text style = {{color: RED_COLOR, fontSize: 9}}>{passwordError}</Text>}
+                    <View style={styles.error}>
+                        {passwordDirty && <Text style={{ color: RED_COLOR, fontSize: 9 }}>{passwordError}</Text>}
                     </View>
-                    <View style={[styles.input2,{borderColor: passwordDirty ? RED_COLOR : GREEN_COLOR,}]}>
+                    <View style={[styles.input2, { borderColor: passwordDirty ? RED_COLOR : GREEN_COLOR, }]}>
 
                         <TextInput
                             // onBlur={e => blurHandler(e)}
