@@ -9,3 +9,13 @@ export const refreshToken = async () => {
   const { data } = await $authHost.get('api/user/refresh')
   return data
 }
+
+export const logout = async () => {
+  const { data } = await $authHost.post('api/user/logout')
+  return data
+}
+
+export const me = async () => {
+  const { data } = await $authHost.get('api/user/me')
+  return data
+}

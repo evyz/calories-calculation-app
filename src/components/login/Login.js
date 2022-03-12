@@ -13,6 +13,7 @@ import { AppContext } from "../../store";
 import { useRoute } from "@react-navigation/native";
 import language from "../../utils/language.json";
 import { GREEN_COLOR, LIGHT_COLOR, RED_COLOR } from "../../styles/colors";
+import { login } from "../../http/user";
 
 let symbols = /[0-9a-zA-Z!@#$%^&*]{6,}/g;
 
@@ -42,8 +43,11 @@ export default LoginComponent = observer(({ navigation }) => {
             user.setIsAuth(false)
             user.setIsLoading(false)
         } else {
-            user.setIsAuth(true)
-            setTimeout(() => user.setIsLoading(false), 1000)
+            login(value, value1).then(data => {
+                console.log(data)
+            })
+            // user.setIsAuth(true)
+            // setTimeout(() => user.setIsLoading(false), 1000)
         }
     };
 

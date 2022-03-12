@@ -1,7 +1,8 @@
 import { observer } from 'mobx-react-lite'
 import { useContext } from 'react'
-import { View, TouchableOpacity, StyleSheet, Alert, Linking } from 'react-native'
+import { View, TouchableOpacity, StyleSheet, Alert, Linking, AsyncStorage } from 'react-native'
 import Svg, { Path, Defs, G, ClipPath, Rect } from 'react-native-svg'
+import { logout } from '../../../../http/user'
 import { AppContext } from '../../../../store'
 import { DARK_GREY_COLOR, GREEN_COLOR, RED_COLOR } from "../../../../styles/colors";
 
@@ -12,7 +13,7 @@ const Buttons = observer(() => {
 
     const channelId = 'UCCVb0ZJzMBEwzK-OwWZarYg'
 
-    const click = (link) => {
+    const click = async (link) => {
         switch (link) {
             case 'yt':
                 Alert.alert("Youtube канал", "Youtube канал команды, которая занималась разработкой данного проекта", [
@@ -47,9 +48,11 @@ const Buttons = observer(() => {
                 return Alert.alert('QR-код временно недоступен', 'Данная функция временно недоступа. В скором обновлении данная проблема будет решена')
                 break
             case 'logout':
-                user.setIsLoading(true)
+                await AsyncStorage.removeItem('token')
                 user.setIsAuth(false)
-                setTimeout(() => user.setIsLoading(false),)
+                logout().then(data => {
+                    console.log(data)
+                })
 
                 // TODO : добавить полный функционал 
                 //          по удалению токена из фронта и бека.

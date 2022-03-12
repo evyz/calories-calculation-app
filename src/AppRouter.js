@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, AsyncStorage } from 'react-native'
 import { AuthComponents, PublicComponents } from './utils/components'
 import { LoaderComponent } from './components/loader/Loader'
 
@@ -6,10 +6,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { AppContext } from './store';
 import { observer } from 'mobx-react-lite';
 import AlphaLoader from './components/loader/AlphaLoader';
+import { me, refreshToken } from './http/user';
 
 export default AppRouter = observer(() => {
 
@@ -17,11 +18,36 @@ export default AppRouter = observer(() => {
     const AuthStack = createBottomTabNavigator()
 
     const { user } = useContext(AppContext)
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
-        console.log(user.isAuth)
+        refreshToken().then(async data => {
+            if (data?.token) {
+                await AsyncStorage.setItem('token', data?.token)
+                me().then(data => {
+                    const obj = {
+                        avatar: {
+                            color: data["Avatars_Back"]?.color,
+                            ico: data["Avatars_Ico"],
+                        },
+                        role: data["Role"]?.name,
+                        profile: {
+                            createdAt: data?.createdAt,
+                            email: data?.email,
+                            id: data?.id,
+                            name: data?.name
+                        }
+                    }
+                    user.setProfile(obj)
+                })
+                user.setIsAuth(true)
+            }
+        }).finally(() => setIsLoading(false))
     }, [user])
 
+    if (isLoading) {
+        return (<AlphaLoader />)
+    }
 
     return (
         <View style={{ width: '100%', height: '100%', }}>

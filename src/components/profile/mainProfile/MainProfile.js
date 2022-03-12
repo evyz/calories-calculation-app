@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -22,11 +22,19 @@ import {
 const MainProfileComponent = observer(({ navigation }) => {
   const { user } = useContext(AppContext);
 
+  const [email, setEmail] = useState("")
   // ЗАДАЧА: Сверстать по макету профиль здесь.
   //          Ссылка - https://www.figma.com/file/vdoWbzCxWCbAnRcUBaNmJS/LZ-calories-(MAIN)?node-id=0%3A1
   //          Стили разрабатывать ниже в styles
 
   const [isBanner, setIsBanner] = useState(true);
+
+  useEffect(() => {
+    console.log('Profile: ', user.profile)
+    setEmail(user.profile.profile.email)
+  }, [])
+
+  console.log(user.profile.profile.name)
 
   return (
     <View
@@ -55,19 +63,18 @@ const MainProfileComponent = observer(({ navigation }) => {
 
       <Shadow {...shadowOpt}>
         <View style={styles.block}>
-          <View style={styles.avatar}></View>
+          <View style={styles.avatar}>
+            <View style={[styles.innerAvatar, { backgroundColor: user.profile?.avatar?.color }]}></View>
+          </View>
 
-          <Text style={styles.nickname}>Никнейм</Text>
+          <Text style={styles.nickname}>{user.profile.profile.name ? user.profile.profile.name : "Никнейм"}</Text>
 
           <View style={styles.emailView}>
             <Shadow {...shadowOpt} startColor="#F3F3F3">
-              <TextInput style={styles.emailInput} placeholder="Ваша почта" />
+              <TextInput value={email} style={styles.emailInput} placeholder="Ваша почта" />
             </Shadow>
           </View>
 
-          {/* <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
-                        <Text>Открыть</Text>
-                    </TouchableOpacity> */}
 
           <Buttons />
         </View>
@@ -124,6 +131,18 @@ const styles = StyleSheet.create({
     borderColor: GREEN_COLOR,
 
     marginBottom: 20,
+  },
+
+  innerAvatar: {
+    width: '90%',
+    height: '90%',
+
+    borderRadius: 100,
+    padding: 10,
+
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   notif: {

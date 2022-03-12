@@ -8,6 +8,8 @@ import {
   Button,
   TextInput,
   TouchableOpacity,
+  Alert,
+  AsyncStorage
 } from "react-native";
 import { AppContext } from "../../store";
 import { useRoute } from "@react-navigation/native";
@@ -18,6 +20,9 @@ import {
   LIGHT_COLOR,
   RED_COLOR,
 } from "../../styles/colors";
+import { login, me } from "../../http/user";
+import VisibleIcon from "../../icons/visible/visibleIcon";
+import ApiLoader from "../loader/ApiLoader";
 
 let symbols = /[0-9a-zA-Z!@#$%^&*]{6,}/g;
 
@@ -29,9 +34,9 @@ export default LoginComponent = observer(({ navigation }) => {
   const { user } = useContext(AppContext);
   const [password, setPassword] = useState("");
   const [passwordDirty, setPasswordDirty] = useState(false);
-  const [passwordError, setPasswordError] = useState(
-    "Пароль не может быть пустым"
-  );
+  const [passwordError, setPasswordError] = useState("Пароль не может быть пустым");
+  const [isSecurity, setIsSecurity] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
   const shadowOpt = {
     width: 100,
     height: 100,
@@ -47,9 +52,38 @@ export default LoginComponent = observer(({ navigation }) => {
     if (passwordDirty) {
       user.setIsAuth(false);
     } else {
-      user.setIsAuth(true);
+      setIsLoading(true)
+      login(value, value1).then(data => {
+        if (data?.status === 404) {
+          setIsLoading(false)
+          Alert.alert("Ошибка авторизации", data?.message)
+        }
+        if (data?.token) {
+          AsyncStorage.setItem('token', data?.token);
+          me().then(data => {
+            const obj = {
+              avatar: {
+                color: data["Avatars_Back"]?.color,
+                ico: data["Avatars_Ico"],
+              },
+              role: data["Role"]?.name,
+              profile: {
+                createdAt: data?.createdAt,
+                email: data?.email,
+                id: data?.id,
+                name: data?.name
+              }
+            }
+
+            user.setProfile(obj)
+            setTimeout(() => setIsLoading(false), 500);
+            user.setIsAuth(true);
+          })
+        }
+      }).finally(() => setTimeout(() => setIsLoading(false), 500))
     }
   };
+
 
   const blurHandler = (e) => {
     console.log(e.nativeEvent.text);
@@ -65,6 +99,8 @@ export default LoginComponent = observer(({ navigation }) => {
 
   return (
     <View style={styles.main}>
+      {isLoading && <ApiLoader focused={isLoading} />}
+
       <TouchableOpacity
         style={{ padding: 30 }}
         onPress={() => navigation.navigate("title")}
@@ -94,7 +130,7 @@ export default LoginComponent = observer(({ navigation }) => {
         <TextInput
           onEndEditing={(e) => blurHandler(e)}
           value={password}
-          secureTextEntry={security}
+          secureTextEntry={isSecurity}
           onChangeText={setValue1}
           value={value1}
           placeholder="Пароль"
@@ -102,10 +138,10 @@ export default LoginComponent = observer(({ navigation }) => {
           autoCapitalize={"none"}
           keyboardType="default"
         />
+        <TouchableOpacity style={{ padding: 10, }} onPress={() => setIsSecurity(!isSecurity)}>
+          <VisibleIcon focused={isSecurity} />
+        </TouchableOpacity>
       </View>
-      {/* <View style = {styles.error}>
-           {passwordDirty && <Text style = {{color: RED_COLOR, fontSize: 14}}>{passwordError}</Text>}
-           </View> */}
       <View style={styles.question}>
         {passwordDirty ? (
           <Text style={{ color: RED_COLOR, fontSize: 14 }}>
@@ -174,9 +210,10 @@ const styles = StyleSheet.create({
     borderBottomColor: GREY_COLOR,
     marginTop: 20,
     fontSize: 12,
-    alignItems: "flex-start",
+    alignItems: "center",
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "row",
+    justifyContent: 'space-between',
     marginTop: 30,
   },
   login: {
