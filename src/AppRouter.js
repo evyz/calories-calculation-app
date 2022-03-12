@@ -1,6 +1,7 @@
-import { View, Text, StyleSheet, AsyncStorage } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import { AuthComponents, PublicComponents } from './utils/components'
 import { LoaderComponent } from './components/loader/Loader'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';

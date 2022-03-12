@@ -9,7 +9,6 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
-  AsyncStorage
 } from "react-native";
 import { AppContext } from "../../store";
 import { useRoute } from "@react-navigation/native";
@@ -23,6 +22,7 @@ import {
 import { login, me } from "../../http/user";
 import VisibleIcon from "../../icons/visible/visibleIcon";
 import ApiLoader from "../loader/ApiLoader";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 let symbols = /[0-9a-zA-Z!@#$%^&*]{6,}/g;
 

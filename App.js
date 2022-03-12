@@ -12,6 +12,7 @@ async function loadAppAplication() {
   await Font.loadAsync({
     'montserrat-black': require('./vendors/Montserrat-Black.ttf'),
     'montserrat-bold': require('./vendors/Montserrat-Bold.ttf'),
+    'montserrat-medium': require('./vendors/Montserrat-Medium.ttf'),
     'montserrat-ligth': require('./vendors/Montserrat-Light.ttf'),
   });
 }
