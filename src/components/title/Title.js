@@ -1,7 +1,7 @@
-import React, { useRef, useEffect } from 'react'
+import React from 'react'
 
-import { View, Text, StyleSheet, Button, Animated } from "react-native";
-import { DARK_GREY_COLOR, GREY_COLOR } from "../../styles/colors";
+import { View, Text, StyleSheet, Button } from "react-native";
+import { GREY_COLOR } from "../../styles/colors";
 import { BOLD_FONT } from "../../styles/fonts";
 
 export default TitleComponent = ({ navigation }) => {

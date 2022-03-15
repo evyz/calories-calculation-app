@@ -17,9 +17,9 @@ import {
   RED_COLOR,
 } from "../../styles/colors";
 import { observer } from "mobx-react-lite";
-import { useRoute } from "@react-navigation/native";
 import { Shadow } from "react-native-shadow-2";
 import { shadowOpt } from "../loader/Loader";
+
 const Home = observer(({ navigation }) => {
 
   const [news, setNews] = useState([
