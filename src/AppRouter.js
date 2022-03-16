@@ -61,11 +61,12 @@ export default AppRouter = observer(() => {
                         {AuthComponents.map(i =>
                             <AuthStack.Screen options={{
                                 tabBarStyle: {
-                                    height: 75,
+                                    height: i.name !== 'page' && 75,
                                 },
                                 headerShown: false,
                                 headerTitle: null,
-                                tabBarIcon: ({ focused }) => (<i.icon focused={focused} />),
+
+                                tabBarIcon: ({ focused }) => (i.name !== 'page' && <i.icon focused={focused} />),
                                 tabBarLabel: () => { return null }
                             }}
                                 // ЗАДАЧА: Настроить language.json со всеми компонентами

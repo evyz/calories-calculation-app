@@ -1,7 +1,7 @@
 import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const url = 'https://lzcalories.ru/'
+export const url = 'https://lzcalories.ru'
 
 const $host = axios.create({
   baseURL: url

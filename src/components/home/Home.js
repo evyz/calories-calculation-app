@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useMemo } from "react";
 import {
   View,
   TouchableOpacity,
@@ -22,40 +22,50 @@ import { shadowOpt } from "../loader/Loader";
 import { getNews } from "../../http/news";
 import { BOLD_FONT } from "../../styles/fonts";
 import { LIGTH_FONT } from "../../styles/fonts";
+import { SvgUri, SvgCssUri } from 'react-native-svg'
+import { url } from "../../http";
+import Page from "./page/Page";
 
 const Home = observer(({ navigation }) => {
-  const [news, setNews] = useState([
-    { id: 1, title: "1", path: "aaa" },
-    { id: 2, title: "2", path: "aaa" },
-    { id: 3, title: "3", path: "aaa" },
-    { id: 4, title: "4", path: "aaa" },
-    { id: 5, title: "5", path: "aaa" },
-    { id: 6, title: "6", path: "aaa" },
-    { id: 7, title: "7", path: "aaa" },
-    { id: 8, title: "8", path: "aaa" },
-    { id: 9, title: "9", path: "aaa" },
-    { id: 10, title: "10", path: "aaa" },
-  ]);
+  const [news, setNews] = useState([]);
+  const [isLoading, setIsLoading] = useState(true)
+
+  const [selectedNews, setSelectedNews] = useState({})
 
   useEffect(() => {
     getNews().then((data) => {
-      console.log(data?.rows);
       setNews(data?.rows);
-    });
+    }).finally(() => setIsLoading(false));
   }, []);
+
+  const Logo = ({ ico }) => useMemo(() => {
+    const link = url + ico
+    if (isLoading) {
+      return
+    } else {
+      return (<View style={styles.ico}>
+        <SvgCssUri uri={link} width="100%" height="100%" />
+      </View>)
+    }
+  }, [isLoading, news])
 
   return (
     <View style={styles.main}>
+
+      {selectedNews?.id && <Page news={selectedNews} setNews={setSelectedNews} />}
+
       <View style={styles.header}>
         <Text style={styles.textHeader}>Что нового?</Text>
       </View>
       <View style={styles.fakeIcon}></View>
+
       <View style={styles.newsContainer}>
         <ScrollView contentContainerStyle={styles.newsScroller}>
           {news.map((block) => (
-            <View style={styles.outerNewsBlock}>
+            <View key={block?.id} style={styles.outerNewsBlock}>
               <Shadow {...shadowOpt} startColor={"#e3e3e3"}>
                 <TouchableOpacity
+                  onPress={() => setSelectedNews(block)}
                   key={block.id}
                   style={[
                     styles.newsBlock,
@@ -64,6 +74,9 @@ const Home = observer(({ navigation }) => {
                 >
                   <Text style={styles.newsHeader}>{block.name}</Text>
                   <Text style={styles.time}>{block.createdAt}</Text>
+                  <View style={styles.newsIco}>
+                    {block?.ico && <SvgCssUri uri={url + block?.ico} width="100%" height="100%" />}
+                  </View>
                 </TouchableOpacity>
               </Shadow>
             </View>
@@ -141,6 +154,14 @@ const styles = StyleSheet.create({
     height: 215,
     backgroundColor: LIGHT_GREEN_COLOR,
     borderRadius: 23,
+  },
+  newsIco: {
+    width: 75,
+    height: 75,
+
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
   },
 });
 export default Home;
