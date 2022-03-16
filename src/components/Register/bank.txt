@@ -1,0 +1,61 @@
+return (
+    <View style={styles.main}>
+      <View style={styles.topText}>
+        <Text style={{ fontSize: 24 }}>Создайте свой аккаунт</Text>
+        <Text style={{ fontSize: 16 }}>Создайте аккаунт и получите</Text>
+        <Text style={{ fontSize: 16 }}>доступ к приложению</Text>
+      </View>
+      <View style={styles.input}>
+        <TextInput
+          onChangeText={setValue}
+          value={value}
+          placeholder="Ваше имя"
+          autoCorrect={false}
+          autoCapitalize={"none"}
+          keyboardType="default"
+        />
+      </View>
+
+      <View style={styles.input}>
+        <TextInput
+          onChangeText={setValue}
+          value={value}
+          placeholder="Почта"
+          autoCorrect={false}
+          autoCapitalize={"none"}
+          keyboardType="default"
+        />
+      </View>
+
+      <View style={styles.input2}>
+        <TextInput
+          onEndEditing={(e) => blurHandler(e)}
+          value={password}
+          secureTextEntry={security}
+          onChangeText={setValue1}
+          value={value1}
+          placeholder="Пароль"
+          autoCorrect={false}
+          autoCapitalize={"none"}
+          keyboardType="default"
+        />
+      </View>
+
+      <View style={styles.input2}>
+        <TextInput
+          onEndEditing={(e) => blurHandler(e)}
+          value={password}
+          secureTextEntry={security}
+          onChangeText={setValue1}
+          value={value1}
+          placeholder="Подтвердите пароль"
+          autoCorrect={false}
+          autoCapitalize={"none"}
+          keyboardType="default"
+        />
+      </View>
+      <View style={styles.next}>
+        <TouchableOpacity>
+          <Text style={{ fontSize: 18, color: LIGHT_COLOR }}>Далее</Text>
+        </TouchableOpacity>
+    </View>

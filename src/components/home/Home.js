@@ -19,9 +19,11 @@ import {
 import { observer } from "mobx-react-lite";
 import { Shadow } from "react-native-shadow-2";
 import { shadowOpt } from "../loader/Loader";
+import { getNews } from "../../http/news";
+import { BOLD_FONT } from "../../styles/fonts";
+import { LIGTH_FONT } from "../../styles/fonts";
 
 const Home = observer(({ navigation }) => {
-
   const [news, setNews] = useState([
     { id: 1, title: "1", path: "aaa" },
     { id: 2, title: "2", path: "aaa" },
@@ -33,26 +35,39 @@ const Home = observer(({ navigation }) => {
     { id: 8, title: "8", path: "aaa" },
     { id: 9, title: "9", path: "aaa" },
     { id: 10, title: "10", path: "aaa" },
-  ])
+  ]);
+
+  useEffect(() => {
+    getNews().then((data) => {
+      console.log(data?.rows);
+      setNews(data?.rows);
+    });
+  }, []);
 
   return (
     <View style={styles.main}>
-
       <View style={styles.header}>
-        <Text>Что нового?</Text>
+        <Text style={styles.textHeader}>Что нового?</Text>
       </View>
-
+      <View style={styles.fakeIcon}></View>
       <View style={styles.newsContainer}>
         <ScrollView contentContainerStyle={styles.newsScroller}>
-          {news.map(block =>
+          {news.map((block) => (
             <View style={styles.outerNewsBlock}>
               <Shadow {...shadowOpt} startColor={"#e3e3e3"}>
-                <View key={block.id} style={styles.newsBlock}>
-                  <Text>{block.title}</Text>
-                </View>
+                <TouchableOpacity
+                  key={block.id}
+                  style={[
+                    styles.newsBlock,
+                    { backgroundColor: block.background },
+                  ]}
+                >
+                  <Text style={styles.newsHeader}>{block.name}</Text>
+                  <Text style={styles.time}>{block.createdAt}</Text>
+                </TouchableOpacity>
               </Shadow>
             </View>
-          )}
+          ))}
         </ScrollView>
       </View>
     </View>
@@ -66,31 +81,56 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: LIGHT_COLOR,
   },
+  time: {
+    fontFamily: LIGTH_FONT,
+    paddingLeft: 15,
+  },
+  fakeIcon: {
+    flexDirection: "row",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "15%",
+    height: 40,
+    backgroundColor: GREEN_COLOR,
+    borderRadius: 30,
+    marginTop: 20,
+  },
+  textHeader: {
+    fontFamily: BOLD_FONT,
+    marginTop: 70,
+    fontSize: 20,
+  },
+  newsHeader: {
+    fontFamily: BOLD_FONT,
+    paddingTop: 20,
+    paddingLeft: 15,
+  },
   header: {
-    width: '100%',
-    height: '15%',
+    width: "100%",
+    height: "15%",
 
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   newsContainer: {
-    width: '100%',
-    height: '85%',
+    width: "100%",
+    height: "85%",
 
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   newsScroller: {
-    paddingTop: '3%',
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
+    paddingTop: "3%",
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
   },
   outerNewsBlock: {
     marginTop: 18,
