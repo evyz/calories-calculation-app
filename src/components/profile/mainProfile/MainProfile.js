@@ -18,6 +18,9 @@ import {
   GREEN_COLOR,
   RED_COLOR,
 } from "../../../styles/colors";
+import Avatar from "./components/Avatar";
+import { SvgUri } from "react-native-svg";
+import { url } from "../../../http";
 
 const MainProfileComponent = observer(({ navigation }) => {
   const { user } = useContext(AppContext);
@@ -28,13 +31,13 @@ const MainProfileComponent = observer(({ navigation }) => {
   //          Стили разрабатывать ниже в styles
 
   const [isBanner, setIsBanner] = useState(true);
+  const [isAvatar, setIsAvatar] = useState(false)
 
   useEffect(() => {
-    console.log('Profile: ', user.profile)
     setEmail(user.profile.profile.email)
   }, [])
 
-  console.log(user.profile.profile.name)
+  console.log(user.profile?.avatar?.ico?.path)
 
   return (
     <View
@@ -45,6 +48,9 @@ const MainProfileComponent = observer(({ navigation }) => {
         justifyContent: "center",
       }}
     >
+
+      {isAvatar && <Avatar isActive={isAvatar} setIsActive={setIsAvatar} />}
+
       {isBanner && (
         <TouchableOpacity
           style={styles.notif}
@@ -63,9 +69,11 @@ const MainProfileComponent = observer(({ navigation }) => {
 
       <Shadow {...shadowOpt}>
         <View style={styles.block}>
-          <View style={styles.avatar}>
-            <View style={[styles.innerAvatar, { backgroundColor: user.profile?.avatar?.color }]}></View>
-          </View>
+          <TouchableOpacity onPress={() => setIsAvatar(true)} style={styles.avatar}>
+            <View style={[styles.innerAvatar, { backgroundColor: user.profile?.avatar?.color }]}>
+              <SvgUri width={140} height={140} uri={url + user.profile?.avatar?.ico?.path} />
+            </View>
+          </TouchableOpacity>
 
           <Text style={styles.nickname}>{user.profile.profile.name ? user.profile.profile.name : "Никнейм"}</Text>
 
@@ -140,6 +148,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     padding: 10,
 
+    overflow: 'hidden',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',

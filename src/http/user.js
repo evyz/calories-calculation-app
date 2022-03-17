@@ -19,3 +19,23 @@ export const me = async () => {
   const { data } = await $authHost.get('/api/user/me')
   return data
 }
+
+export const getAvatars = async ({ count, page }) => {
+  const { data } = await $authHost.get(`/api/avatar/get-all?count=${count}&&page=${page}`)
+  return data
+}
+
+export const getColors = async () => {
+  const { data } = await $authHost.get(`/api/avatar/colors`)
+  return data
+}
+
+export const uploadAvatar = async ({ path, color }) => {
+  const { data } = await $authHost.post(`/api/avatar/`, { path, color })
+  return data
+}
+
+export const getAvatar = async () => {
+  const { data } = await $authHost.get(`/api/avatar/`)
+  return data
+}

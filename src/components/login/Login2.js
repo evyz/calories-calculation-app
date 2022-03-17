@@ -35,6 +35,8 @@ export default LoginComponent = observer(({ navigation }) => {
   const [password, setPassword] = useState("");
   const [passwordDirty, setPasswordDirty] = useState(false);
   const [passwordError, setPasswordError] = useState("Пароль не может быть пустым");
+  const [emailDirty, setEmailDirty] = useState(false);
+  const [emailError, setEmailError] = useState("Почта не может быть пустой");
   const [isSecurity, setIsSecurity] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
   const shadowOpt = {
@@ -56,6 +58,14 @@ export default LoginComponent = observer(({ navigation }) => {
       login(value, value1).then(data => {
         if (data?.status === 404) {
           setIsLoading(false)
+          if (data?.message === 'Неверный пароль') {
+            setPasswordDirty(true)
+            setPasswordError(data?.message)
+          }
+          if (data?.message === 'Неверная почта') {
+            setEmailDirty(true)
+            setEmailError(data?.message)
+          }
           Alert.alert("Ошибка авторизации", data?.message)
         }
         if (data?.token) {
@@ -86,16 +96,26 @@ export default LoginComponent = observer(({ navigation }) => {
 
 
   const blurHandler = (e) => {
-    console.log(e.nativeEvent.text);
     setPassword(e.nativeEvent.text);
-    if (e.nativeEvent?.text.length < 6) {
-      setPasswordError("Неверный пароль");
-      setPasswordDirty(true);
+    if (e.nativeEvent?.text.length === 0) {
+      setPasswordError('Укажите пароль')
+      setPasswordDirty(true)
     } else {
-      setPasswordError("");
-      setPasswordDirty(false);
+      setPasswordError('')
+      setPasswordDirty(false)
     }
   };
+
+  const blurHandlerMail = (e) => {
+    if (e.nativeEvent?.text.length === 0) {
+      setEmailError('Укажите пароль')
+      setEmailDirty(true)
+    } else {
+      setEmailError('')
+      setEmailDirty(false)
+    }
+  };
+
 
   return (
     <View style={styles.main}>
@@ -110,23 +130,33 @@ export default LoginComponent = observer(({ navigation }) => {
 
       <View style={styles.text}>
         <Text style={{ fontSize: 24 }}>
-          {/* fontFamily: "montserrat-bold" */}
           Войдите в аккаунт
         </Text>
         <Text style={{ fontSize: 16 }}>С возвращением!</Text>
         <Text style={{ fontSize: 16 }}>Войдите и пользуйтесь.</Text>
       </View>
-      <View style={styles.input}>
+      <View style={[styles.input, { borderBottomColor: emailDirty ? RED_COLOR : GREY_COLOR }]}>
         <TextInput
+          onEndEditing={(e) => blurHandlerMail(e)}
           onChangeText={setValue}
           value={value}
           placeholder="Почта"
           autoCorrect={false}
           autoCapitalize={"none"}
           keyboardType="default"
+          style={styles.innerInput}
         />
       </View>
-      <View style={styles.input2}>
+      <View style={styles.question}>
+        {emailDirty ? (
+          <Text style={{ color: RED_COLOR, fontSize: 14 }}>
+            {emailError}
+          </Text>
+        ) : (
+          <Text></Text>
+        )}
+      </View>
+      <View style={[styles.input2, { borderBottomColor: passwordDirty ? RED_COLOR : GREY_COLOR }]}>
         <TextInput
           onEndEditing={(e) => blurHandler(e)}
           value={password}
@@ -137,6 +167,7 @@ export default LoginComponent = observer(({ navigation }) => {
           autoCorrect={false}
           autoCapitalize={"none"}
           keyboardType="default"
+          style={[styles.innerInput]}
         />
         <TouchableOpacity style={{ padding: 10, }} onPress={() => setIsSecurity(!isSecurity)}>
           <VisibleIcon focused={isSecurity} />
@@ -215,6 +246,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: 'space-between',
     marginTop: 30,
+  },
+  innerInput: {
+    width: '80%',
   },
   login: {
     display: "flex",
