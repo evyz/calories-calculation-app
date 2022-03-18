@@ -37,8 +37,6 @@ const MainProfileComponent = observer(({ navigation }) => {
     setEmail(user.profile.profile.email)
   }, [])
 
-  console.log(user.profile?.avatar?.ico?.path)
-
   return (
     <View
       style={{
