@@ -12,8 +12,11 @@ import { AppContext } from './store';
 import { observer } from 'mobx-react-lite';
 import AlphaLoader from './components/loader/AlphaLoader';
 import { me, refreshToken } from './http/user';
+import { getNews } from './http/news';
 
 export default AppRouter = observer(() => {
+
+    const { newsStore } = useContext(AppContext)
 
     const Stack = createNativeStackNavigator()
     const AuthStack = createBottomTabNavigator()
@@ -40,6 +43,10 @@ export default AppRouter = observer(() => {
                         }
                     }
                     user.setProfile(obj)
+                    getNews().then((data) => {
+                        newsStore.setNews(data?.rows);
+                        newsStore.setCount(data?.count);
+                    }).finally(() => setIsLoading(false));
                 })
                 user.setIsAuth(true)
             }

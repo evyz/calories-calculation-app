@@ -7,8 +7,7 @@ import { getAvatar, getAvatars, getColors, me, uploadAvatar } from '../../../../
 import { GREEN_COLOR, LIGHT_COLOR } from '../../../../styles/colors'
 import ApiLoader from '../../../loader/ApiLoader'
 
-const Avatar = ({ isActive, setIsActive }) => {
-
+const Avatar = ({ isActive, setIsActive, user, setUser }) => {
   const [avatars, setAvatars] = useState([])
   const [avatarsSecond, setAvatarsSecond] = useState([])
   const [colors, setColors] = useState([])
@@ -18,7 +17,6 @@ const Avatar = ({ isActive, setIsActive }) => {
 
   useEffect(() => {
     getAvatar().then(data => {
-      console.log(data)
       setSelectedAvatar({ ava: data?.Avatars_Ico?.path, background: data?.Avatars_Back?.color })
     }).then(() => {
       getAvatars({ page: 1, count: 20 }).then(data => {
@@ -29,17 +27,24 @@ const Avatar = ({ isActive, setIsActive }) => {
         })
       }).then(() => {
         getColors().then(data => {
-          console.log('query')
           setColors(data)
         })
       })
     }).finally(() => setIsLoading(false))
 
   }, [])
-
   const upload = () => {
+    setIsLoading(true)
     uploadAvatar({ path: selectedAvatar.ava, color: selectedAvatar.background }).then(data => {
-      console.log(data)
+      // console.log(data)
+    }).finally(() => {
+      let obj = user
+      obj.avatar.color = selectedAvatar.background
+      obj.avatar.ico.path = selectedAvatar.ava
+      setUser(obj)
+      setIsLoading(false)
+      setIsActive(false)
+      alert('Аватар изменён')
     })
   }
 
@@ -193,11 +198,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
-  },
-
-
-
-
+  }
 })
 
 export default Avatar;

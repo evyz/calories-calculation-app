@@ -25,32 +25,30 @@ import { LIGTH_FONT } from "../../styles/fonts";
 import { SvgUri, SvgCssUri } from 'react-native-svg'
 import { url } from "../../http";
 import Page from "./page/Page";
+import ApiLoader from "../loader/ApiLoader";
 
 const Home = observer(({ navigation }) => {
+  const { newsStore } = useContext(AppContext)
+
   const [news, setNews] = useState([]);
   const [isLoading, setIsLoading] = useState(true)
 
   const [selectedNews, setSelectedNews] = useState({})
 
   useEffect(() => {
-    getNews().then((data) => {
-      setNews(data?.rows);
-    }).finally(() => setIsLoading(false));
-  }, []);
-
-  const Logo = ({ ico }) => useMemo(() => {
-    const link = url + ico
-    if (isLoading) {
-      return
-    } else {
-      return (<View style={styles.ico}>
-        <SvgCssUri uri={link} width="100%" height="100%" />
-      </View>)
+    if (newsStore.news.length < 1) {
+      return getNews().then((data) => {
+        setNews(data?.rows);
+      }).finally(() => setIsLoading(false));
     }
-  }, [isLoading, news])
+    setNews(newsStore.news)
+    setIsLoading(false)
+  }, []);
 
   return (
     <View style={styles.main}>
+
+      {isLoading && <ApiLoader />}
 
       {selectedNews?.id && <Page news={selectedNews} setNews={setSelectedNews} />}
 

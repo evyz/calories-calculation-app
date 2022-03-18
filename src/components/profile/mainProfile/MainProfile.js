@@ -47,7 +47,7 @@ const MainProfileComponent = observer(({ navigation }) => {
       }}
     >
 
-      {isAvatar && <Avatar isActive={isAvatar} setIsActive={setIsAvatar} />}
+      {isAvatar && <Avatar isActive={isAvatar} setIsActive={setIsAvatar} user={user.profile} setUser={user.setProfile} />}
 
       {isBanner && (
         <TouchableOpacity

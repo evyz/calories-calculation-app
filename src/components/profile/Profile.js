@@ -30,6 +30,7 @@ const Profile = ({ navigation }) => {
                 fontSize: 0,
                 color: 'red'
             },
+            swipeEdgeWidth: 0,
         }}>
             {profileRouter.map(i =>
                 <Drawer.Screen name={i.name} component={i.component} />
