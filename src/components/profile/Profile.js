@@ -33,7 +33,7 @@ const Profile = ({ navigation }) => {
             swipeEdgeWidth: 0,
         }}>
             {profileRouter.map(i =>
-                <Drawer.Screen name={i.name} component={i.component} />
+                <Drawer.Screen key={i.name} name={i.name} component={i.component} />
             )}
         </Drawer.Navigator>
     )

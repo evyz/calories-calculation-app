@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Linking } from 'react-native'
 import { AuthComponents, PublicComponents } from './utils/components'
 import { LoaderComponent } from './components/loader/Loader'
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -7,7 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import { AppContext } from './store';
 import { observer } from 'mobx-react-lite';
 import AlphaLoader from './components/loader/AlphaLoader';
@@ -15,7 +15,6 @@ import { me, refreshToken } from './http/user';
 import { getNews } from './http/news';
 
 export default AppRouter = observer(() => {
-
     const { newsStore } = useContext(AppContext)
 
     const Stack = createNativeStackNavigator()
@@ -25,6 +24,7 @@ export default AppRouter = observer(() => {
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
+
         refreshToken().then(async data => {
             if (data?.token) {
                 await AsyncStorage.setItem('token', data?.token)
@@ -49,7 +49,9 @@ export default AppRouter = observer(() => {
                     }).finally(() => setIsLoading(false));
                 })
                 user.setIsAuth(true)
+                return;
             }
+            return user.setIsAuth(false);
         }).finally(() => setIsLoading(false))
     }, [user])
 

@@ -39,3 +39,8 @@ export const getAvatar = async () => {
   const { data } = await $authHost.get(`/api/avatar/`)
   return data
 }
+
+export const changePassword = async ({ password, newPassword }) => {
+  const { data } = await $authHost.post('/api/user/change-password', { password, newPassword })
+  return data
+}

@@ -5,6 +5,7 @@ import { SvgUri } from 'react-native-svg'
 import { url } from '../../../../http'
 import { getAvatar, getAvatars, getColors, me, uploadAvatar } from '../../../../http/user'
 import { GREEN_COLOR, LIGHT_COLOR } from '../../../../styles/colors'
+import { BOLD_FONT, MEDIUM_FONT } from '../../../../styles/fonts'
 import ApiLoader from '../../../loader/ApiLoader'
 
 const Avatar = ({ isActive, setIsActive, user, setUser }) => {
@@ -18,26 +19,28 @@ const Avatar = ({ isActive, setIsActive, user, setUser }) => {
   useEffect(() => {
     getAvatar().then(data => {
       setSelectedAvatar({ ava: data?.Avatars_Ico?.path, background: data?.Avatars_Back?.color })
-    }).then(() => {
-      getAvatars({ page: 1, count: 20 }).then(data => {
-        setAvatars(data)
-      }).then(data => {
-        getAvatars({ page: 2, count: 20 }).then(data => {
-          setAvatarsSecond(data)
-        })
-      }).then(() => {
-        getColors().then(data => {
-          setColors(data)
-        })
-      })
+    })
+    getAvatars({ page: 1, count: 20 }).then(data => {
+      setAvatars(data)
+    })
+    getAvatars({ page: 2, count: 20 }).then(data => {
+      setAvatarsSecond(data)
+    })
+    getColors().then(data => {
+      setColors(data)
     }).finally(() => setIsLoading(false))
-
   }, [])
+
   const upload = () => {
+    if (user.avatar.color === selectedAvatar.background) {
+      return setIsActive(false)
+    }
+    if (user.avatar.ico.path === selectedAvatar.ava) {
+      return setIsActive(false)
+    }
+
     setIsLoading(true)
-    uploadAvatar({ path: selectedAvatar.ava, color: selectedAvatar.background }).then(data => {
-      // console.log(data)
-    }).finally(() => {
+    uploadAvatar({ path: selectedAvatar.ava, color: selectedAvatar.background }).finally(() => {
       let obj = user
       obj.avatar.color = selectedAvatar.background
       obj.avatar.ico.path = selectedAvatar.ava
@@ -55,17 +58,14 @@ const Avatar = ({ isActive, setIsActive, user, setUser }) => {
         {isLoading && <ApiLoader />}
 
         <View style={styles.innerBlock}>
-          <TouchableOpacity onPress={() => setIsActive(false)}>
-            <Text>Закрыть</Text>
-          </TouchableOpacity>
-
-
           <View style={[styles.selectedAvatar, { backgroundColor: selectedAvatar.background }]}>
             {selectedAvatar.ava &&
               <View style={styles.selectedInnerAvatar}>
                 <SvgUri width={200} height={200} uri={url + selectedAvatar.ava} />
               </View>}
           </View>
+
+          <Text style={{ fontFamily: MEDIUM_FONT, fontSize: 18, marginTop: 10, }}>Выберите аватар</Text>
 
           <View style={styles.avatars}>
             <ScrollView horizontal={true}>
@@ -74,12 +74,6 @@ const Avatar = ({ isActive, setIsActive, user, setUser }) => {
                   <SvgUri width={60} height={60} uri={url + avatar.path} />
                 </TouchableOpacity>
               )}
-
-            </ScrollView>
-          </View>
-
-          <View style={styles.avatars}>
-            <ScrollView horizontal={true}>
               {avatarsSecond.map(avatar =>
                 <TouchableOpacity key={avatar?.id} style={styles.avatar} onPress={() => setSelectedAvatar({ ava: avatar?.path, id: avatar?.id, background: selectedAvatar.background })}>
                   <SvgUri width={60} height={60} uri={url + avatar.path} />
@@ -88,6 +82,7 @@ const Avatar = ({ isActive, setIsActive, user, setUser }) => {
             </ScrollView>
           </View>
 
+          <Text style={{ fontFamily: MEDIUM_FONT, fontSize: 18, marginTop: 10, }}>Выберите цвет</Text>
           <View style={styles.avatars}>
             <ScrollView horizontal={true}>
               {colors.map(color =>
@@ -98,8 +93,8 @@ const Avatar = ({ isActive, setIsActive, user, setUser }) => {
           </View>
 
 
-          <TouchableOpacity onPress={() => upload()}>
-            <Text>Обновить</Text>
+          <TouchableOpacity style={styles.buttonUpdate} onPress={() => upload()}>
+            <Text style={{ color: LIGHT_COLOR, fontSize: 18, fontFamily: MEDIUM_FONT }}>Обновить</Text>
           </TouchableOpacity>
 
         </View>
@@ -198,7 +193,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
-  }
+  },
+  buttonUpdate: {
+    width: '100%',
+    height: 50,
+
+    backgroundColor: GREEN_COLOR,
+
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+
+    borderRadius: 24,
+  },
 })
 
 export default Avatar;

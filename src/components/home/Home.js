@@ -27,6 +27,10 @@ import { url } from "../../http";
 import Page from "./page/Page";
 import ApiLoader from "../loader/ApiLoader";
 
+import dayjs from "dayjs";
+import 'dayjs/locale/ru'
+dayjs().locale('ru')
+
 const Home = observer(({ navigation }) => {
   const { newsStore } = useContext(AppContext)
 
@@ -61,22 +65,22 @@ const Home = observer(({ navigation }) => {
         <ScrollView contentContainerStyle={styles.newsScroller}>
           {news.map((block) => (
             <View key={block?.id} style={styles.outerNewsBlock}>
-              <Shadow {...shadowOpt} startColor={"#e3e3e3"}>
-                <TouchableOpacity
-                  onPress={() => setSelectedNews(block)}
-                  key={block.id}
-                  style={[
-                    styles.newsBlock,
-                    { backgroundColor: block.background },
-                  ]}
-                >
-                  <Text style={styles.newsHeader}>{block.name}</Text>
-                  <Text style={styles.time}>{block.createdAt}</Text>
-                  <View style={styles.newsIco}>
-                    {block?.ico && <SvgCssUri uri={url + block?.ico} width="100%" height="100%" />}
-                  </View>
-                </TouchableOpacity>
-              </Shadow>
+              {/* <Shadow {...shadowOpt} startColor={"#e3e3e3"}> */}
+              <TouchableOpacity
+                onPress={() => setSelectedNews(block)}
+                key={block.id}
+                style={[
+                  styles.newsBlock,
+                  { backgroundColor: block.background },
+                ]}
+              >
+                <Text style={styles.newsHeader}>{block.name}</Text>
+                <Text style={styles.time}>{dayjs(block.createdAt).format('DD MMMM')}</Text>
+                <View style={styles.newsIco}>
+                  {block?.ico && <SvgCssUri uri={url + block?.ico} width="100%" height="100%" />}
+                </View>
+              </TouchableOpacity>
+              {/* </Shadow> */}
             </View>
           ))}
         </ScrollView>
@@ -142,6 +146,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexWrap: "wrap",
     justifyContent: "space-around",
+    paddingBottom: '3%'
   },
   outerNewsBlock: {
     marginTop: 18,
