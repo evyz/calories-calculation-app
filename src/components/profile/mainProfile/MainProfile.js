@@ -82,9 +82,9 @@ const MainProfileComponent = observer(({ navigation }) => {
           </View>
 
           <View style={styles.options}>
-            <TouchableOpacity onPress={() => navigation.navigate('settings')}>
+            {/* <TouchableOpacity onPress={() => navigation.navigate('settings')}>
               <Text>Настройки</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
 
 
