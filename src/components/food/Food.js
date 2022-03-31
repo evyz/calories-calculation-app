@@ -22,20 +22,35 @@ import { shadowOpt } from "../loader/Loader";
 import { getNews } from "../../http/news";
 import { BOLD_FONT } from "../../styles/fonts";
 import { LIGTH_FONT } from "../../styles/fonts";
-import { getCategories } from "../../http/product";
+import { getCategories, getEachProduct } from "../../http/product";
 
 const FoodComponent = observer(({ navigation }) => {
   const [value, setValue] = useState("");
+  const [search, setSearch] = useState([]);
+  const [food, setFood] = useState(false);
   const [cats, setCats] = useState([]);
   useEffect(() => {
     getCategories().then((data) => {
       setCats(data.rows);
     });
   }, []);
+  useEffect(() => {
+    if (food) {
+      getEachProduct(40, 1).then((data) => {
+        setSearch(data);
+        console.log(data);
+      });
+    }
+  }, [food]);
+
   return (
     <View style={styles.main}>
       <View style={styles.search}>
         <TextInput placeholder="Поиск" value={value} onChangeText={setValue} />
+
+        <TouchableOpacity onPress={() => setFood(true)} style={styles.button}>
+          <Text>Найти</Text>
+        </TouchableOpacity>
       </View>
       {/* <Shadow {...shadowOpt} startColor="#F3F3F3"> */}
       <View style={styles.categories}>
@@ -48,6 +63,15 @@ const FoodComponent = observer(({ navigation }) => {
         </View>
       </View>
       {/* </Shadow> */}
+      <View style={{ width: "90%", height: "30%" }}>
+        <Text>{search?.count}</Text>
+        {search?.rows &&
+          search?.rows.map((obj) => (
+            <View key={obj.id} style={styles.searchFood}>
+              <Text>{obj.name}</Text>
+            </View>
+          ))}
+      </View>
     </View>
   );
 });
@@ -61,10 +85,30 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: LIGHT_COLOR,
   },
+  searchFood: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "90%",
+    height: 30,
+    backgroundColor: GREY_COLOR,
+    marginTop: 20,
+  },
+  button: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "25%",
+    height: 40,
+    borderWidth: 3,
+    borderColor: LIGHT_GREEN_COLOR,
+    borderRadius: 30,
+    paddingEnd: 2,
+    marginLeft: 10,
+  },
   eachCat: {
     width: 50,
     height: 50,
-    backgroundColor: GREEN_COLOR,
     margin: 10,
     flexDirection: "row",
     alignItems: "center",
@@ -87,7 +131,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     display: "flex",
     alignItems: "center",
-    backgroundColor: "grey",
+    backgroundColor: "#DCDCDC",
     borderRadius: 25,
   },
   search: {
@@ -96,11 +140,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     display: "flex",
     alignItems: "center",
-    justifyContent: "flex-start",
+    justifyContent: "space-between",
     paddingLeft: 20,
     width: "90%",
     height: 50,
-    backgroundColor: "grey",
+    backgroundColor: "#DCDCDC",
     marginTop: 85,
   },
 });
