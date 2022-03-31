@@ -2,6 +2,8 @@ import AppRouter from './src/AppRouter';
 import AppProvider from './src/store';
 import { useState } from 'react';
 
+
+import AppLoading from 'expo-app-loading'
 import * as Font from 'expo-font';
 import LoaderComponent from './src/components/loader/Loader';
 import WellcomeComponent from './src/components/wellcome/Wellcome';
@@ -16,7 +18,6 @@ async function loadAppAplication() {
     'montserrat-ligth': require('./vendors/Montserrat-Light.ttf'),
   });
 }
-
 
 export const isWellcome = async () => {
   let check = await AsyncStorage.getItem('isWellcome')
@@ -40,12 +41,12 @@ export default function App() {
   })
 
   if (!isReady) {
-    loadAppAplication().then(data => {
-      setIsReady(true)
-    })
-
     return (
-      <LoaderComponent />
+      <AppLoading
+        startAsync={loadAppAplication}
+        onError={err => console.log(err)}
+        onFinish={() => setIsReady(true)}
+      />
     )
   }
 

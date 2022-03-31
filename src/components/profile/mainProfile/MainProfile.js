@@ -47,7 +47,7 @@ const MainProfileComponent = observer(({ navigation }) => {
       }}
     >
 
-      {isAvatar && <Avatar isActive={isAvatar} setIsActive={setIsAvatar} />}
+      {isAvatar && <Avatar isActive={isAvatar} setIsActive={setIsAvatar} user={user.profile} setUser={user.setProfile} />}
 
       {isBanner && (
         <TouchableOpacity
@@ -81,6 +81,12 @@ const MainProfileComponent = observer(({ navigation }) => {
             </Shadow>
           </View>
 
+          <View style={styles.options}>
+            {/* <TouchableOpacity onPress={() => navigation.navigate('settings')}>
+              <Text>Настройки</Text>
+            </TouchableOpacity> */}
+          </View>
+
 
           <Buttons />
         </View>
@@ -109,7 +115,7 @@ const styles = StyleSheet.create({
 
   emailView: {
     marginTop: 30,
-    marginBottom: 200, // --- Убрать потом!
+    marginBottom: 100, // --- Убрать потом!
   },
 
   emailInput: {
@@ -137,6 +143,13 @@ const styles = StyleSheet.create({
     borderColor: GREEN_COLOR,
 
     marginBottom: 20,
+  },
+
+  options: {
+    width: '90%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
 
   innerAvatar: {

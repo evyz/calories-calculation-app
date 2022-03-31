@@ -18,7 +18,7 @@ import {
 import { observer } from "mobx-react-lite";
 import { useRoute } from "@react-navigation/native";
 
-let symbols = /[0-9a-zA-Z!@#$%^&*]{8,}/g;
+export let symbols = /[0-9a-zA-Z!@#$%^&*]{8,}/g;
 
 const Registration = observer(({ navigation }) => {
   const [value, setValue] = useState("");
