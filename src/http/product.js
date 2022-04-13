@@ -3,9 +3,10 @@ export const getCategories = async () => {
   const { data } = await $authHost.get("api/category");
   return data;
 };
-export const getEachProduct = async (count, page) => {
-  const { data } = await $authHost.get(
-    `api/product?count=${count}&page=${page}`
+export const getEachProduct = async ({ count, page, cats }) => {
+  const result = await $authHost.get(
+    "api/product?" + `count=${count}&page=${page}`,
+    { data: { categories: cats } }
   );
-  return data;
+  return result.data;
 };

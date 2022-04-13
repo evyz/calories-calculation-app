@@ -22,7 +22,7 @@ import {
 import { login, me } from "../../http/user";
 import VisibleIcon from "../../icons/visible/visibleIcon";
 import ApiLoader from "../loader/ApiLoader";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 let symbols = /[0-9a-zA-Z!@#$%^&*]{6,}/g;
 
@@ -34,11 +34,13 @@ export default LoginComponent = observer(({ navigation }) => {
   const { user } = useContext(AppContext);
   const [password, setPassword] = useState("");
   const [passwordDirty, setPasswordDirty] = useState(false);
-  const [passwordError, setPasswordError] = useState("Пароль не может быть пустым");
+  const [passwordError, setPasswordError] = useState(
+    "Пароль не может быть пустым"
+  );
   const [emailDirty, setEmailDirty] = useState(false);
   const [emailError, setEmailError] = useState("Почта не может быть пустой");
-  const [isSecurity, setIsSecurity] = useState(true)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isSecurity, setIsSecurity] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const shadowOpt = {
     width: 100,
     height: 100,
@@ -54,68 +56,68 @@ export default LoginComponent = observer(({ navigation }) => {
     if (passwordDirty) {
       user.setIsAuth(false);
     } else {
-      setIsLoading(true)
-      login(value, value1).then(data => {
-        if (data?.status === 404) {
-          setIsLoading(false)
-          if (data?.message === 'Неверный пароль') {
-            setPasswordDirty(true)
-            setPasswordError(data?.message)
-          }
-          if (data?.message === 'Неверная почта') {
-            setEmailDirty(true)
-            setEmailError(data?.message)
-          }
-          Alert.alert("Ошибка авторизации", data?.message)
-        }
-        if (data?.token) {
-          AsyncStorage.setItem('token', data?.token);
-          me().then(data => {
-            const obj = {
-              avatar: {
-                color: data["Avatars_Back"]?.color,
-                ico: data["Avatars_Ico"],
-              },
-              role: data["Role"]?.name,
-              profile: {
-                createdAt: data?.createdAt,
-                email: data?.email,
-                id: data?.id,
-                name: data?.name
-              }
+      setIsLoading(true);
+      login(value, value1)
+        .then((data) => {
+          if (data?.status === 404) {
+            setIsLoading(false);
+            if (data?.message === "Неверный пароль") {
+              setPasswordDirty(true);
+              setPasswordError(data?.message);
             }
+            if (data?.message === "Неверная почта") {
+              setEmailDirty(true);
+              setEmailError(data?.message);
+            }
+            Alert.alert("Ошибка авторизации", data?.message);
+          }
+          if (data?.token) {
+            AsyncStorage.setItem("token", data?.token);
+            me().then((data) => {
+              const obj = {
+                avatar: {
+                  color: data["Avatars_Back"]?.color,
+                  ico: data["Avatars_Ico"],
+                },
+                role: data["Role"]?.name,
+                profile: {
+                  createdAt: data?.createdAt,
+                  email: data?.email,
+                  id: data?.id,
+                  name: data?.name,
+                },
+              };
 
-            user.setProfile(obj)
-            setTimeout(() => setIsLoading(false), 500);
-            user.setIsAuth(true);
-          })
-        }
-      }).finally(() => setTimeout(() => setIsLoading(false), 500))
+              user.setProfile(obj);
+              setTimeout(() => setIsLoading(false), 500);
+              user.setIsAuth(true);
+            });
+          }
+        })
+        .finally(() => setTimeout(() => setIsLoading(false), 500));
     }
   };
-
 
   const blurHandler = (e) => {
     setPassword(e.nativeEvent.text);
     if (e.nativeEvent?.text.length === 0) {
-      setPasswordError('Укажите пароль')
-      setPasswordDirty(true)
+      setPasswordError("Укажите пароль");
+      setPasswordDirty(true);
     } else {
-      setPasswordError('')
-      setPasswordDirty(false)
+      setPasswordError("");
+      setPasswordDirty(false);
     }
   };
 
   const blurHandlerMail = (e) => {
     if (e.nativeEvent?.text.length === 0) {
-      setEmailError('Укажите пароль')
-      setEmailDirty(true)
+      setEmailError("Укажите пароль");
+      setEmailDirty(true);
     } else {
-      setEmailError('')
-      setEmailDirty(false)
+      setEmailError("");
+      setEmailDirty(false);
     }
   };
-
 
   return (
     <View style={styles.main}>
@@ -129,13 +131,16 @@ export default LoginComponent = observer(({ navigation }) => {
       </TouchableOpacity>
 
       <View style={styles.text}>
-        <Text style={{ fontSize: 24 }}>
-          Войдите в аккаунт
-        </Text>
+        <Text style={{ fontSize: 24 }}>Войдите в аккаунт</Text>
         <Text style={{ fontSize: 16 }}>С возвращением!</Text>
         <Text style={{ fontSize: 16 }}>Войдите и пользуйтесь.</Text>
       </View>
-      <View style={[styles.input, { borderBottomColor: emailDirty ? RED_COLOR : GREY_COLOR }]}>
+      <View
+        style={[
+          styles.input,
+          { borderBottomColor: emailDirty ? RED_COLOR : GREY_COLOR },
+        ]}
+      >
         <TextInput
           onEndEditing={(e) => blurHandlerMail(e)}
           onChangeText={setValue}
@@ -149,27 +154,32 @@ export default LoginComponent = observer(({ navigation }) => {
       </View>
       <View style={styles.question}>
         {emailDirty ? (
-          <Text style={{ color: RED_COLOR, fontSize: 14 }}>
-            {emailError}
-          </Text>
+          <Text style={{ color: RED_COLOR, fontSize: 14 }}>{emailError}</Text>
         ) : (
           <Text></Text>
         )}
       </View>
-      <View style={[styles.input2, { borderBottomColor: passwordDirty ? RED_COLOR : GREY_COLOR }]}>
+      <View
+        style={[
+          styles.input2,
+          { borderBottomColor: passwordDirty ? RED_COLOR : GREY_COLOR },
+        ]}
+      >
         <TextInput
           onEndEditing={(e) => blurHandler(e)}
-          value={password}
-          secureTextEntry={isSecurity}
-          onChangeText={setValue1}
           value={value1}
+          onChangeText={setValue1}
+          secureTextEntry={isSecurity}
           placeholder="Пароль"
           autoCorrect={false}
           autoCapitalize={"none"}
           keyboardType="default"
           style={[styles.innerInput]}
         />
-        <TouchableOpacity style={{ padding: 10, }} onPress={() => setIsSecurity(!isSecurity)}>
+        <TouchableOpacity
+          style={{ padding: 10 }}
+          onPress={() => setIsSecurity(!isSecurity)}
+        >
           <VisibleIcon focused={isSecurity} />
         </TouchableOpacity>
       </View>
@@ -244,11 +254,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     display: "flex",
     flexDirection: "row",
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     marginTop: 30,
   },
   innerInput: {
-    width: '80%',
+    width: "80%",
   },
   login: {
     display: "flex",
