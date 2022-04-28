@@ -18,8 +18,12 @@ import {
   RED_COLOR,
 } from "../../../styles/colors";
 import { getCategories, getEachProduct } from "../../../http/product";
+import { Shadow } from "react-native-shadow-2";
+import { shadowOpt } from "../../loader/Loader";
 
-const MainFoodRoute = ({ navigation }) => {
+const MainFoodRoute = observer(({ navigation }) => {
+  const { user } = useContext(AppContext);
+
   const [value, setValue] = useState("");
   const [search, setSearch] = useState([]);
   const [food, setFood] = useState(false);
@@ -46,30 +50,42 @@ const MainFoodRoute = ({ navigation }) => {
   //   </View>
   // );
 
+  console.log(user.isSelectedProduct); // --- Здесь состояние продукта
+
   return (
     <View style={styles.main}>
-      <View style={styles.search}>
-        <TextInput placeholder="Поиск" value={value} onChangeText={setValue} />
+      <Shadow {...shadowOpt} startColor="#EBEBEB">
+        <View style={styles.search}>
+          <TextInput
+            placeholder="Поиск"
+            value={value}
+            onChangeText={setValue}
+          />
 
-        <TouchableOpacity onPress={() => getProducts()} style={styles.button}>
-          <Text>Найти</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.categories}>
-        <View style={styles.allCat}>
-          {cats.map((obj) => (
-            <TouchableOpacity
-              key={obj.id}
-              style={[styles.eachCat]}
-              onPress={() => setChosed([obj.name])}
-            >
-              <Text style={{ color: chosed[0] === obj.name ? "red" : "black" }}>
-                {obj.name}
-              </Text>
-            </TouchableOpacity>
-          ))}
+          <TouchableOpacity onPress={() => getProducts()} style={styles.button}>
+            <Text>Найти</Text>
+          </TouchableOpacity>
         </View>
-      </View>
+      </Shadow>
+      <Shadow {...shadowOpt} startColor="#EBEBEB">
+        <View style={styles.categories}>
+          <View style={styles.allCat}>
+            {cats.map((obj) => (
+              <TouchableOpacity
+                key={obj.id}
+                style={[styles.eachCat]}
+                onPress={() => setChosed([obj.name])}
+              >
+                <Text
+                  style={{ color: chosed[0] === obj.name ? "red" : "black" }}
+                >
+                  {obj.name}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+      </Shadow>
       <View style={styles.allSearched}>
         <ScrollView style={styles.scroll}>
           <Text>{search?.count}</Text>
@@ -77,7 +93,10 @@ const MainFoodRoute = ({ navigation }) => {
             search?.rows.map((obj) => (
               <View>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("EachFoodRoute")}
+                  onPress={() => {
+                    user.setIsSelectedProduct(obj);
+                    navigation.navigate("EachFoodRoute");
+                  }}
                   key={obj.id}
                   style={styles.searchFood}
                 >
@@ -89,14 +108,17 @@ const MainFoodRoute = ({ navigation }) => {
       </View>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   main: {
     display: "flex",
+    flexDirection: "column",
     width: "100%",
     height: "100%",
-    // backgroundColor: "red",
+    alignItems: "center",
+    justifyContent: "space-around",
+    backgroundColor: LIGHT_COLOR,
   },
   allSearched: {
     width: "90%",
@@ -157,12 +179,12 @@ const styles = StyleSheet.create({
   },
   categories: {
     marginTop: 50,
-    width: "90%",
+    width: 350,
     height: 330,
     flexDirection: "row",
     display: "flex",
     alignItems: "center",
-    backgroundColor: "#DCDCDC",
+    backgroundColor: LIGHT_COLOR,
     borderRadius: 25,
   },
   search: {
@@ -173,9 +195,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingLeft: 20,
-    width: "90%",
+    width: 350,
     height: 50,
-    backgroundColor: "#DCDCDC",
+    backgroundColor: LIGHT_COLOR,
     marginTop: 85,
   },
 });

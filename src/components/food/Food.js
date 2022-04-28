@@ -71,15 +71,22 @@ const FoodComponent = observer(({ navigation }) => {
 
       <Tab.Navigator
         screenOptions={{
+          drawerPosition: "right",
+          drawerStyle: {
+            width: 240,
+          },
           headerStyle: {
             height: 0,
             opacity: 0,
           },
-          derTitleStyle: {
+          headerTitleStyle: {
             fontSize: 0,
             color: "red",
           },
           swipeEdgeWidth: 0,
+          tabBarStyle: {
+            height: 0,
+          },
         }}
       >
         {foodRouter.map((route) => (
@@ -95,12 +102,15 @@ const FoodComponent = observer(({ navigation }) => {
 });
 export default FoodComponent;
 
-// const styles = StyleSheet.create({
-//   main: {
-//     display: "flex",
-//     width: "100%",
-//     height: "100%",
-//     // backgroundColor: "red",
+const styles = StyleSheet.create({
+  main: {
+    display: "flex",
+    flexDirection: "column",
+    width: "100%",
+    height: "100%",
+  },
+});
+// backgroundColor: "red",
 //   },
 //   allSearched: {
 //     width: "90%",
@@ -182,4 +192,3 @@ export default FoodComponent;
 //     backgroundColor: "#DCDCDC",
 //     marginTop: 85,
 //   },
-// });

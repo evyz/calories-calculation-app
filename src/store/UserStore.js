@@ -14,9 +14,10 @@ export default class UserStore {
         createdAt: null,
         email: null,
         id: null,
-        name: null
-      }
-    }
+        name: null,
+      },
+    };
+    this._isSelectedProduct = {};
     makeAutoObservable(this);
   }
 
@@ -27,7 +28,11 @@ export default class UserStore {
     this._isLoading = status;
   }
   setProfile(profile) {
-    this._profile = profile
+    this._profile = profile;
+  }
+
+  setIsSelectedProduct(obj) {
+    this._isSelectedProduct = obj;
   }
 
   get isAuth() {
@@ -38,6 +43,10 @@ export default class UserStore {
   }
 
   get profile() {
-    return this._profile
+    return this._profile;
+  }
+
+  get isSelectedProduct() {
+    return this._isSelectedProduct;
   }
 }
