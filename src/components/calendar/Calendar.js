@@ -4,7 +4,6 @@ import Picker from "./components/Picker";
 const CalendarComponent = () => {
   return (
     <View>
-      <Text>CalendarComponent</Text>
 
       <Picker />
 
