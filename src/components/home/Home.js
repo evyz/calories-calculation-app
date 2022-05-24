@@ -22,41 +22,57 @@ import { shadowOpt } from "../loader/Loader";
 import { getNews } from "../../http/news";
 import { BOLD_FONT } from "../../styles/fonts";
 import { LIGTH_FONT } from "../../styles/fonts";
-import { SvgUri, SvgCssUri } from 'react-native-svg'
+import { SvgUri, SvgCssUri } from "react-native-svg";
 import { url } from "../../http";
 import Page from "./page/Page";
 import ApiLoader from "../loader/ApiLoader";
 
 import dayjs from "dayjs";
-import 'dayjs/locale/ru'
-dayjs().locale('ru')
+import "dayjs/locale/ru";
+dayjs().locale("ru");
 
 const Home = observer(({ navigation }) => {
-  const { newsStore } = useContext(AppContext)
+  const { newsStore } = useContext(AppContext);
 
   const [news, setNews] = useState([]);
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [selectedNews, setSelectedNews] = useState({})
+  const [selectedNews, setSelectedNews] = useState({});
 
   useEffect(() => {
     if (newsStore.news.length < 1) {
-      return getNews().then((data) => {
-        setNews(data?.rows);
-      }).finally(() => setIsLoading(false));
+      return getNews()
+        .then((data) => {
+          setNews(data?.rows);
+        })
+        .finally(() => setIsLoading(false));
     }
-    setNews(newsStore.news)
-    setIsLoading(false)
+    setNews(newsStore.news);
+    setIsLoading(false);
   }, []);
 
   return (
     <View style={styles.main}>
-
       {isLoading && <ApiLoader />}
 
-      {selectedNews?.id && <Page news={selectedNews} setNews={setSelectedNews} />}
+      {selectedNews?.id && (
+        <Page news={selectedNews} setNews={setSelectedNews} />
+      )}
 
       <View style={styles.header}>
+        <View>
+          <TouchableOpacity
+            style={{
+              alignItems: "flex-start",
+              position: "absolute",
+              top: 30,
+              left: 20,
+            }}
+            onPress={() => navigation.navigate("TitleComponent")}
+          >
+            <Text>Back</Text>
+          </TouchableOpacity>
+        </View>
         <Text style={styles.textHeader}>Что нового?</Text>
       </View>
       <View style={styles.fakeIcon}></View>
@@ -75,9 +91,17 @@ const Home = observer(({ navigation }) => {
                 ]}
               >
                 <Text style={styles.newsHeader}>{block.name}</Text>
-                <Text style={styles.time}>{dayjs(block.createdAt).format('DD MMMM')}</Text>
+                <Text style={styles.time}>
+                  {dayjs(block.createdAt).format("DD MMMM")}
+                </Text>
                 <View style={styles.newsIco}>
-                  {block?.ico && <SvgCssUri uri={url + block?.ico} width="100%" height="100%" />}
+                  {block?.ico && (
+                    <SvgCssUri
+                      uri={url + block?.ico}
+                      width="100%"
+                      height="100%"
+                    />
+                  )}
                 </View>
               </TouchableOpacity>
               {/* </Shadow> */}
@@ -146,7 +170,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexWrap: "wrap",
     justifyContent: "space-around",
-    paddingBottom: '3%'
+    paddingBottom: "3%",
   },
   outerNewsBlock: {
     marginTop: 18,
@@ -162,7 +186,7 @@ const styles = StyleSheet.create({
     width: 75,
     height: 75,
 
-    position: 'absolute',
+    position: "absolute",
     bottom: 20,
     right: 20,
   },

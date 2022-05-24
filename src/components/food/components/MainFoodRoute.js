@@ -55,6 +55,19 @@ const MainFoodRoute = observer(({ navigation }) => {
   return (
     <View style={styles.main}>
       <Shadow {...shadowOpt} startColor="#EBEBEB">
+        <View>
+          <TouchableOpacity
+            style={{
+              alignItems: "flex-start",
+              position: "absolute",
+              top: 30,
+              left: 20,
+            }}
+            onPress={() => navigation.navigate("TitleComponent")}
+          >
+            <Text>Back</Text>
+          </TouchableOpacity>
+        </View>
         <View style={styles.search}>
           <TextInput
             placeholder="Поиск"
