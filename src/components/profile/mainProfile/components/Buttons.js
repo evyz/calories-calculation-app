@@ -48,15 +48,22 @@ const Buttons = observer(() => {
                 return Alert.alert('QR-код временно недоступен', 'Данная функция временно недоступа. В скором обновлении данная проблема будет решена')
                 break
             case 'logout':
-                await AsyncStorage.removeItem('token')
-                user.setIsAuth(false)
-                logout().then(data => {
-                    console.log(data)
-                })
-
-                // TODO : добавить полный функционал 
-                //          по удалению токена из фронта и бека.
-
+                Alert.alert("Вы уверены, что хотите выйти из аккаунта?", null, [
+                    {
+                        text: "Выйти", onPress: async () => {
+                            await AsyncStorage.removeItem('token')
+                            user.setIsAuth(false)
+                            logout().then(data => {
+                                console.log(data)
+                            })
+                        },
+                        style: "cancel",
+                    },
+                    {
+                        text: "Остаться",
+                        style: "default"
+                    }
+                ])
                 break
         }
     }

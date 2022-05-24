@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TextInput,
   Text,
+  Alert,
 } from "react-native";
 import { AppContext } from "../../store";
 import {
@@ -17,6 +18,7 @@ import {
 } from "../../styles/colors";
 import { observer } from "mobx-react-lite";
 import { useRoute } from "@react-navigation/native";
+import { register } from "../../http/user";
 
 export let symbols = /[0-9a-zA-Z!@#$%^&*]{8,}/g;
 
@@ -25,6 +27,7 @@ const Registration = observer(({ navigation }) => {
   const [value1, setValue1] = useState("");
   const [isRemember, setIsRemember] = useState(false);
   const [security, setSecurity] = useState(true);
+  const [code, setCode] = useState('')
   const { user } = useContext(AppContext);
   const [password, setPassword] = useState("");
   const [dublpassword, setDublPassword] = useState("");
@@ -63,6 +66,17 @@ const Registration = observer(({ navigation }) => {
       setShortPasswordDirty(false);
     }
   };
+
+  const registerEvent = () => {
+    register(value, value1, dublpassword).then(data => {
+      if (data.status === 404) {
+        return Alert.alert("Ошибка в регистрации", data.message)
+      } else {
+        setIsConfirmed(true)
+      }
+    })
+  }
+
   return (
     <View style={styles.main}>
       <View style={styles.mainTopBlock}>
@@ -94,8 +108,8 @@ const Registration = observer(({ navigation }) => {
 
       <View style={styles.input}>
         <TextInput
-          onChangeText={setValue}
-          value={value}
+          onChangeText={setValue1}
+          value={value1}
           placeholder="Почта"
           autoCorrect={false}
           autoCapitalize={"none"}
@@ -154,7 +168,7 @@ const Registration = observer(({ navigation }) => {
         )}
       </View>
       <View style={styles.next}>
-        <TouchableOpacity onPress={() => setIsConfirmed(true)}>
+        <TouchableOpacity onPress={() => registerEvent()}>
           <Text style={{ fontSize: 18, color: LIGHT_COLOR }}>Далее</Text>
         </TouchableOpacity>
       </View>
@@ -184,6 +198,8 @@ const Registration = observer(({ navigation }) => {
             <TextInput
               style={styles.inputCode}
               placeholder="Введите код"
+              value={code}
+              onChangeText={setCode}
             ></TextInput>
             <View style={styles.confirm}>
               <TouchableOpacity

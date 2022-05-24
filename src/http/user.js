@@ -8,6 +8,15 @@ export const login = async (email, password) => {
   return data;
 };
 
+export const register = async (name, email, password) => {
+  const { data } = await $host.post("/api/user/register", {
+    name,
+    email,
+    password,
+  });
+  return data;
+}
+
 export const refreshToken = async () => {
   const { data } = await $authHost.get("/api/user/refresh");
   return data;

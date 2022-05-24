@@ -1,95 +1,89 @@
-import React, { useState } from 'react'
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
-import { Calendar } from 'react-native-calendario'
-import { LIGHT_COLOR } from '../../../styles/colors'
+import React, { useEffect, useRef, useState } from 'react'
+import { View, StyleSheet, Text, TouchableOpacity, Animated, Easing, Button } from 'react-native'
+import CalendarPicker from 'react-native-calendar-picker'
+import { DARK_GREY_COLOR, GREEN_COLOR, GREY_GREEN_COLOR, LIGHT_COLOR } from '../../../styles/colors'
 import dayjs from 'dayjs'
 import 'dayjs/locale/ru'
+import { BLACK_FONT, BOLD_FONT } from '../../../styles/fonts'
+import Stats from './Stats'
 
 const Picker = () => {
-
-  // https://github.com/maggialejandro/react-native-calendario - GH documentation
-
-  const [month, setMonth] = useState(new Date())
   const [startDate, setStartDate] = useState(new Date())
-  const [endDate, setEndDate] = useState(new Date())
 
-  const [multyDate, setMultyDate] = useState(false)
+  const [isActive, setIsActive] = useState(false)
 
-  const changeDates = (date) => {
-    setStartDate(date)
-    setEndDate(date)
+
+  const arrow = useRef(new Animated.Value(1)).current;
+  const arrowSpin = arrow.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '-180deg'],
+  });
+
+  const rotateArrow = () => {
+    if (isActive) {
+      setIsActive(false)
+      Animated.timing(arrow, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true
+      }).start();
+    } else {
+      setIsActive(true)
+      Animated.timing(arrow, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: true
+      }).start();
+    }
   }
+
+  const activeBlock = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    if (isActive) {
+      Animated.timing(activeBlock, {
+        toValue: -400,
+        duration: 500,
+        useNativeDriver: true
+      }).start();
+    } else {
+      Animated.timing(activeBlock, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: true
+      }).start();
+    }
+  }, [isActive])
+
 
   return (
     <View style={styles.main}>
-      <View style={styles.content}>
-        <View style={styles.nav}>
-          {/* <TouchableOpacity onPress={() => setMonth(dayjs(month).add(-1, 'month'))}>
-            <Text>Back</Text>
-          </TouchableOpacity> */}
-          <Text>{dayjs(month).format('MMMM YYYY')}</Text>
-          {/* <TouchableOpacity onPress={() => setMonth(dayjs(month).add(1, 'month'))}>
-            <Text>Next</Text>
-          </TouchableOpacity> */}
+
+      <Animated.View style={[styles.calendarBlock, { transform: [{ translateY: activeBlock }] }]}>
+        <View style={styles.content}>
+          <View style={styles.calendar}>
+            <CalendarPicker
+              width={330}
+              // height={500}
+              previousTitle={"<"}
+              nextTitle={">"}
+              firstDay={0}
+              startFromMonday={true}
+              textStyle={{ fontFamily: BOLD_FONT }}
+              onDateChange={date => setStartDate(date)}
+            />
+          </View>
         </View>
-        <TouchableOpacity onPress={() => setMultyDate(!multyDate)}>
-          <Text>{multyDate ? "Выбор одной даты" : "Выбор нескольких дат:"}</Text>
-        </TouchableOpacity>
-        <Calendar
-          onChange={(range) => console.log(range)}
-          onPress={(date) => changeDates(date)}
-          minDate={null}
-          startDate={startDate}
-          endDate={endDate}
-          numberOfMonths={1}
-          firstDayMonday={true}
-          dayNames={['П', 'В', 'С', 'Ч', 'П', "С", 'В']}
-          startingMonth={month}
-          theme={{
-            activeDayColor: {},
-            monthTitleTextStyle: {
-              color: '#6d95da',
-              fontWeight: '300',
-              fontSize: 0,
-            },
-            emptyMonthContainerStyle: {},
-            emptyMonthTextStyle: {
-              fontWeight: '200',
-            },
-            weekColumnsContainerStyle: {},
-            weekColumnStyle: {
-              paddingVertical: 10,
-            },
-            weekColumnTextStyle: {
-              color: 'black',
-              fontSize: 13,
-            },
-            nonTouchableDayContainerStyle: {},
-            nonTouchableDayTextStyle: {},
-            startDateContainerStyle: {},
-            endDateContainerStyle: {},
-            dayContainerStyle: {},
-            dayTextStyle: {
-              color: '#2d4150',
-              fontWeight: '200',
-              fontSize: 15,
-            },
-            dayOutOfRangeContainerStyle: {},
-            dayOutOfRangeTextStyle: {},
-            todayContainerStyle: {},
-            todayTextStyle: {
-              color: '#6d95da',
-            },
-            activeDayContainerStyle: {
-              backgroundColor: '#6d95da',
-            },
-            activeDayTextStyle: {
-              color: 'white',
-            },
-            nonTouchableLastMonthDayTextStyle: {},
-          }}
-        />
-      </View>
+
+        <Animated.View style={{ marginTop: 20, transform: [{ rotate: arrowSpin }] }}>
+          <TouchableOpacity style={styles.touchButton} onPress={() => rotateArrow()}>
+            <Text style={styles.button}>↓</Text>
+          </TouchableOpacity>
+        </Animated.View>
+      </Animated.View>
+
+      <Stats selectedDate={startDate} />
+
     </View>
   )
 }
@@ -114,6 +108,35 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center'
   },
+  calendarBlock: {
+    width: '100%',
+    height: 550,
+    backgroundColor: GREEN_COLOR,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    borderBottomEndRadius: 25,
+    borderBottomStartRadius: 25,
+
+    position: 'absolute',
+    zIndex: 5,
+  },
+  button: {
+    fontSize: 42,
+    fontFamily: BOLD_FONT,
+    color: LIGHT_COLOR,
+  },
+  touchButton: {
+    width: 70,
+    height: 70,
+    borderRadius: 50,
+    borderWidth: 1,
+    borderColor: LIGHT_COLOR,
+
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
 })
 
 export default Picker
