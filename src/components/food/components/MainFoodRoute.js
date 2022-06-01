@@ -20,9 +20,12 @@ import {
 import { getCategories, getEachProduct } from "../../../http/product";
 import { Shadow } from "react-native-shadow-2";
 import { shadowOpt } from "../../loader/Loader";
+import ApiLoader from "../../loader/ApiLoader";
 
 const MainFoodRoute = observer(({ navigation }) => {
   const { user } = useContext(AppContext);
+
+  const [isLoading, setIsLoading] = useState(true)
 
   const [value, setValue] = useState("");
   const [search, setSearch] = useState([]);
@@ -30,27 +33,51 @@ const MainFoodRoute = observer(({ navigation }) => {
   const [cats, setCats] = useState([]);
   const [chosed, setChosed] = useState([]);
   const [isConfirmed, setIsConfirmed] = useState(false);
+
   useEffect(() => {
     getCategories().then((data) => {
       setCats(data.rows);
-    });
+    }).finally(() => setIsLoading(false));
   }, []);
+
+
   useEffect(() => {
-    console.log(1, chosed);
-    getProducts();
-  }, [chosed]);
+    if (search.length > 0) {
+      setIsConfirmed(true)
+    }
+  }, [search])
+
+  const updateSelection = (name) => {
+    if (chosed.length > 0) {
+      let arr = []
+      let status = false
+      chosed.forEach(item => {
+        if (item !== name) {
+          arr.push(item)
+        } else {
+          status = true
+        }
+      })
+      if (!status) {
+        arr.push(name)
+      }
+      setChosed(arr)
+      return
+    }
+    setChosed([name])
+  }
+
   const getProducts = async () => {
-    console.log(2, chosed);
     await getEachProduct({ count: 40, page: 1, cats: chosed }).then((data) => {
-      setSearch(data);
-      console.log(data.count);
+      setSearch(data.rows);
     });
   };
 
-  console.log(user.isSelectedProduct); // --- Здесь состояние продукта
-
   return (
     <View style={styles.main}>
+
+      {isLoading && <ApiLoader />}
+
       <Shadow {...shadowOpt} startColor="#EBEBEB">
         <View>
           <TouchableOpacity
@@ -85,17 +112,12 @@ const MainFoodRoute = observer(({ navigation }) => {
                 <TouchableOpacity
                   key={obj.id}
                   style={[styles.eachCat]}
-                  onPress={() => {
-                    setChosed(obj.name);
-                    setIsConfirmed(true);
-                    getProducts({ count: 10, page: 1, cats: chosed });
-                    console.log(3, chosed);
-                  }}
+                  onPress={() => updateSelection(obj.name)}
                 >
                   <Text
                     style={{
                       fontSize: 14,
-                      color: chosed[0] === obj.name ? "red" : "black",
+                      color: chosed.find(item => item === obj.name) !== undefined ? "red" : "black",
                     }}
                   >
                     {obj.name}
@@ -111,8 +133,8 @@ const MainFoodRoute = observer(({ navigation }) => {
           <View style={styles.allSearched}>
             <ScrollView style={styles.scroll}>
               <Text>{search?.count}</Text>
-              {search?.rows &&
-                search?.rows.map((obj) => (
+              {search &&
+                search.map((obj) => (
                   <View key={obj.id}>
                     <TouchableOpacity
                       onPress={() => {
@@ -131,7 +153,91 @@ const MainFoodRoute = observer(({ navigation }) => {
         </View>
       )}
     </View>
-  );
+  )
+
+  // return (
+  //   <View style={styles.main}>
+  //     <Shadow {...shadowOpt} startColor="#EBEBEB">
+  //       <View>
+  //         <TouchableOpacity
+  //           style={{
+  //             alignItems: "flex-start",
+  //             // position: "absolute",
+
+  //             left: 20,
+  //           }}
+  //           onPress={() => navigation.navigate("TitleComponent")}
+  //         >
+  //           <Text>Back</Text>
+  //         </TouchableOpacity>
+  //       </View>
+  //       <View style={styles.search}>
+  //         <TextInput
+  //           placeholder="Поиск"
+  //           value={value}
+  //           onChangeText={setValue}
+  //         />
+
+  //         <TouchableOpacity onPress={() => getProducts()} style={styles.button}>
+  //           <Text>Найти</Text>
+  //         </TouchableOpacity>
+  //       </View>
+  //     </Shadow>
+  //     <Shadow {...shadowOpt} startColor="#EBEBEB">
+  //       <View style={styles.categories}>
+  //         <View style={styles.allCat}>
+  //           {cats.map((obj) => (
+  //             <View key={obj.id}>
+  //               <TouchableOpacity
+  //                 key={obj.id}
+  //                 style={[styles.eachCat]}
+  //                 onPress={() => {
+  //                   setChosed(obj.name);
+  //                   setIsConfirmed(true);
+  //                   getProducts({ count: 10, page: 1, cats: chosed });
+  //                   console.log(3, chosed);
+  //                 }}
+  //               >
+  //                 <Text
+  //                   style={{
+  //                     fontSize: 14,
+  //                     color: chosed[0] === obj.name ? "red" : "black",
+  //                   }}
+  //                 >
+  //                   {obj.name}
+  //                 </Text>
+  //               </TouchableOpacity>
+  //             </View>
+  //           ))}
+  //         </View>
+  //       </View>
+  //     </Shadow>
+  //     {isConfirmed && (
+  //       <View style={styles.mainAlert}>
+  //         <View style={styles.allSearched}>
+  //           <ScrollView style={styles.scroll}>
+  //             <Text>{search?.count}</Text>
+  //             {search?.rows &&
+  //               search?.rows.map((obj) => (
+  //                 <View key={obj.id}>
+  //                   <TouchableOpacity
+  //                     onPress={() => {
+  //                       user.setIsSelectedProduct(obj);
+  //                       navigation.navigate("EachFoodRoute");
+  //                     }}
+  //                     key={obj.id}
+  //                     style={styles.searchFood}
+  //                   >
+  //                     <Text>{obj.name}</Text>
+  //                   </TouchableOpacity>
+  //                 </View>
+  //               ))}
+  //           </ScrollView>
+  //         </View>
+  //       </View>
+  //     )}
+  //   </View>
+  // );
 });
 
 const styles = StyleSheet.create({
