@@ -29,6 +29,7 @@ const MainFoodRoute = observer(({ navigation }) => {
   const [food, setFood] = useState(false);
   const [cats, setCats] = useState([]);
   const [chosed, setChosed] = useState([]);
+  const [isConfirmed, setIsConfirmed] = useState(false);
   useEffect(() => {
     getCategories().then((data) => {
       setCats(data.rows);
@@ -84,41 +85,53 @@ const MainFoodRoute = observer(({ navigation }) => {
         <View style={styles.categories}>
           <View style={styles.allCat}>
             {cats.map((obj) => (
-              <TouchableOpacity
-                key={obj.id}
-                style={[styles.eachCat]}
-                onPress={() => setChosed([obj.name])}
-              >
-                <Text
-                  style={{ color: chosed[0] === obj.name ? "red" : "black" }}
+              <View>
+                <TouchableOpacity
+                  key={obj.id}
+                  style={[styles.eachCat]}
+                  onPress={() => {
+                    setChosed([obj.name]);
+                    setIsConfirmed(true);
+                  }}
                 >
-                  {obj.name}
-                </Text>
-              </TouchableOpacity>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      color: chosed[0] === obj.name ? "red" : "black",
+                    }}
+                  >
+                    {obj.name}
+                  </Text>
+                </TouchableOpacity>
+              </View>
             ))}
           </View>
         </View>
       </Shadow>
-      <View style={styles.allSearched}>
-        <ScrollView style={styles.scroll}>
-          <Text>{search?.count}</Text>
-          {search?.rows &&
-            search?.rows.map((obj) => (
-              <View>
-                <TouchableOpacity
-                  onPress={() => {
-                    user.setIsSelectedProduct(obj);
-                    navigation.navigate("EachFoodRoute");
-                  }}
-                  key={obj.id}
-                  style={styles.searchFood}
-                >
-                  <Text>{obj.name}</Text>
-                </TouchableOpacity>
-              </View>
-            ))}
-        </ScrollView>
-      </View>
+      {isConfirmed && (
+        <View style={styles.mainAlert}>
+          <View style={styles.allSearched}>
+            <ScrollView style={styles.scroll}>
+              <Text>{search?.count}</Text>
+              {search?.rows &&
+                search?.rows.map((obj) => (
+                  <View>
+                    <TouchableOpacity
+                      onPress={() => {
+                        user.setIsSelectedProduct(obj);
+                        navigation.navigate("EachFoodRoute");
+                      }}
+                      key={obj.id}
+                      style={styles.searchFood}
+                    >
+                      <Text>{obj.name}</Text>
+                    </TouchableOpacity>
+                  </View>
+                ))}
+            </ScrollView>
+          </View>
+        </View>
+      )}
     </View>
   );
 });
@@ -132,6 +145,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-around",
     backgroundColor: LIGHT_COLOR,
+  },
+  mainAlert: {
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    position: "absolute",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-around",
+    alignItems: "center",
   },
   allSearched: {
     width: "90%",
@@ -172,17 +195,19 @@ const styles = StyleSheet.create({
   },
   eachCat: {
     display: "flex",
-    width: 50,
-    height: 50,
+    width: 75,
+    height: 60,
     margin: 10,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: GREEN_COLOR,
+    borderRadius: 30,
   },
   allCat: {
     display: "flex",
     width: "90%",
-    height: 250,
+    height: 300,
     margin: 10,
     flexDirection: "row",
     alignItems: "center",
@@ -191,9 +216,9 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
   },
   categories: {
-    marginTop: 50,
+    marginTop: 40,
     width: 350,
-    height: 330,
+    height: 350,
     flexDirection: "row",
     display: "flex",
     alignItems: "center",
