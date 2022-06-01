@@ -35,21 +35,17 @@ const MainFoodRoute = observer(({ navigation }) => {
       setCats(data.rows);
     });
   }, []);
-
+  useEffect(() => {
+    console.log(1, chosed);
+    getProducts();
+  }, [chosed]);
   const getProducts = async () => {
+    console.log(2, chosed);
     await getEachProduct({ count: 40, page: 1, cats: chosed }).then((data) => {
       setSearch(data);
       console.log(data.count);
     });
   };
-
-  // alert("a");
-
-  // return (
-  //   <View style={{ backgroundColor: "red", width: "100%", height: "100%" }}>
-  //     <Text>A</Text>
-  //   </View>
-  // );
 
   console.log(user.isSelectedProduct); // --- Здесь состояние продукта
 
@@ -60,8 +56,8 @@ const MainFoodRoute = observer(({ navigation }) => {
           <TouchableOpacity
             style={{
               alignItems: "flex-start",
-              position: "absolute",
-              top: 30,
+              // position: "absolute",
+
               left: 20,
             }}
             onPress={() => navigation.navigate("TitleComponent")}
@@ -85,13 +81,15 @@ const MainFoodRoute = observer(({ navigation }) => {
         <View style={styles.categories}>
           <View style={styles.allCat}>
             {cats.map((obj) => (
-              <View>
+              <View key={obj.id}>
                 <TouchableOpacity
                   key={obj.id}
                   style={[styles.eachCat]}
                   onPress={() => {
-                    setChosed([obj.name]);
+                    setChosed(obj.name);
                     setIsConfirmed(true);
+                    getProducts({ count: 10, page: 1, cats: chosed });
+                    console.log(3, chosed);
                   }}
                 >
                   <Text
@@ -115,7 +113,7 @@ const MainFoodRoute = observer(({ navigation }) => {
               <Text>{search?.count}</Text>
               {search?.rows &&
                 search?.rows.map((obj) => (
-                  <View>
+                  <View key={obj.id}>
                     <TouchableOpacity
                       onPress={() => {
                         user.setIsSelectedProduct(obj);
@@ -159,7 +157,7 @@ const styles = StyleSheet.create({
   allSearched: {
     width: "90%",
     height: "100%",
-    // backgroundColor: "red",
+    // backgroundColor: LIGHT_COLOR,
     flex: 1,
   },
   scroll: {
@@ -208,7 +206,7 @@ const styles = StyleSheet.create({
     display: "flex",
     width: "90%",
     height: 300,
-    margin: 10,
+    marginLeft: 7,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
@@ -216,7 +214,7 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
   },
   categories: {
-    marginTop: 40,
+    // marginTop: 40,
     width: 350,
     height: 350,
     flexDirection: "row",
@@ -224,6 +222,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: LIGHT_COLOR,
     borderRadius: 25,
+    marginBottom: 50,
   },
   search: {
     borderRadius: 25,
@@ -236,7 +235,7 @@ const styles = StyleSheet.create({
     width: 350,
     height: 50,
     backgroundColor: LIGHT_COLOR,
-    marginTop: 85,
+    marginTop: 30,
   },
 });
 
