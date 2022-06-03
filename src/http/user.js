@@ -15,7 +15,7 @@ export const register = async (name, email, password) => {
     password,
   });
   return data;
-}
+};
 
 export const refreshToken = async () => {
   const { data } = await $authHost.get("/api/user/refresh");

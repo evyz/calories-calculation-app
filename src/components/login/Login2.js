@@ -23,6 +23,7 @@ import { login, me } from "../../http/user";
 import VisibleIcon from "../../icons/visible/visibleIcon";
 import ApiLoader from "../loader/ApiLoader";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { setLastsAuth } from "../../storage/last.auth";
 
 let symbols = /[0-9a-zA-Z!@#$%^&*]{6,}/g;
 
@@ -91,6 +92,7 @@ export default LoginComponent = observer(({ navigation }) => {
               user.setProfile(obj);
               setTimeout(() => setIsLoading(false), 500);
               user.setIsAuth(true);
+              setLastsAuth(value);
             });
           }
         })

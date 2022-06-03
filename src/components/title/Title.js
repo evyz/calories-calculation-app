@@ -1,11 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { View, Text, StyleSheet, Button, TouchableOpacity } from "react-native";
 import { GREEN_COLOR, GREY_COLOR, LIGHT_COLOR } from "../../styles/colors";
 import { BOLD_FONT, MEDIUM_FONT } from "../../styles/fonts";
+
+import { getLastsAuth } from "../../storage/last.auth";
+
 export default TitleComponent = ({ navigation }) => {
+  const [isLoginAlert, setIsLoginAlert] = useState(false);
+
+  const getArr = async () => {
+    return await getLastsAuth();
+  };
+
+  // useEffect(() => {
+  //   getArr().then((arr) => {
+  //     console.log(arr);
+
+  //     if (arr.length > 0) {
+  //       setIsLoginAlert(true);
+  //     }
+  //   });
+  // }, []);
+
   return (
     <View style={styles.main}>
+      {isLoginAlert && <View style={styles.loginAlert}></View>}
+
       <View style={styles.topComponents}>
         <Text style={styles.wellcome}>Добро пожаловать!</Text>
 
@@ -128,5 +149,15 @@ const styles = StyleSheet.create({
 
     borderRadius: 100,
     backgroundColor: GREY_COLOR,
+  },
+  loginAlert: {
+    width: "90%",
+    height: 50,
+
+    backgroundColor: GREEN_COLOR,
+
+    position: "absolute",
+    bottom: 0,
+    left: 0,
   },
 });
