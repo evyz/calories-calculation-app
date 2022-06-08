@@ -1,7 +1,8 @@
-import { View, Text, StyleSheet, Linking } from "react-native";
+import { View, Text, StyleSheet, Linking, Platform, Alert } from "react-native";
 import { AuthComponents, PublicComponents } from "./utils/components";
 import { LoaderComponent } from "./components/loader/Loader";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNetInfo } from '@react-native-community/netinfo'
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -23,6 +24,19 @@ export default AppRouter = observer(() => {
 
   const { user } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(true);
+
+  // console.log(NetInfo.isConnected)
+
+  const netInfo = useNetInfo();
+
+  useEffect(() => {
+    if (netInfo.isConnected === false) {
+      setIsLoading(true)
+    }
+    else if (netInfo.isConnected) {
+      setIsLoading(false)
+    }
+  }, [netInfo])
 
   useEffect(() => {
     refreshToken()

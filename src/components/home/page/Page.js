@@ -16,11 +16,8 @@ dayjs().locale('ru')
 const Page = ({ news, setNews }) => {
 
   const [data, setData] = useState({})
-  const [ico, setIco] = useState('')
   const { width } = useWindowDimensions();
   const [isLoading, setIsLoading] = useState(true)
-
-
 
   const cashNews = async (obj) => {
     await AsyncStorage.setItem('old_news', JSON.stringify(obj))
@@ -42,7 +39,6 @@ const Page = ({ news, setNews }) => {
     return false
   }
 
-
   useEffect(() => {
     let check = isCashingNews(news?.id)
     check.then(res => {
@@ -55,7 +51,6 @@ const Page = ({ news, setNews }) => {
         })
       } else {
         getOneNews({ id: news?.id }).then(data => {
-          // console.log(data)
           setData(data)
         }).finally(() => setIsLoading(false))
       }
