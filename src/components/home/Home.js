@@ -15,6 +15,7 @@ import {
   GREEN_COLOR,
   GREY_COLOR,
   RED_COLOR,
+  DARK_GREY_COLOR,
 } from "../../styles/colors";
 import { observer } from "mobx-react-lite";
 import { Shadow } from "react-native-shadow-2";
@@ -61,7 +62,7 @@ const Home = observer(({ navigation }) => {
 
       <View style={styles.header}>
         <View>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={{
               alignItems: "flex-start",
               position: "absolute",
@@ -71,7 +72,7 @@ const Home = observer(({ navigation }) => {
             onPress={() => navigation.navigate("TitleComponent")}
           >
             <Text>Back</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         <Text style={styles.textHeader}>Что нового?</Text>
       </View>
@@ -80,31 +81,33 @@ const Home = observer(({ navigation }) => {
       <View style={styles.newsContainer}>
         <ScrollView contentContainerStyle={styles.newsScroller}>
           {news.map((block) => (
-            <View key={block?.id} style={styles.outerNewsBlock}>
-              {/* <Shadow {...shadowOpt} startColor={"#e3e3e3"}> */}
-              <TouchableOpacity
-                onPress={() => setSelectedNews(block)}
-                key={block.id}
-                style={[
-                  styles.newsBlock,
-                  { backgroundColor: block.background },
-                ]}
-              >
-                <Text style={styles.newsHeader}>{block.name}</Text>
-                <Text style={styles.time}>
-                  {dayjs(block.createdAt).format("DD MMMM")}
-                </Text>
-                <View style={styles.newsIco}>
-                  {block?.ico && (
-                    <SvgCssUri
-                      uri={url + block?.ico}
-                      width="100%"
-                      height="100%"
-                    />
-                  )}
-                </View>
-              </TouchableOpacity>
-              {/* </Shadow> */}
+            <View key={block?.id} style={styles.outerNewsBorder}>
+              <View key={block?.id} style={styles.outerNewsBlock}>
+                {/* <Shadow {...shadowOpt} startColor={"#e3e3e3"}> */}
+                <TouchableOpacity
+                  onPress={() => setSelectedNews(block)}
+                  key={block.id}
+                  style={[
+                    styles.newsBlock,
+                    { backgroundColor: block.background },
+                  ]}
+                >
+                  <Text style={styles.newsHeader}>{block.name}</Text>
+                  <Text style={styles.time}>
+                    {dayjs(block.createdAt).format("DD MMMM")}
+                  </Text>
+                  <View style={styles.newsIco}>
+                    {block?.ico && (
+                      <SvgCssUri
+                        uri={url + block?.ico}
+                        width="100%"
+                        height="100%"
+                      />
+                    )}
+                  </View>
+                </TouchableOpacity>
+                {/* </Shadow> */}
+              </View>
             </View>
           ))}
         </ScrollView>
@@ -173,8 +176,7 @@ const styles = StyleSheet.create({
     paddingBottom: "3%",
   },
   outerNewsBlock: {
-    marginTop: 18,
-    marginBottom: 18,
+    padding: 5,
   },
   newsBlock: {
     width: 164,
@@ -189,6 +191,14 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 20,
     right: 20,
+  },
+  outerNewsBorder: {
+    borderColor: DARK_GREY_COLOR,
+    borderWidth: 1,
+    marginTop: 18,
+    marginBottom: 18,
+    borderRadius: 25,
+
   },
 });
 export default Home;

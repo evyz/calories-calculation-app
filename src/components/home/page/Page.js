@@ -9,6 +9,7 @@ import { url } from '../../../http'
 import ApiLoader from '../../loader/ApiLoader'
 import dayjs from "dayjs";
 import 'dayjs/locale/ru'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import ArrowLeft from '../../Arrows/ArrowLeft'
 dayjs().locale('ru')
 
@@ -19,10 +20,46 @@ const Page = ({ news, setNews }) => {
   const { width } = useWindowDimensions();
   const [isLoading, setIsLoading] = useState(true)
 
+
+
+  const cashNews = async (obj) => {
+    await AsyncStorage.setItem('old_news', JSON.stringify(obj))
+  }
+
+  const getCashNews = async () => {
+    return JSON.parse(await AsyncStorage.getItem('old_news'))
+  }
+
+  const isCashingNews = async (id) => {
+    let check = await AsyncStorage.getItem('old_news')
+    if (check) {
+      check = JSON.parse(check)
+      if (check?.id == id) {
+        return true
+      }
+      return false
+    }
+    return false
+  }
+
+
   useEffect(() => {
-    getOneNews({ id: news?.id }).then(data => {
-      setData(data)
-    }).finally(() => setIsLoading(false))
+    let check = isCashingNews(news?.id)
+    check.then(res => {
+      if (res) {
+        setIsLoading(false)
+        setData(res)
+        setIsLoading(false)
+        getCashNews().then(result => {
+          setData(result);
+        })
+      } else {
+        getOneNews({ id: news?.id }).then(data => {
+          // console.log(data)
+          setData(data)
+        }).finally(() => setIsLoading(false))
+      }
+    })
   }, [news?.id])
 
   const logo = useMemo(() => {
@@ -41,7 +78,10 @@ const Page = ({ news, setNews }) => {
       {isLoading && <ApiLoader />}
       <View style={[styles.header, { backgroundColor: news?.background }]}>
         <View style={styles.headerLeft}>
-          <TouchableOpacity style={styles.back} onPress={() => setNews({})}>
+          <TouchableOpacity style={styles.back} onPress={() => {
+            cashNews(data)
+            setNews({})
+          }}>
             <ArrowLeft />
           </TouchableOpacity>
           <View>

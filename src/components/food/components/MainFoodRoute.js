@@ -73,6 +73,7 @@ const MainFoodRoute = observer(({ navigation }) => {
     await getEachProduct({ count: 40, page: 1, cats: chosed })
       .then((data) => {
         setSearch(data.rows);
+        console.log(data.rows[0])
       })
       .finally(() => setIsLoading(false));
   };
@@ -156,16 +157,19 @@ const MainFoodRoute = observer(({ navigation }) => {
               {search &&
                 search.map((obj) => (
                   <View key={obj.id}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        user.setIsSelectedProduct(obj);
-                        navigation.navigate("EachFoodRoute");
-                      }}
+                    <View
                       key={obj.id}
                       style={styles.searchFood}
                     >
                       <Text>{obj.name}</Text>
-                    </TouchableOpacity>
+                      <TouchableOpacity onPress={() => {
+                        user.setIsSelectedProduct(obj);
+                        navigation.navigate("EachFoodRoute");
+                      }} style={styles.kcal}>
+                        <Text>{obj?.kcal}ккал {`(${obj?.grams} гр.)`}</Text>
+                        <Text>></Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 ))}
             </ScrollView>
@@ -220,14 +224,29 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "flex-start",
+    justifyContent: 'space-between',
     width: "100%",
     height: 50,
-    backgroundColor: GREEN_COLOR,
+    backgroundColor: LIGHT_COLOR,
     marginTop: 20,
     borderRadius: 30,
+    paddingLeft: 20,
     // paddingRight: 20,
     // paddingLeft: 10,
+    overflow: 'hidden'
+  },
+  kcal: {
+    width: '50%',
+    height: '100%',
+
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+
+    backgroundColor: GREEN_COLOR,
+    borderTopLeftRadius: 50,
+    borderBottomLeftRadius: 50,
   },
   button: {
     display: "flex",
