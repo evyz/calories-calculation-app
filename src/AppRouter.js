@@ -25,12 +25,12 @@ export default AppRouter = observer(() => {
   const { user } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(true);
 
-  // console.log(NetInfo.isConnected)
 
   const netInfo = useNetInfo();
 
   useEffect(() => {
     if (netInfo.isConnected === false) {
+      Alert.alert('Ошибка: Internet disconnected', "Ошибка в подключении к интернету. Перезапустите мобильное приложение или проверьте интернет-соединение.")
       setIsLoading(true)
     }
     else if (netInfo.isConnected) {

@@ -22,6 +22,14 @@ import { Shadow } from "react-native-shadow-2";
 import { shadowOpt } from "../../loader/Loader";
 import ApiLoader from "../../loader/ApiLoader";
 
+export const litleShadowOpt = {
+  startColor: '#F4F4F4',
+  offset: [0, 0],
+  radius: 50,
+  distance: 20
+}
+
+
 const MainFoodRoute = observer(({ navigation }) => {
   const { user } = useContext(AppContext);
 
@@ -33,6 +41,8 @@ const MainFoodRoute = observer(({ navigation }) => {
   const [cats, setCats] = useState([]);
   const [chosed, setChosed] = useState([]);
   const [isConfirmed, setIsConfirmed] = useState(false);
+
+
 
   useEffect(() => {
     getCategories()
@@ -108,7 +118,7 @@ const MainFoodRoute = observer(({ navigation }) => {
           </TouchableOpacity>
         </View>
       </Shadow>
-      <Shadow {...shadowOpt} startColor="#EBEBEB">
+      <Shadow {...shadowOpt}>
         <View style={styles.categories}>
           <View style={styles.allCat}>
             {cats.map((obj) => (
@@ -171,14 +181,20 @@ const MainFoodRoute = observer(({ navigation }) => {
                       </TouchableOpacity>
                     </View>
                   </View>
-                ))}
+                ))
+              }
+              {/* <Shadow {...litleShadowOpt} > */}
+              <View style={[styles.searchFood, { justifyContent: 'center', marginVertical: 10, }]}>
+                <Text>Не нашли нужный продукт?</Text>
+                <TouchableOpacity><Text style={{ color: GREEN_COLOR, textDecorationColor: GREEN_COLOR, textDecorationLine: 'underline' }}>Добавьте его.</Text></TouchableOpacity>
+              </View>
+              {/* </Shadow > */}
             </ScrollView>
           </View>
         </View>
       )}
     </View>
   );
-  r;
 });
 
 const styles = StyleSheet.create({
@@ -231,6 +247,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
     borderRadius: 30,
     paddingLeft: 20,
+    borderWidth: 1,
+    borderColor: GREY_COLOR,
     // paddingRight: 20,
     // paddingLeft: 10,
     overflow: 'hidden'
