@@ -22,7 +22,8 @@ import Avatar from "./components/Avatar";
 import { SvgUri } from "react-native-svg";
 import { url } from "../../../http";
 import { TextComponent } from "../../Functional/Text/TextComponent";
-import { BOLD_FONT } from "../../../styles/fonts";
+import { BOLD_FONT, LIGTH_FONT } from "../../../styles/fonts";
+import { getRole } from "../../../utils/roles";
 
 const MainProfileComponent = observer(({ navigation }) => {
   const { user } = useContext(AppContext);
@@ -75,12 +76,15 @@ const MainProfileComponent = observer(({ navigation }) => {
             </View>
           </TouchableOpacity>
 
-          {/* <Text style={styles.nickname}>{}</Text> */}
           <TextComponent
             text={user.profile.profile.name ? user.profile.profile.name : "Никнейм"}
             bold={BOLD_FONT}
             size={18}
           />
+          <Text>
+            <TextComponent size={14} text={"Ваш статус:"} />
+            <TextComponent size={14} bold={LIGTH_FONT} text={getRole(user.profile.role, 'ru')} />
+          </Text>
 
           <View style={styles.emailView}>
             <Shadow {...shadowOpt} startColor="#F3F3F3">
@@ -93,7 +97,6 @@ const MainProfileComponent = observer(({ navigation }) => {
               <Text>Настройки</Text>
             </TouchableOpacity> */}
           </View>
-
 
           <Buttons />
         </View>
