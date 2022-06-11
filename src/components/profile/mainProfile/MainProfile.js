@@ -98,6 +98,14 @@ const MainProfileComponent = observer(({ navigation }) => {
             </TouchableOpacity> */}
           </View>
 
+          {user.profile.role === 'admin' &&
+            <View>
+              <TouchableOpacity>
+                <Text>Admin man</Text>
+              </TouchableOpacity>
+            </View>
+          }
+
           <Buttons />
         </View>
       </Shadow>
