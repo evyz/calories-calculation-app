@@ -7,7 +7,7 @@ import { url } from '../../../../http'
 import { getAvatar, getAvatars, getColors, me, uploadAvatar } from '../../../../http/user'
 import { AppContext } from '../../../../store'
 import { GREEN_COLOR, LIGHT_COLOR } from '../../../../styles/colors'
-import { BOLD_FONT, MEDIUM_FONT } from '../../../../styles/fonts'
+import { MEDIUM_FONT } from '../../../../styles/fonts'
 import ApiLoader from '../../../loader/ApiLoader'
 
 const Avatar = observer(({ isActive, setIsActive }) => {
@@ -70,9 +70,9 @@ const Avatar = observer(({ isActive, setIsActive }) => {
               </View>}
           </View>
 
-          <Text style={{ fontFamily: MEDIUM_FONT, fontSize: 18, marginTop: 10, }}>Выберите аватар</Text>
+          <Text style={{ fontFamily: MEDIUM_FONT, fontSize: 18, marginTop: 10 }}>Выберите аватар</Text>
 
-          <View style={styles.avatars}>
+          <View style={styles.avatars} >
             <ScrollView horizontal={true}>
               {avatars.map(avatar =>
                 <TouchableOpacity key={avatar?.id} style={styles.avatar} onPress={() => setSelectedAvatar({ ava: avatar?.path, id: avatar?.id, background: selectedAvatar.background })}>

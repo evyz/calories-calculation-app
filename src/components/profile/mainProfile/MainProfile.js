@@ -21,6 +21,8 @@ import {
 import Avatar from "./components/Avatar";
 import { SvgUri } from "react-native-svg";
 import { url } from "../../../http";
+import { TextComponent } from "../../Functional/Text/TextComponent";
+import { BOLD_FONT } from "../../../styles/fonts";
 
 const MainProfileComponent = observer(({ navigation }) => {
   const { user } = useContext(AppContext);
@@ -73,7 +75,12 @@ const MainProfileComponent = observer(({ navigation }) => {
             </View>
           </TouchableOpacity>
 
-          <Text style={styles.nickname}>{user.profile.profile.name ? user.profile.profile.name : "Никнейм"}</Text>
+          {/* <Text style={styles.nickname}>{}</Text> */}
+          <TextComponent
+            text={user.profile.profile.name ? user.profile.profile.name : "Никнейм"}
+            bold={BOLD_FONT}
+            size={18}
+          />
 
           <View style={styles.emailView}>
             <Shadow {...shadowOpt} startColor="#F3F3F3">
