@@ -1,14 +1,18 @@
 
-import React, { useEffect, useState } from 'react'
+import { observer } from 'mobx-react-lite'
+import React, { useContext, useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native'
 import { SvgUri } from 'react-native-svg'
 import { url } from '../../../../http'
 import { getAvatar, getAvatars, getColors, me, uploadAvatar } from '../../../../http/user'
+import { AppContext } from '../../../../store'
 import { GREEN_COLOR, LIGHT_COLOR } from '../../../../styles/colors'
 import { BOLD_FONT, MEDIUM_FONT } from '../../../../styles/fonts'
 import ApiLoader from '../../../loader/ApiLoader'
 
-const Avatar = ({ isActive, setIsActive, user, setUser }) => {
+const Avatar = observer(({ isActive, setIsActive }) => {
+  const { user } = useContext(AppContext)
+
   const [avatars, setAvatars] = useState([])
   const [avatarsSecond, setAvatarsSecond] = useState([])
   const [colors, setColors] = useState([])
@@ -17,37 +21,38 @@ const Avatar = ({ isActive, setIsActive, user, setUser }) => {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    getAvatar().then(data => {
-      setSelectedAvatar({ ava: data?.Avatars_Ico?.path, background: data?.Avatars_Back?.color })
-    })
-    getAvatars({ page: 1, count: 20 }).then(data => {
-      setAvatars(data)
-    })
-    getAvatars({ page: 2, count: 20 }).then(data => {
-      setAvatarsSecond(data)
-    })
-    getColors().then(data => {
-      setColors(data)
-    }).finally(() => setIsLoading(false))
+
+    try {
+      getAvatar().then(data => {
+        console.log(data)
+        setSelectedAvatar({ ava: data?.Avatars_Ico?.path, background: data?.Avatars_Back?.color })
+      })
+      getAvatars({ page: 1, count: 20 }).then(data => {
+        setAvatars(data)
+      })
+      getAvatars({ page: 2, count: 20 }).then(data => {
+        setAvatarsSecond(data)
+      })
+      getColors().then(data => {
+        setColors(data)
+      }).finally(() => setIsLoading(false))
+    } catch (e) {
+      console.log(e)
+    }
   }, [])
 
   const upload = () => {
-    if (user.avatar.color === selectedAvatar.background) {
+    if (user.profile.avatar.color === selectedAvatar.background && user.profile.avatar.ico.path === selectedAvatar.ava) {
       return setIsActive(false)
     }
-    if (user.avatar.ico.path === selectedAvatar.ava) {
-      return setIsActive(false)
-    }
-
     setIsLoading(true)
-    uploadAvatar({ path: selectedAvatar.ava, color: selectedAvatar.background }).finally(() => {
-      let obj = user
+    uploadAvatar({ path: selectedAvatar.ava, color: selectedAvatar.background }).finally(data => {
+      let obj = user.profile
       obj.avatar.color = selectedAvatar.background
       obj.avatar.ico.path = selectedAvatar.ava
-      setUser(obj)
+      user.setProfile(obj)
       setIsLoading(false)
       setIsActive(false)
-      alert('Аватар изменён')
     })
   }
 
@@ -104,7 +109,7 @@ const Avatar = ({ isActive, setIsActive, user, setUser }) => {
       </View>
     )
   }
-}
+})
 
 const styles = StyleSheet.create({
   block: {
