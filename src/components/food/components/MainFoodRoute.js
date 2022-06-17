@@ -8,6 +8,7 @@ import {
   TextInput,
   Text,
   ScrollView,
+  Animated
 } from "react-native";
 import { AppContext } from "../../../store";
 import {
@@ -20,10 +21,11 @@ import { getCategories, getEachProduct } from "../../../http/product";
 import { Shadow } from "react-native-shadow-2";
 import { shadowOpt } from "../../loader/Loader";
 import ApiLoader from "../../loader/ApiLoader";
+import { useRef } from "react";
 
 
 export const litleShadowOpt = {
-  startColor: '#F4F4F4',
+  startColor: '#f7f7f7',
   offset: [0, 0],
   radius: 50,
   distance: 20
@@ -41,6 +43,25 @@ const MainFoodRoute = observer(({ navigation }) => {
   const [chosed, setChosed] = useState([]);
   const [isConfirmed, setIsConfirmed] = useState(false);
 
+  const [isOpenedFilters, setIsOpenedFilters] = useState(false)
+  const isActiveFilters = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    if (isActiveFilters) {
+      Animated.timing(isActiveFilters, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      Animated.timing(isActiveFilters, {
+        toValue: -400,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [isOpenedFilters])
+
   useEffect(() => {
     getCategories()
       .then((data) => {
@@ -48,12 +69,6 @@ const MainFoodRoute = observer(({ navigation }) => {
       })
       .finally(() => setIsLoading(false));
   }, []);
-
-  useEffect(() => {
-    if (search.length > 0) {
-      setIsConfirmed(true);
-    }
-  }, [search]);
 
   const updateSelection = (name) => {
     if (chosed.length > 0) {
@@ -80,7 +95,6 @@ const MainFoodRoute = observer(({ navigation }) => {
     await getEachProduct({ count: 40, page: 1, cats: chosed })
       .then((data) => {
         setSearch(data.rows);
-        console.log(data.rows[0])
       })
       .finally(() => setIsLoading(false));
   };
@@ -89,43 +103,40 @@ const MainFoodRoute = observer(({ navigation }) => {
     <View style={styles.main}>
       {isLoading && <ApiLoader />}
 
-      {/* <Shadow {...shadowOpt} startColor="#EBEBEB">
-
-        <View>
-          <TouchableOpacity
-            style={{
-              alignItems: "flex-start",
-              // position: "absolute",
-
-              left: 20,
-            }}
-            onPress={() => navigation.navigate("TitleComponent")}
-          >
-            <Text>Back</Text>
+      {isOpenedFilters &&
+        <TouchableOpacity style={styles.windowFilters} onPress={() => setIsOpenedFilters(false)}>
+          <TouchableOpacity activeOpacity={1}>
+            <View style={styles.categories}>
+              <View style={styles.allCat}>
+                {cats.map((obj) => (
+                  <View key={obj.id}>
+                    <TouchableOpacity
+                      key={obj.id}
+                      style={[styles.eachCat]}
+                      onPress={() => updateSelection(obj.name)}
+                    >
+                      <Text
+                        style={{
+                          fontSize: 14,
+                          color:
+                            chosed.find((item) => item === obj.name) !== undefined
+                              ? "red"
+                              : "black",
+                        }}
+                      >
+                        {obj.name}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                ))}
+              </View>
+            </View>
           </TouchableOpacity>
-        </View>
-
-        <View style={styles.search}>
-          <TextInput
-            placeholder="Поиск"
-            value={value}
-            onChangeText={setValue}
-          />
-
-          <TouchableOpacity onPress={() => getProducts()} style={styles.button}>
-            <Text>Найти</Text>
-          </TouchableOpacity>
-
-          <View style={styles.filterButton}>
-            <TouchableOpacity onPress={() => alert('test')} style={styles.filterInnerButton}>
-              <Text style={styles.filterText}>Категории</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Shadow> */}
+        </TouchableOpacity>
+      }
 
       <View style={styles.outerInput}>
-        <Shadow {...litleShadowOpt} startColor="#EBEBEB">
+        <Shadow {...litleShadowOpt} startColor="#f5f5f5">
 
           <View style={styles.search}>
             <TextInput
@@ -140,88 +151,40 @@ const MainFoodRoute = observer(({ navigation }) => {
           </View>
 
         </Shadow>
-        <View style={styles.filterButton}>
-          <TouchableOpacity onPress={() => alert('test')} style={styles.filterInnerButton}>
-            <Text style={styles.filterText}>Категории</Text>
-          </TouchableOpacity>
-        </View>
+        <Shadow {...litleShadowOpt} startColor="#f0f0f0">
+          <View style={styles.filterButton}>
+            <TouchableOpacity onPress={() => setIsOpenedFilters(true)} style={styles.filterInnerButton}>
+              <Text style={styles.filterText}>Категории</Text>
+            </TouchableOpacity>
+          </View>
+        </Shadow>
       </View>
 
-      <Shadow {...shadowOpt}>
-        <View style={styles.categories}>
-          <View style={styles.allCat}>
-            {cats.map((obj) => (
-              <View key={obj.id}>
-                <TouchableOpacity
-                  key={obj.id}
-                  style={[styles.eachCat]}
-                  onPress={() => updateSelection(obj.name)}
-                >
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      color:
-                        chosed.find((item) => item === obj.name) !== undefined
-                          ? "red"
-                          : "black",
-                    }}
-                  >
-                    {obj.name}
-                  </Text>
+      <View style={styles.allSearched}>
+        <ScrollView style={styles.scroll}>
+          <View style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center' }}>
+            {search && search.map(obj =>
+              <Shadow viewStyle={styles.foodRow} key={obj.id} {...litleShadowOpt} >
+                <Text>{obj.name}</Text>
+                <TouchableOpacity onPress={() => {
+                  user.setIsSelectedProduct(obj);
+                  navigation.navigate("EachFoodRoute");
+                }} style={styles.kcal}>
+                  <Text>{obj?.kcal}ккал {`(${obj?.grams} гр.)`}</Text>
+                  <Text>></Text>
                 </TouchableOpacity>
-              </View>
-            ))}
+              </Shadow>
+            )}
+
+            <Shadow {...litleShadowOpt} viewStyle={[styles.searchFood, { justifyContent: 'center', marginVertical: 10, }]} >
+              <Text>Не нашли нужный продукт?</Text>
+              <TouchableOpacity onPress={() => navigation.navigate("NewFoodRoute")}><Text style={{ color: GREEN_COLOR, textDecorationColor: GREEN_COLOR, textDecorationLine: 'underline' }}>Добавьте его.</Text></TouchableOpacity>
+            </Shadow >
           </View>
-        </View>
-      </Shadow>
-      {isConfirmed && (
-        <View style={styles.mainAlert}>
-          <TouchableOpacity
-            onPress={() => setIsConfirmed(false)}
-            style={{
-              marginTop: 80,
-              display: "flex",
-              flexDirection: "column",
-              width: 30,
-              height: 30,
-              alignItems: "center",
-              justifyContent: "flex-start",
-            }}
-          >
-            <Text>back</Text>
-          </TouchableOpacity>
-          <View style={styles.allSearched}>
-            <ScrollView style={styles.scroll}>
-              <Text>{search?.count}</Text>
-              {search &&
-                search.map((obj) => (
-                  <View key={obj.id}>
-                    <View
-                      key={obj.id}
-                      style={styles.searchFood}
-                    >
-                      <Text>{obj.name}</Text>
-                      <TouchableOpacity onPress={() => {
-                        user.setIsSelectedProduct(obj);
-                        navigation.navigate("EachFoodRoute");
-                      }} style={styles.kcal}>
-                        <Text>{obj?.kcal}ккал {`(${obj?.grams} гр.)`}</Text>
-                        <Text>></Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                ))
-              }
-              {/* <Shadow {...litleShadowOpt} > */}
-              <View style={[styles.searchFood, { justifyContent: 'center', marginVertical: 10, }]}>
-                <Text>Не нашли нужный продукт?</Text>
-                <TouchableOpacity><Text style={{ color: GREEN_COLOR, textDecorationColor: GREEN_COLOR, textDecorationLine: 'underline' }}>Добавьте его.</Text></TouchableOpacity>
-              </View>
-              {/* </Shadow > */}
-            </ScrollView>
-          </View>
-        </View>
-      )}
+
+        </ScrollView>
+      </View>
+
     </View>
   );
 });
@@ -233,7 +196,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     alignItems: "center",
-    justifyContent: "space-around",
+    justifyContent: "flex-start",
     backgroundColor: LIGHT_COLOR,
   },
   mainAlert: {
@@ -251,13 +214,11 @@ const styles = StyleSheet.create({
   allSearched: {
     width: "100%",
     height: "100%",
-    // backgroundColor: LIGHT_COLOR,
-
-    alignItems: "center",
     display: "flex",
+    alignItems: "center",
   },
   scroll: {
-    width: "90%",
+    width: "100%",
     height: "100%",
     paddingTop: 50,
     // alignItems: "center",
@@ -275,11 +236,8 @@ const styles = StyleSheet.create({
     backgroundColor: LIGHT_COLOR,
     marginTop: 20,
     borderRadius: 30,
-    paddingLeft: 20,
     borderWidth: 1,
     borderColor: GREY_COLOR,
-    // paddingRight: 20,
-    // paddingLeft: 10,
     overflow: 'hidden'
   },
   kcal: {
@@ -354,7 +312,7 @@ const styles = StyleSheet.create({
     backgroundColor: LIGHT_COLOR,
     // marginTop: 30,
     borderBottomLeftRadius: 0,
-    position: 'relative'
+    position: 'relative',
   },
   filterButton: {
     width: 100,
@@ -364,11 +322,13 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
+    zIndex: 4,
+
+    // position: 'absolute',
 
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-
   },
   filterInnerButton: {
     width: '100%',
@@ -382,8 +342,43 @@ const styles = StyleSheet.create({
     width: 350,
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'flex-start'
+    alignItems: 'flex-start',
+
+    marginTop: '20%',
   },
+  windowFilters: {
+    width: '100%',
+    height: '100%',
+
+    backgroundColor: 'rgba(0,0,0,0.3)',
+
+    position: 'absolute',
+    top: 0,
+    left: 0,
+
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 10,
+  },
+  foodRow: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: 'space-between',
+    width: 320,
+    height: 50,
+    backgroundColor: LIGHT_COLOR,
+    marginTop: 20,
+    borderRadius: 30,
+    paddingLeft: 20,
+    // borderWidth: 1,
+    // borderColor: GREY_COLOR,
+    // paddingRight: 20,
+    // paddingLeft: 10,
+    overflow: 'hidden'
+  },
+
 });
 
 export default MainFoodRoute;
