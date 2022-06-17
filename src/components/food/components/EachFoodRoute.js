@@ -26,8 +26,6 @@ const EachFoodRoute = observer(({ navigation }) => {
   const [foodName, setFoodName] = useState([]);
   const { user } = useContext(AppContext);
 
-  console.log(user.isSelectedProduct.name);
-
   return (
     <View style={styles.main}>
       <TouchableOpacity

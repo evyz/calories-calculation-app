@@ -86,6 +86,7 @@ const Picker = () => {
               startFromMonday={true}
               textStyle={{ fontFamily: BOLD_FONT }}
               onDateChange={(date) => setStartDate(date)}
+            // customDayHeaderStyles={()}
             />
           </View>
         </View>

@@ -1,8 +1,11 @@
-import { View, Text, StyleSheet, Linking, Platform, Alert } from "react-native";
+import { View, Text, StyleSheet, Linking, Platform, Alert, Button } from "react-native";
 import { AuthComponents, PublicComponents } from "./utils/components";
 import { LoaderComponent } from "./components/loader/Loader";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNetInfo } from '@react-native-community/netinfo'
+
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -16,8 +19,65 @@ import { me, refreshToken } from "./http/user";
 import { getNews } from "./http/news";
 import { getLastsAuth, setLastsAuth } from "./storage/last.auth";
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
+
+async function registerForPushNotificationsAsync() {
+  let token;
+  if (Device.isDevice) {
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== 'granted') {
+      alert('Failed to get push token for push notification!');
+      return;
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log(token);
+  } else {
+    alert('Must use physical device for Push Notifications');
+  }
+
+  if (Platform.OS === 'android') {
+    Notifications.setNotificationChannelAsync('default', {
+      name: 'lzcalories',
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+    });
+  }
+
+  return token;
+}
+
+async function schedulePushNotification() {
+
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: "You've got mail! 📬",
+      body: 'Here is the notification body',
+      data: { data: 'goes here' },
+      // sound: 'notifications-first.wav', // Provide ONLY the base filename
+    },
+    trigger: { seconds: 2 },
+  });
+}
+
 export default AppRouter = observer(() => {
   const { newsStore } = useContext(AppContext);
+
+  const [expoPushToken, setExpoPushToken] = useState('');
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
 
   const Stack = createNativeStackNavigator();
   const AuthStack = createBottomTabNavigator();
@@ -25,8 +85,28 @@ export default AppRouter = observer(() => {
   const { user } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(true);
 
-
   const netInfo = useNetInfo();
+
+  // useEffect(() => {
+  //   console.log('--->>> ', expoPushToken)
+  // }, [expoPushToken])
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(notification);
+    });
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response);
+    });
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
 
   useEffect(() => {
     if (netInfo.isConnected === false) {
@@ -37,6 +117,7 @@ export default AppRouter = observer(() => {
       setIsLoading(false)
     }
   }, [netInfo])
+
 
   useEffect(() => {
     refreshToken()
@@ -81,6 +162,8 @@ export default AppRouter = observer(() => {
   return (
     <View style={{ width: "100%", height: "100%" }}>
       {user.isLoading && <AlphaLoader />}
+
+      {/* <Button title="Уведомлялка" onPress={async () => await schedulePushNotification()} /> */}
 
       <NavigationContainer>
         {user.isAuth ? (

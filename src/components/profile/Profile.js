@@ -11,10 +11,6 @@ const Profile = ({ navigation }) => {
 
   const Drawer = createDrawerNavigator();
 
-  const logOutHandler = () => {
-    user.setIsAuth(false);
-  };
-
   return (
     <Drawer.Navigator
       screenOptions={{
@@ -39,15 +35,5 @@ const Profile = ({ navigation }) => {
     </Drawer.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    width: "100%",
-    height: "100%",
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
 
 export default Profile;

@@ -14,13 +14,13 @@ import {
   LIGHT_COLOR,
   LIGHT_GREEN_COLOR,
   GREEN_COLOR,
-  GREY_COLOR,
-  RED_COLOR,
+  GREY_COLOR
 } from "../../../styles/colors";
 import { getCategories, getEachProduct } from "../../../http/product";
 import { Shadow } from "react-native-shadow-2";
 import { shadowOpt } from "../../loader/Loader";
 import ApiLoader from "../../loader/ApiLoader";
+
 
 export const litleShadowOpt = {
   startColor: '#F4F4F4',
@@ -28,7 +28,6 @@ export const litleShadowOpt = {
   radius: 50,
   distance: 20
 }
-
 
 const MainFoodRoute = observer(({ navigation }) => {
   const { user } = useContext(AppContext);
@@ -41,8 +40,6 @@ const MainFoodRoute = observer(({ navigation }) => {
   const [cats, setCats] = useState([]);
   const [chosed, setChosed] = useState([]);
   const [isConfirmed, setIsConfirmed] = useState(false);
-
-
 
   useEffect(() => {
     getCategories()
@@ -92,7 +89,8 @@ const MainFoodRoute = observer(({ navigation }) => {
     <View style={styles.main}>
       {isLoading && <ApiLoader />}
 
-      <Shadow {...shadowOpt} startColor="#EBEBEB">
+      {/* <Shadow {...shadowOpt} startColor="#EBEBEB">
+
         <View>
           <TouchableOpacity
             style={{
@@ -106,6 +104,7 @@ const MainFoodRoute = observer(({ navigation }) => {
             <Text>Back</Text>
           </TouchableOpacity>
         </View>
+
         <View style={styles.search}>
           <TextInput
             placeholder="Поиск"
@@ -116,8 +115,38 @@ const MainFoodRoute = observer(({ navigation }) => {
           <TouchableOpacity onPress={() => getProducts()} style={styles.button}>
             <Text>Найти</Text>
           </TouchableOpacity>
+
+          <View style={styles.filterButton}>
+            <TouchableOpacity onPress={() => alert('test')} style={styles.filterInnerButton}>
+              <Text style={styles.filterText}>Категории</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </Shadow>
+      </Shadow> */}
+
+      <View style={styles.outerInput}>
+        <Shadow {...litleShadowOpt} startColor="#EBEBEB">
+
+          <View style={styles.search}>
+            <TextInput
+              placeholder="Поиск"
+              value={value}
+              onChangeText={setValue}
+            />
+
+            <TouchableOpacity onPress={() => getProducts()} style={styles.button}>
+              <Text>Найти</Text>
+            </TouchableOpacity>
+          </View>
+
+        </Shadow>
+        <View style={styles.filterButton}>
+          <TouchableOpacity onPress={() => alert('test')} style={styles.filterInnerButton}>
+            <Text style={styles.filterText}>Категории</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
       <Shadow {...shadowOpt}>
         <View style={styles.categories}>
           <View style={styles.allCat}>
@@ -323,7 +352,37 @@ const styles = StyleSheet.create({
     width: 350,
     height: 50,
     backgroundColor: LIGHT_COLOR,
-    marginTop: 30,
+    // marginTop: 30,
+    borderBottomLeftRadius: 0,
+    position: 'relative'
+  },
+  filterButton: {
+    width: 100,
+    height: 40,
+
+    backgroundColor: LIGHT_COLOR,
+    borderRadius: 25,
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: 0,
+
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+
+  },
+  filterInnerButton: {
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 1
+  },
+  outerInput: {
+    width: 350,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start'
   },
 });
 

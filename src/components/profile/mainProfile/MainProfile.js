@@ -7,6 +7,8 @@ import {
   TextInput,
   Alert,
   TouchableOpacity,
+  Touchable,
+  Image
 } from "react-native";
 import { Shadow } from "react-native-shadow-2";
 import { AppContext } from "../../../store";
@@ -70,6 +72,11 @@ const MainProfileComponent = observer(({ navigation }) => {
 
       <Shadow {...shadowOpt}>
         <View style={styles.block}>
+
+          <TouchableOpacity onPress={() => navigation.navigate('settings')} style={{ width: 40, height: 40, position: 'absolute', right: 10, top: 10 }}>
+            <Image source={require('../../../assets/icos/settings.png')} style={{ width: 40, height: 40 }} />
+          </TouchableOpacity>
+
           <TouchableOpacity onPress={() => setIsAvatar(true)} style={styles.avatar}>
             <View style={[styles.innerAvatar, { backgroundColor: user.profile?.avatar?.color }]}>
               <SvgUri width={140} height={140} uri={url + user.profile?.avatar?.ico?.path} />
