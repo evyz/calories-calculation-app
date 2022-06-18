@@ -8,7 +8,6 @@ import {
   Easing,
   Button,
 } from "react-native";
-import CalendarPicker from "react-native-calendar-picker";
 import {
   DARK_GREY_COLOR,
   GREEN_COLOR,
@@ -19,6 +18,7 @@ import dayjs from "dayjs";
 import "dayjs/locale/ru";
 import { BLACK_FONT, BOLD_FONT } from "../../../styles/fonts";
 import Stats from "./Stats";
+import Calendar from "../../Functional/Calendar/Calendar";
 
 const Picker = () => {
   const [startDate, setStartDate] = useState(new Date());
@@ -77,17 +77,7 @@ const Picker = () => {
       >
         <View style={styles.content}>
           <View style={styles.calendar}>
-            <CalendarPicker
-              width={330}
-              // height={500}
-              previousTitle={"<"}
-              nextTitle={">"}
-              firstDay={0}
-              startFromMonday={true}
-              textStyle={{ fontFamily: BOLD_FONT }}
-              onDateChange={(date) => setStartDate(date)}
-            // customDayHeaderStyles={()}
-            />
+            <Calendar />
           </View>
         </View>
 
@@ -134,7 +124,7 @@ const styles = StyleSheet.create({
     backgroundColor: GREEN_COLOR,
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-around",
+    justifyContent: "center",
     borderBottomEndRadius: 25,
     borderBottomStartRadius: 25,
     position: "absolute",
