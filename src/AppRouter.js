@@ -155,13 +155,14 @@ export default AppRouter = observer(() => {
       .finally(() => setIsLoading(false));
   }, [user]);
 
-  if (isLoading) {
-    return <AlphaLoader />;
-  }
+  // if (isLoading) {
+  //   return <AlphaLoader />;
+  // }
 
   return (
     <View style={{ width: "100%", height: "100%" }}>
       {user.isLoading && <AlphaLoader />}
+      {isLoading && <AlphaLoader />}
 
       {/* <Button title="Уведомлялка" onPress={async () => await schedulePushNotification()} /> */}
 

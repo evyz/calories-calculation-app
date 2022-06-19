@@ -5,8 +5,10 @@ import dayjs from "dayjs";
 import "dayjs/locale/ru";
 import { getCaloriesFromDate } from "../../../http/product";
 
-const Stats = ({ selectedDate }) => {
+const Stats = ({ selectedDate, setSelectedDate }) => {
   const [data, setData] = useState({});
+
+
 
   useEffect(() => {
     // getCaloriesFromDate({ selectedDate }).then((data) => {

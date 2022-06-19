@@ -2,7 +2,7 @@
   "expo": {
     "name": "calories-mobile",
     "slug": "calories-mobile",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -35,7 +35,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "lzcalories.app"
+      "package": "lzcalories.app",
+      "versionCode": 2
     },
     "web": {
       "favicon": "./assets/favicon.png"
