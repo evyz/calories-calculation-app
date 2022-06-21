@@ -43,7 +43,8 @@
     "react-native-shadow-2": "^6.0.0",
     "react-native-svg": "^12.3.0",
     "react-native-web": "0.17.1",
-    "use-calendar-matrix": "^1.0.0"
+    "use-calendar-matrix": "^1.0.0",
+    "websocket": "^1.0.34"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

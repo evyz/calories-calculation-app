@@ -11,13 +11,15 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, { useContext, useEffect, useState, useRef, useCallback } from "react";
 import { AppContext } from "./store";
 import { observer } from "mobx-react-lite";
 import AlphaLoader from "./components/loader/AlphaLoader";
 import { me, refreshToken } from "./http/user";
 import { getNews } from "./http/news";
 import { getLastsAuth, setLastsAuth } from "./storage/last.auth";
+import NotificationIndex from "./components/Notifications";
+// import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -74,22 +76,48 @@ async function schedulePushNotification() {
 export default AppRouter = observer(() => {
   const { newsStore } = useContext(AppContext);
 
+  const [isPaused, setIsPaused] = useState(false)
   const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
+
+  const [mobileNotif, setMobileNotif] = useState(null)
+
 
   const Stack = createNativeStackNavigator();
   const AuthStack = createBottomTabNavigator();
 
   const { user } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(true);
+  const [tokenFromStorage, setToken] = useState('')
 
   const netInfo = useNetInfo();
 
+  // const ws = useRef('')
+
   // useEffect(() => {
-  //   console.log('--->>> ', expoPushToken)
-  // }, [expoPushToken])
+  //   if (!isPaused && user.isAuth) {
+  //     ws.current = new WebSocket(`ws://lzcalories.ru/api/ws?authorization=${tokenFromStorage}`); // создаем ws соединение
+  //     ws.current.onopen = () => console.log("Соединение открыто");  // callback на ивент открытия соединения
+  //     ws.current.onclose = () => console.log("Соединение закрыто"); // callback на ивент закрытия соединения
+
+  //     gettingData();
+  //   }
+
+  //   return () => ws.current?.close(); // кода меняется isPaused - соединение закрывается
+  // }, [ws, isPaused]);
+
+  // const gettingData = useCallback(() => {
+  //   if (!ws.current) return;
+
+  //   ws.current.onmessage = e => {                //подписка на получение данных по вебсокету
+  //     if (isPaused) return;
+  //     const message = JSON.parse(e.data);
+  //     console.log('---->>>>>', message);
+  //     // setMobileNotif(message)
+  //   };
+  // }, [isPaused]);
 
   useEffect(() => {
     registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
@@ -124,6 +152,7 @@ export default AppRouter = observer(() => {
       .then(async (data) => {
         if (data?.token) {
           await AsyncStorage.setItem("token", data?.token);
+          setToken(data?.token)
           me().then((data) => {
             const obj = {
               avatar: {
@@ -155,16 +184,16 @@ export default AppRouter = observer(() => {
       .finally(() => setIsLoading(false));
   }, [user]);
 
-  // if (isLoading) {
-  //   return <AlphaLoader />;
-  // }
-
   return (
     <View style={{ width: "100%", height: "100%" }}>
+
+      <NotificationIndex
+        data={mobileNotif}
+        setData={setMobileNotif}
+      />
+
       {user.isLoading && <AlphaLoader />}
       {isLoading && <AlphaLoader />}
-
-      {/* <Button title="Уведомлялка" onPress={async () => await schedulePushNotification()} /> */}
 
       <NavigationContainer>
         {user.isAuth ? (
