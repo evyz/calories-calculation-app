@@ -25,4 +25,5 @@ export const AuthComponents = [
   { name: "food", component: Food, icon: FoodIcon },
   { name: "calendar", component: Calendar, icon: CalendarIcon },
   { name: "profile", component: Profile, icon: ProfileIcon },
+  // { name: "settings", component: Settings },
 ];
