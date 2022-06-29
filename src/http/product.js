@@ -21,3 +21,25 @@ export const getCaloriesFromDate = async ({ date }) => {
   });
   return data;
 };
+
+export const createNewProduct = async ({
+  name,
+  category,
+  grams,
+  fats,
+  carbohydrates,
+  proteins,
+  kcal,
+}) => {
+  const { data } = await $authHost.post("/api/product/", {
+    name,
+    category,
+    grams,
+    fats,
+    carbohydrates,
+    proteins,
+    kcal,
+  });
+  console.log(name, category, grams, fats, carbohydrates, proteins, kcal);
+  return data;
+};
