@@ -107,7 +107,7 @@ const MainProfileComponent = observer(({ navigation }) => {
 
           {user.profile.role === 'admin' &&
             <View>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('admin')}>
                 <Text>Admin man</Text>
               </TouchableOpacity>
             </View>

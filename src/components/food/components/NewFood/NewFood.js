@@ -1,10 +1,8 @@
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
-import { TextInput } from "react-native-gesture-handler";
+import { Text, TouchableOpacity, View, ScrollView, TextInput, StyleSheet, Animated } from "react-native";
 import { BOLD_FONT, LIGTH_FONT, MEDIUM_FONT } from "../../../../styles/fonts";
 import { observer } from "mobx-react-lite";
 import { useState, useEffect, useContext } from "react";
-import { StyleSheet, ScrollView, Animated } from "react-native";
 import { createNewProduct, getCategories } from "../../../../http/product";
 
 import { GREEN_COLOR, LIGHT_COLOR } from "../../../../styles/colors";
@@ -67,6 +65,12 @@ const NewFood = ({ navigation }) => {
   }, [typed, name, ccal, belk, jiry, ugl]);
 
   const CheckOut = async () => {
+
+    if (!/^\d+$/.test(ccal)) {
+      alert('Калории должны быть указаны строго целым числом')
+      return setInputError3(true)
+    }
+
     if (typed.length === 0) {
       return setInputError(true);
     }
@@ -113,7 +117,6 @@ const NewFood = ({ navigation }) => {
 
   return (
     <View style={styles.main}>
-      {isLoading && <ApiLoader />}
       {getCategoryOf && (
         <View
           style={{
@@ -219,193 +222,197 @@ const NewFood = ({ navigation }) => {
           ></TouchableOpacity>
         </View>
       )}
+      <ScrollView>
+        {isLoading && <ApiLoader />}
 
-      <TouchableOpacity
-        style={{ paddingTop: 30 }}
-        onPress={() => navigation.navigate("mainFoodRoute")}
-      >
-        <Text>Назад</Text>
-      </TouchableOpacity>
-      <Text
-        style={{
-          marginTop: 7,
-          fontSize: 20,
-          alignItems: "center",
-          justifyContent: "flex-start",
-          marginLeft: 20,
-          fontStyle: BOLD_FONT,
-        }}
-      >
-        Добавление продукта
-      </Text>
 
-      <Text
-        style={{
-          marginTop: 10,
-          fontSize: 16,
-          alignItems: "center",
-          justifyContent: "flex-start",
-          marginLeft: 20,
-          fontFamily: LIGTH_FONT,
-        }}
-      >
-        Выберите категорию продукта:
-      </Text>
-
-      <View style={[styles.typeArea, { position: "relative" }]}>
         <TouchableOpacity
-          onPress={() => setGetCategoryOf(!getCategoryOf)}
-          style={[
-            {
-              width: "100%",
-              height: "100%",
-              textAlign: "center",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            },
-            inputError && styles.emptyInput,
-          ]}
+          style={{ paddingTop: 30 }}
+          onPress={() => navigation.navigate("mainFoodRoute")}
         >
-          <Text>{typed}</Text>
+          <Text>Назад</Text>
         </TouchableOpacity>
-      </View>
-      <Text
-        style={{
-          marginTop: 10,
-          fontSize: 16,
-          alignItems: "center",
-          justifyContent: "flex-start",
-          marginLeft: 20,
-          fontFamily: LIGTH_FONT,
-        }}
-      >
-        Введите название продукта:
-      </Text>
-
-      <View style={styles.typeArea}>
-        <TextInput
-          value={name}
-          onChangeText={setName}
-          style={[
-            { width: "100%", height: "100%", textAlign: "center" },
-            inputError2 && styles.emptyInput,
-          ]}
-        ></TextInput>
-      </View>
-      <Text
-        style={{
-          marginTop: 10,
-          fontSize: 16,
-          alignItems: "center",
-          justifyContent: "flex-start",
-          marginLeft: 20,
-          fontFamily: LIGTH_FONT,
-        }}
-      >
-        Введите количество калорий на 100г продукта:
-      </Text>
-      <View style={styles.typeArea}>
-        <TextInput
-          value={ccal}
-          onChangeText={setCcal}
-          style={[
-            { width: "100%", height: "100%", textAlign: "center" },
-            inputError3 && styles.emptyInput,
-          ]}
-        ></TextInput>
-      </View>
-
-      <Text
-        style={{
-          marginTop: 10,
-          fontSize: 16,
-          alignItems: "center",
-          justifyContent: "flex-start",
-          marginLeft: 20,
-          fontFamily: LIGTH_FONT,
-        }}
-      >
-        Введите количество белков на 100г продукта:
-      </Text>
-
-      <View style={styles.typeArea}>
-        <TextInput
-          value={belk}
-          onChangeText={setBelk}
-          style={[
-            { width: "100%", height: "100%", textAlign: "center" },
-            inputError4 && styles.emptyInput,
-          ]}
-        ></TextInput>
-      </View>
-      <Text
-        style={{
-          marginTop: 10,
-          fontSize: 16,
-          alignItems: "center",
-          justifyContent: "flex-start",
-          marginLeft: 20,
-          fontFamily: LIGTH_FONT,
-        }}
-      >
-        Введите количество жиров на 100г продукта:
-      </Text>
-      <View style={styles.typeArea}>
-        <TextInput
-          value={jiry}
-          onChangeText={setJiry}
-          style={[
-            { width: "100%", height: "100%", textAlign: "center" },
-            inputError5 && styles.emptyInput,
-          ]}
-        ></TextInput>
-      </View>
-      <Text
-        style={{
-          marginTop: 10,
-          fontSize: 16,
-          alignItems: "center",
-          justifyContent: "flex-start",
-          marginLeft: 20,
-          fontFamily: LIGTH_FONT,
-        }}
-      >
-        Введите количество углеводов на 100г продукта:
-      </Text>
-      <View style={styles.typeArea}>
-        <TextInput
-          value={ugl}
-          onChangeText={setUgl}
-          style={[
-            {
-              width: "100%",
-              height: "100%",
-              textAlign: "center",
-            },
-            inputError6 && styles.emptyInput,
-          ]}
-        ></TextInput>
-      </View>
-      <TouchableOpacity
-        onPress={() => CheckOut()}
-        style={{
-          alignItems: "center",
-          flexDirection: "column",
-          justifyContent: "center",
-          width: 200,
-          height: 50,
-          borderRadius: 25,
-          borderColor: GREEN_COLOR,
-          backgroundColor: GREEN_COLOR,
-          marginTop: 15,
-          marginLeft: 20,
-        }}
-      >
-        <Text style={{ fontSize: 16, fontFamily: MEDIUM_FONT }}>
-          Создать продукт
+        <Text
+          style={{
+            marginTop: 7,
+            fontSize: 20,
+            alignItems: "center",
+            justifyContent: "flex-start",
+            marginLeft: 20,
+            fontStyle: BOLD_FONT,
+          }}
+        >
+          Добавление продукта
         </Text>
-      </TouchableOpacity>
+
+        <Text
+          style={{
+            marginTop: 10,
+            fontSize: 16,
+            alignItems: "center",
+            justifyContent: "flex-start",
+            marginLeft: 20,
+            fontFamily: LIGTH_FONT,
+          }}
+        >
+          Выберите категорию продукта:
+        </Text>
+
+        <View style={[styles.typeArea, { position: "relative" }]}>
+          <TouchableOpacity
+            onPress={() => setGetCategoryOf(!getCategoryOf)}
+            style={[
+              {
+                width: "100%",
+                height: "100%",
+                textAlign: "center",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              },
+              inputError && styles.emptyInput,
+            ]}
+          >
+            <Text>{typed}</Text>
+          </TouchableOpacity>
+        </View>
+        <Text
+          style={{
+            marginTop: 10,
+            fontSize: 16,
+            alignItems: "center",
+            justifyContent: "flex-start",
+            marginLeft: 20,
+            fontFamily: LIGTH_FONT,
+          }}
+        >
+          Введите название продукта:
+        </Text>
+
+        <View style={styles.typeArea}>
+          <TextInput
+            value={name}
+            onChangeText={setName}
+            style={[
+              { width: "100%", height: "100%", textAlign: "center" },
+              inputError2 && styles.emptyInput,
+            ]}
+          ></TextInput>
+        </View>
+        <Text
+          style={{
+            marginTop: 10,
+            fontSize: 16,
+            alignItems: "center",
+            justifyContent: "flex-start",
+            marginLeft: 20,
+            fontFamily: LIGTH_FONT,
+          }}
+        >
+          Введите количество калорий на 100г продукта:
+        </Text>
+        <View style={styles.typeArea}>
+          <TextInput
+            value={ccal}
+            onChangeText={setCcal}
+            style={[
+              { width: "100%", height: "100%", textAlign: "center" },
+              inputError3 && styles.emptyInput,
+            ]}
+          ></TextInput>
+        </View>
+
+        <Text
+          style={{
+            marginTop: 10,
+            fontSize: 16,
+            alignItems: "center",
+            justifyContent: "flex-start",
+            marginLeft: 20,
+            fontFamily: LIGTH_FONT,
+          }}
+        >
+          Введите количество белков на 100г продукта:
+        </Text>
+
+        <View style={styles.typeArea}>
+          <TextInput
+            value={belk}
+            onChangeText={setBelk}
+            style={[
+              { width: "100%", height: "100%", textAlign: "center" },
+              inputError4 && styles.emptyInput,
+            ]}
+          ></TextInput>
+        </View>
+        <Text
+          style={{
+            marginTop: 10,
+            fontSize: 16,
+            alignItems: "center",
+            justifyContent: "flex-start",
+            marginLeft: 20,
+            fontFamily: LIGTH_FONT,
+          }}
+        >
+          Введите количество жиров на 100г продукта:
+        </Text>
+        <View style={styles.typeArea}>
+          <TextInput
+            value={jiry}
+            onChangeText={setJiry}
+            style={[
+              { width: "100%", height: "100%", textAlign: "center" },
+              inputError5 && styles.emptyInput,
+            ]}
+          ></TextInput>
+        </View>
+        <Text
+          style={{
+            marginTop: 10,
+            fontSize: 16,
+            alignItems: "center",
+            justifyContent: "flex-start",
+            marginLeft: 20,
+            fontFamily: LIGTH_FONT,
+          }}
+        >
+          Введите количество углеводов на 100г продукта:
+        </Text>
+        <View style={styles.typeArea}>
+          <TextInput
+            value={ugl}
+            onChangeText={setUgl}
+            style={[
+              {
+                width: "100%",
+                height: "100%",
+                textAlign: "center",
+              },
+              inputError6 && styles.emptyInput,
+            ]}
+          ></TextInput>
+        </View>
+        <TouchableOpacity
+          onPress={() => CheckOut()}
+          style={{
+            alignItems: "center",
+            flexDirection: "column",
+            justifyContent: "center",
+            width: 200,
+            height: 50,
+            borderRadius: 25,
+            borderColor: GREEN_COLOR,
+            backgroundColor: GREEN_COLOR,
+            marginTop: 15,
+            marginLeft: 20,
+          }}
+        >
+          <Text style={{ fontSize: 16, fontFamily: MEDIUM_FONT }}>
+            Создать продукт
+          </Text>
+        </TouchableOpacity>
+      </ScrollView>
     </View>
   );
 };

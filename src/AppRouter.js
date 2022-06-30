@@ -18,60 +18,60 @@ import AlphaLoader from "./components/loader/AlphaLoader";
 import { me, refreshToken } from "./http/user";
 import { getNews } from "./http/news";
 import { getLastsAuth, setLastsAuth } from "./storage/last.auth";
-import NotificationIndex from "./components/Notifications";
+// import NotificationIndex from "./components/Notifications";
 // import { w3cwebsocket as W3CWebSocket } from "websocket";
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: false,
-  }),
-});
+// Notifications.setNotificationHandler({
+//   handleNotification: async () => ({
+//     shouldShowAlert: true,
+//     shouldPlaySound: true,
+//     shouldSetBadge: false,
+//   }),
+// });
 
-async function registerForPushNotificationsAsync() {
-  let token;
-  if (Device.isDevice) {
-    const { status: existingStatus } = await Notifications.getPermissionsAsync();
-    let finalStatus = existingStatus;
-    if (existingStatus !== 'granted') {
-      const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
-    }
-    if (finalStatus !== 'granted') {
-      alert('Failed to get push token for push notification!');
-      return;
-    }
-    token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log(token);
-  } else {
-    alert('Must use physical device for Push Notifications');
-  }
+// async function registerForPushNotificationsAsync() {
+//   let token;
+//   if (Device.isDevice) {
+//     const { status: existingStatus } = await Notifications.getPermissionsAsync();
+//     let finalStatus = existingStatus;
+//     if (existingStatus !== 'granted') {
+//       const { status } = await Notifications.requestPermissionsAsync();
+//       finalStatus = status;
+//     }
+//     if (finalStatus !== 'granted') {
+//       alert('Failed to get push token for push notification!');
+//       return;
+//     }
+//     token = (await Notifications.getExpoPushTokenAsync()).data;
+//     console.log(token);
+//   } else {
+//     alert('Must use physical device for Push Notifications');
+//   }
 
-  if (Platform.OS === 'android') {
-    Notifications.setNotificationChannelAsync('default', {
-      name: 'lzcalories',
-      importance: Notifications.AndroidImportance.MAX,
-      vibrationPattern: [0, 250, 250, 250],
-      lightColor: '#FF231F7C',
-    });
-  }
+//   if (Platform.OS === 'android') {
+//     Notifications.setNotificationChannelAsync('default', {
+//       name: 'lzcalories',
+//       importance: Notifications.AndroidImportance.MAX,
+//       vibrationPattern: [0, 250, 250, 250],
+//       lightColor: '#FF231F7C',
+//     });
+//   }
 
-  return token;
-}
+//   return token;
+// }
 
-async function schedulePushNotification() {
+// async function schedulePushNotification() {
 
-  await Notifications.scheduleNotificationAsync({
-    content: {
-      title: "You've got mail! 📬",
-      body: 'Here is the notification body',
-      data: { data: 'goes here' },
-      // sound: 'notifications-first.wav', // Provide ONLY the base filename
-    },
-    trigger: { seconds: 2 },
-  });
-}
+//   await Notifications.scheduleNotificationAsync({
+//     content: {
+//       title: "You've got mail! 📬",
+//       body: 'Here is the notification body',
+//       data: { data: 'goes here' },
+//       // sound: 'notifications-first.wav', // Provide ONLY the base filename
+//     },
+//     trigger: { seconds: 2 },
+//   });
+// }
 
 export default AppRouter = observer(() => {
   const { newsStore } = useContext(AppContext);
@@ -119,22 +119,22 @@ export default AppRouter = observer(() => {
   //   };
   // }, [isPaused]);
 
-  useEffect(() => {
-    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+  // useEffect(() => {
+  //   registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 
-    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-      setNotification(notification);
-    });
+  //   notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+  //     setNotification(notification);
+  //   });
 
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log(response);
-    });
+  //   responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+  //     console.log(response);
+  //   });
 
-    return () => {
-      Notifications.removeNotificationSubscription(notificationListener.current);
-      Notifications.removeNotificationSubscription(responseListener.current);
-    };
-  }, []);
+  //   return () => {
+  //     Notifications.removeNotificationSubscription(notificationListener.current);
+  //     Notifications.removeNotificationSubscription(responseListener.current);
+  //   };
+  // }, []);
 
   useEffect(() => {
     if (netInfo.isConnected === false) {
@@ -148,6 +148,7 @@ export default AppRouter = observer(() => {
 
 
   useEffect(() => {
+    setIsLoading(true)
     refreshToken()
       .then(async (data) => {
         if (data?.token) {
@@ -187,10 +188,10 @@ export default AppRouter = observer(() => {
   return (
     <View style={{ width: "100%", height: "100%" }}>
 
-      <NotificationIndex
+      {/* <NotificationIndex
         data={mobileNotif}
         setData={setMobileNotif}
-      />
+      /> */}
 
       {user.isLoading && <AlphaLoader />}
       {isLoading && <AlphaLoader />}

@@ -123,7 +123,7 @@ const MainFoodRoute = observer(({ navigation }) => {
                           fontSize: 14,
                           color:
                             chosed.find((item) => item === obj.name) !==
-                            undefined
+                              undefined
                               ? "red"
                               : "black",
                         }}
