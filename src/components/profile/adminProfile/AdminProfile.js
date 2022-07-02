@@ -3,8 +3,8 @@ import { AppContext } from '../../../store'
 
 import React, { useContext, useEffect, useState } from 'react'
 import { Text, View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native'
-import { DARK_GREY_COLOR, GREY_COLOR, LIGHT_COLOR, LIGTH_GREY_COLOR } from '../../../styles/colors'
-import { BLACK_FONT, BOLD_FONT, MEDIUM_FONT } from '../../../styles/fonts'
+import { DARK_GREY_COLOR, LIGHT_COLOR, LIGTH_GREY_COLOR } from '../../../styles/colors'
+import { MEDIUM_FONT } from '../../../styles/fonts'
 import AdminProduct from './components/AdminProduct'
 import AdminUsers from './components/AdminUsers'
 
@@ -12,14 +12,16 @@ const roles = ['admin']
 
 const AdminProfile = observer(({ navigation }) => {
 
-  const { user } = useContext(AppContext)
+  const { user, admin } = useContext(AppContext)
   const [route, setRoute] = useState('')
 
   useEffect(() => {
     if (!roles.find(role => role === user.profile.role)) {
       navigation.navigate('main')
       alert('У вас нет доступа к этой компоненте')
+
     }
+
   }, [])
 
   const routes = [

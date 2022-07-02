@@ -170,62 +170,63 @@ const MainFoodRoute = observer(({ navigation }) => {
 
       <View style={styles.allSearched}>
         <ScrollView style={styles.scroll}>
-          <View
+          {/* <View
             style={{
               width: "100%",
-              height: "100%",
+              // height: "100%",
               display: "flex",
               alignItems: "center",
             }}
-          >
-            {search &&
-              search.map((obj) => (
-                <Shadow
-                  viewStyle={styles.foodRow}
-                  key={obj.id}
-                  {...litleShadowOpt}
-                >
-                  <Text>{obj.name}</Text>
-                  <TouchableOpacity
-                    onPress={() => {
-                      user.setIsSelectedProduct(obj);
-                      navigation.navigate("EachFoodRoute");
-                    }}
-                    style={styles.kcal}
-                  >
-                    <Text>
-                      {obj?.kcal}ккал {`(${obj?.grams} гр.)`}
-                    </Text>
-                    <Text></Text>
-                  </TouchableOpacity>
-                </Shadow>
-              ))}
-
-            <Shadow
-              {...litleShadowOpt}
-              // shadowOpacity={0.5}
-
-              viewStyle={[
-                styles.searchFood,
-                { justifyContent: "center", marginVertical: 10, width: 350 },
-              ]}
-            >
-              <Text>Не нашли нужный продукт?</Text>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("NewFoodRoute")}
+          > */}
+          {search &&
+            search.map((obj) => (
+              <Shadow
+                viewStyle={[styles.foodRow, { marginLeft: '5%' }]}
+                key={obj.id}
+                {...litleShadowOpt}
               >
-                <Text
-                  style={{
-                    color: GREEN_COLOR,
-                    textDecorationColor: GREEN_COLOR,
-                    textDecorationLine: "underline",
+                <Text>{obj.name}</Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    user.setIsSelectedProduct(obj);
+                    navigation.navigate("EachFoodRoute");
                   }}
+                  style={styles.kcal}
                 >
-                  Добавьте его.
-                </Text>
-              </TouchableOpacity>
-            </Shadow>
-          </View>
+                  <Text>
+                    {obj?.kcal}ккал {`(${obj?.grams} гр.)`}
+                  </Text>
+                  <Text></Text>
+                </TouchableOpacity>
+              </Shadow>
+            ))}
+
+          <Shadow
+            {...litleShadowOpt}
+            // shadowOpacity={0.5}
+
+            viewStyle={[
+              styles.searchFood,
+              { justifyContent: "center", marginVertical: 10, width: 350, },
+            ]}
+          >
+            <Text>Не нашли нужный продукт?</Text>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("NewFoodRoute")}
+            >
+              <Text
+                style={{
+                  color: GREEN_COLOR,
+                  textDecorationColor: GREEN_COLOR,
+                  textDecorationLine: "underline",
+                }}
+              >
+                Добавьте его.
+              </Text>
+            </TouchableOpacity>
+          </Shadow>
+          <View style={{ height: 50 }}></View>
+          {/* </View> */}
         </ScrollView>
       </View>
     </View>
