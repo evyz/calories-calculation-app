@@ -12,7 +12,7 @@ export const getEachProduct = async ({ count, page, cats, name }) => {
       name,
     }
   );
-  console.log(result.data);
+
   return result.data;
 };
 
@@ -41,6 +41,6 @@ export const createNewProduct = async ({
     proteins,
     kcal,
   });
-  console.log(name, category, grams, fats, carbohydrates, proteins, kcal);
+
   return data;
 };

@@ -90,32 +90,44 @@ const EachFoodRoute = observer(({ navigation }) => {
             </View>
             <Shadow {...shadowOpt} distance={5} startColor="#F3F3F3">
               <View style={[styles.container, { backgroundColor: "#F7D921" }]}>
-                <Text style={{ fontFamily: MEDIUM_FONT }}>Жиры</Text>
-                <Text>{user.isSelectedProduct.fats}</Text>
+                <Text style={{ fontFamily: BOLD_FONT, color: LIGHT_COLOR }}>
+                  Жиры
+                </Text>
+                <Text style={{ color: LIGHT_COLOR, fontFamily: BOLD_FONT }}>
+                  {user.isSelectedProduct.fats} г
+                </Text>
               </View>
             </Shadow>
             <Shadow {...shadowOpt} distance={5} startColor="#F3F3F3">
               <View style={[styles.container, { backgroundColor: "#B0CB1F" }]}>
-                <Text style={{ fontFamily: MEDIUM_FONT }}>Белки</Text>
-                <Text>{user.isSelectedProduct.proteins}</Text>
+                <Text style={{ fontFamily: BOLD_FONT, color: LIGHT_COLOR }}>
+                  Белки
+                </Text>
+                <Text style={{ color: LIGHT_COLOR, fontFamily: BOLD_FONT }}>
+                  {user.isSelectedProduct.proteins} г
+                </Text>
               </View>
             </Shadow>
             <Shadow {...shadowOpt} distance={5} startColor="#F3F3F3">
               <View style={[styles.container, { backgroundColor: "#5B5B5B" }]}>
-                <Text style={{ fontFamily: MEDIUM_FONT }}>Углеводы</Text>
-                <Text>{user.isSelectedProduct.carbohydrates}</Text>
+                <Text style={{ fontFamily: BOLD_FONT, color: LIGHT_COLOR }}>
+                  Углеводы
+                </Text>
+                <Text style={{ color: LIGHT_COLOR, fontFamily: BOLD_FONT }}>
+                  {user.isSelectedProduct.carbohydrates} г
+                </Text>
               </View>
             </Shadow>
-            <Shadow {...shadowOpt} distance={5} startColor="#F3F3F3">
+            {/* <Shadow {...shadowOpt} distance={5} startColor="#F3F3F3">
               <View style={[styles.container, { backgroundColor: "#A2D9F7" }]}>
                 <Text style={{ fontFamily: MEDIUM_FONT }}>Вода</Text>
               </View>
-            </Shadow>
-            <Shadow {...shadowOpt} distance={5} startColor="#F3F3F3">
+            </Shadow> */}
+            {/* <Shadow {...shadowOpt} distance={5} startColor="#F3F3F3">
               <View style={[styles.container, { backgroundColor: "#B2B3B3" }]}>
                 <Text style={{ fontFamily: MEDIUM_FONT }}>Зола</Text>
               </View>
-            </Shadow>
+            </Shadow> */}
           </View>
         </View>
       </Shadow>

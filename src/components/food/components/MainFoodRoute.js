@@ -22,6 +22,7 @@ import { Shadow } from "react-native-shadow-2";
 import { shadowOpt } from "../../loader/Loader";
 import ApiLoader from "../../loader/ApiLoader";
 import { useRef } from "react";
+import { BOLD_FONT, LIGTH_FONT } from "../../../styles/fonts";
 
 export const litleShadowOpt = {
   startColor: "#f7f7f7",
@@ -156,7 +157,7 @@ const MainFoodRoute = observer(({ navigation }) => {
             </TouchableOpacity>
           </View>
         </Shadow>
-        <Shadow {...litleShadowOpt} startColor="#f0f0f0">
+        <Shadow {...litleShadowOpt} distance={5} startColor="#f0f0f0">
           <View style={styles.filterButton}>
             <TouchableOpacity
               onPress={() => setIsOpenedFilters(true)}
@@ -184,8 +185,9 @@ const MainFoodRoute = observer(({ navigation }) => {
                   key={obj.id}
                   {...litleShadowOpt}
                   distance={0}
+                  startColor="rgba(0,0,0,0)"
                 >
-                  <View style={{ width: "60%" }}>
+                  <View style={{ width: "40%" }}>
                     <Text>{obj.name}</Text>
                   </View>
                   <TouchableOpacity
@@ -195,7 +197,9 @@ const MainFoodRoute = observer(({ navigation }) => {
                     }}
                     style={styles.kcal}
                   >
-                    <Text>
+                    <Text
+                      style={{ color: LIGHT_COLOR, fontFamily: LIGTH_FONT }}
+                    >
                       {obj?.kcal}ккал {`(${obj?.grams} гр.)`}
                     </Text>
                     <Text></Text>
@@ -204,6 +208,8 @@ const MainFoodRoute = observer(({ navigation }) => {
               ))}
             <Shadow
               {...litleShadowOpt}
+              distance={0}
+              startColor="rgba(0,0,0,0)"
               viewStyle={[
                 styles.searchFood,
                 { justifyContent: "center", marginVertical: 10, width: 350 },
@@ -244,7 +250,7 @@ const styles = StyleSheet.create({
     height: "100%",
     alignItems: "center",
     justifyContent: "flex-start",
-    backgroundColor: LIGHT_COLOR,
+    backgroundColor: "#f5f5f5",
   },
   mainAlert: {
     width: "100%",
