@@ -3,15 +3,16 @@ export const getCategories = async () => {
   const { data } = await $authHost.get("api/category");
   return data;
 };
-export const getEachProduct = async ({ count, page, cats }) => {
+export const getEachProduct = async ({ count, page, cats, name }) => {
   const categories = cats;
   const result = await $authHost.post(
     "api/product/filters?" + `count=${count}&page=${page}`,
     {
       categories,
+      name,
     }
   );
-
+  console.log(result.data);
   return result.data;
 };
 

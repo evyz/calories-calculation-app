@@ -92,7 +92,7 @@ const MainFoodRoute = observer(({ navigation }) => {
 
   const getProducts = async () => {
     setIsLoading(true);
-    await getEachProduct({ count: 40, page: 1, cats: chosed })
+    await getEachProduct({ count: 40, page: 1, cats: chosed, name: value })
       .then((data) => {
         setSearch(data.rows);
       })
@@ -123,7 +123,7 @@ const MainFoodRoute = observer(({ navigation }) => {
                           fontSize: 14,
                           color:
                             chosed.find((item) => item === obj.name) !==
-                              undefined
+                            undefined
                               ? "red"
                               : "black",
                         }}
@@ -170,61 +170,64 @@ const MainFoodRoute = observer(({ navigation }) => {
 
       <View style={styles.allSearched}>
         <ScrollView style={styles.scroll}>
-          {/* <View
+          <View
             style={{
               width: "100%",
-              // height: "100%",
-              display: "flex",
               alignItems: "center",
+              display: "flex",
             }}
-          > */}
-          {search &&
-            search.map((obj) => (
-              <Shadow
-                viewStyle={[styles.foodRow, { marginLeft: '5%' }]}
-                key={obj.id}
-                {...litleShadowOpt}
-              >
-                <Text>{obj.name}</Text>
-                <TouchableOpacity
-                  onPress={() => {
-                    user.setIsSelectedProduct(obj);
-                    navigation.navigate("EachFoodRoute");
-                  }}
-                  style={styles.kcal}
-                >
-                  <Text>
-                    {obj?.kcal}ккал {`(${obj?.grams} гр.)`}
-                  </Text>
-                  <Text></Text>
-                </TouchableOpacity>
-              </Shadow>
-            ))}
-
-          <Shadow
-            {...litleShadowOpt}
-            // shadowOpacity={0.5}
-
-            viewStyle={[
-              styles.searchFood,
-              { justifyContent: "center", marginVertical: 10, width: 350, },
-            ]}
           >
-            <Text>Не нашли нужный продукт?</Text>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("NewFoodRoute")}
+            {search &&
+              search.map((obj) => (
+                <Shadow
+                  viewStyle={styles.foodRow}
+                  key={obj.id}
+                  {...litleShadowOpt}
+                  distance={0}
+                >
+                  <View style={{ width: "60%" }}>
+                    <Text>{obj.name}</Text>
+                  </View>
+                  <TouchableOpacity
+                    onPress={() => {
+                      user.setIsSelectedProduct(obj);
+                      navigation.navigate("EachFoodRoute");
+                    }}
+                    style={styles.kcal}
+                  >
+                    <Text>
+                      {obj?.kcal}ккал {`(${obj?.grams} гр.)`}
+                    </Text>
+                    <Text></Text>
+                  </TouchableOpacity>
+                </Shadow>
+              ))}
+            <Shadow
+              {...litleShadowOpt}
+              viewStyle={[
+                styles.searchFood,
+                { justifyContent: "center", marginVertical: 10, width: 350 },
+              ]}
             >
-              <Text
-                style={{
-                  color: GREEN_COLOR,
-                  textDecorationColor: GREEN_COLOR,
-                  textDecorationLine: "underline",
-                }}
+              <Text>Не нашли нужный продукт?</Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("NewFoodRoute")}
               >
-                Добавьте его.
-              </Text>
-            </TouchableOpacity>
-          </Shadow>
+                <Text
+                  style={{
+                    color: GREEN_COLOR,
+                    textDecorationColor: GREEN_COLOR,
+                    textDecorationLine: "underline",
+                  }}
+                >
+                  Добавьте его.
+                </Text>
+              </TouchableOpacity>
+            </Shadow>
+          </View>
+          <View
+            style={{ display: "flex", alignItems: "center", width: "100%" }}
+          ></View>
           <View style={{ height: 50 }}></View>
           {/* </View> */}
         </ScrollView>
@@ -256,15 +259,17 @@ const styles = StyleSheet.create({
     left: 0,
   },
   allSearched: {
-    width: "100%",
+    width: "120%",
     height: "100%",
     display: "flex",
     alignItems: "center",
+    overflow: "hidden",
   },
   scroll: {
     width: "100%",
     height: "100%",
-    paddingTop: 50,
+    paddingTop: 20,
+
     // alignItems: "center",
     // justifyContent: "center",
 
@@ -302,10 +307,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    width: "25%",
-    height: 40,
-    borderWidth: 3,
-    borderColor: LIGHT_GREEN_COLOR,
+    width: "30%",
+    height: 47,
+    borderWidth: 1.5,
+    borderColor: GREEN_COLOR,
     borderRadius: 30,
     paddingEnd: 2,
     marginLeft: 10,
@@ -410,17 +415,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    width: 320,
+    width: 350,
     height: 50,
     backgroundColor: LIGHT_COLOR,
     marginTop: 20,
     borderRadius: 30,
     paddingLeft: 20,
+    overflow: "hidden",
+
     // borderWidth: 1,
     // borderColor: GREY_COLOR,
     // paddingRight: 20,
     // paddingLeft: 10,
-    overflow: "hidden",
   },
 });
 

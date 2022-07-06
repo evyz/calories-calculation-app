@@ -200,7 +200,15 @@ export default LoginComponent = observer(({ navigation }) => {
         </TouchableOpacity>
       </View>
       <View style={styles.login}>
-        <TouchableOpacity onPress={() => authChangeHandler()}>
+        <TouchableOpacity
+          style={{
+            width: "100%",
+            textAlign: "center",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          onPress={() => authChangeHandler()}
+        >
           <Text style={{ fontSize: 18, color: LIGHT_COLOR }}>Войти</Text>
         </TouchableOpacity>
       </View>

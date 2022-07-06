@@ -27,7 +27,7 @@ const Registration = observer(({ navigation }) => {
   const [value1, setValue1] = useState("");
   const [isRemember, setIsRemember] = useState(false);
   const [security, setSecurity] = useState(true);
-  const [code, setCode] = useState('')
+  const [code, setCode] = useState("");
   const { user } = useContext(AppContext);
   const [password, setPassword] = useState("");
   const [dublpassword, setDublPassword] = useState("");
@@ -68,14 +68,14 @@ const Registration = observer(({ navigation }) => {
   };
 
   const registerEvent = () => {
-    register(value, value1, dublpassword).then(data => {
+    register(value, value1, dublpassword).then((data) => {
       if (data.status === 404) {
-        return Alert.alert("Ошибка в регистрации", data.message)
+        return Alert.alert("Ошибка в регистрации", data.message);
       } else {
-        setIsConfirmed(true)
+        setIsConfirmed(true);
       }
-    })
-  }
+    });
+  };
 
   return (
     <View style={styles.main}>
@@ -168,7 +168,15 @@ const Registration = observer(({ navigation }) => {
         )}
       </View>
       <View style={styles.next}>
-        <TouchableOpacity onPress={() => registerEvent()}>
+        <TouchableOpacity
+          style={{
+            width: "100%",
+            textAlign: "center",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          onPress={() => registerEvent()}
+        >
           <Text style={{ fontSize: 18, color: LIGHT_COLOR }}>Далее</Text>
         </TouchableOpacity>
       </View>

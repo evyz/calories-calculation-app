@@ -31,9 +31,6 @@ export default TitleComponent = ({ navigation }) => {
         <Text style={styles.wellcome}>Добро пожаловать!</Text>
 
         <View
-          style={[styles.circle, { transform: [{ scale: 1 }], marginTop: 30 }]}
-        ></View>
-        <View
           style={{
             width: "90%",
             height: "30%",
@@ -41,7 +38,15 @@ export default TitleComponent = ({ navigation }) => {
           }}
         >
           <Text
-            style={{ marginTop: 40, fontSize: 18, fontFamily: MEDIUM_FONT }}
+            style={{
+              marginTop: 20,
+              fontSize: 18,
+              fontFamily: MEDIUM_FONT,
+              width: "100%",
+              alignItems: "center",
+              justifyContent: "center",
+              textAlign: "center",
+            }}
           >
             Начните пользоваться приложением
           </Text>
@@ -49,9 +54,22 @@ export default TitleComponent = ({ navigation }) => {
             style={{
               flexDirection: "row",
               justifyContent: "center",
+              // width: "100%",
+              // alignItems: "center",
+              // justifyContent: "center",
+              // textAlign: "center",
             }}
           >
-            <Text style={{ fontSize: 18, fontFamily: MEDIUM_FONT }}>
+            <Text
+              style={{
+                fontSize: 18,
+                fontFamily: MEDIUM_FONT,
+                width: "100%",
+                textAlign: "center",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               прямо сейчас
             </Text>
           </View>
@@ -59,12 +77,24 @@ export default TitleComponent = ({ navigation }) => {
       </View>
       <View style={styles.positionObjs}>
         <View style={styles.buttons}>
-          <TouchableOpacity onPress={() => navigation.navigate("login")}>
+          <TouchableOpacity
+            style={{
+              width: "100%",
+              height: "100%",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            onPress={() => navigation.navigate("login")}
+          >
             <Text
               style={{
                 fontSize: 18,
                 fontFamily: MEDIUM_FONT,
                 color: LIGHT_COLOR,
+                // width: "100%",
+                // height: "100%",
+                // alignItems: "center",
+                // justifyContent: "center",
               }}
             >
               Авторизация
@@ -74,6 +104,12 @@ export default TitleComponent = ({ navigation }) => {
 
         <View style={styles.buttons}>
           <TouchableOpacity
+            style={{
+              width: "100%",
+              height: "100%",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
             onPress={() => navigation.navigate("registerStep1")}
           >
             <Text
@@ -143,13 +179,6 @@ const styles = StyleSheet.create({
     borderRadius: 30,
   },
 
-  circle: {
-    width: 200,
-    height: 200,
-
-    borderRadius: 100,
-    backgroundColor: GREY_COLOR,
-  },
   loginAlert: {
     width: "90%",
     height: 50,
