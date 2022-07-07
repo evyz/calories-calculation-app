@@ -124,7 +124,7 @@ const MainFoodRoute = observer(({ navigation }) => {
                           fontSize: 14,
                           color:
                             chosed.find((item) => item === obj.name) !==
-                            undefined
+                              undefined
                               ? "red"
                               : "black",
                         }}
@@ -181,7 +181,7 @@ const MainFoodRoute = observer(({ navigation }) => {
             {search &&
               search.map((obj) => (
                 <Shadow
-                  viewStyle={styles.foodRow}
+                  viewStyle={[styles.foodRow, search.length < 10 && { height: 100, borderRadius: 24, }]}
                   key={obj.id}
                   {...litleShadowOpt}
                   distance={0}
@@ -195,14 +195,26 @@ const MainFoodRoute = observer(({ navigation }) => {
                       user.setIsSelectedProduct(obj);
                       navigation.navigate("EachFoodRoute");
                     }}
-                    style={styles.kcal}
+                    style={[styles.kcal, search.length < 10 && {
+                      width: "45%",
+                      height: 100,
+                      borderTopLeftRadius: 35,
+                      borderBottomLeftRadius: 35,
+                    }]}
                   >
+                    {search.length < 10 && <View style={{
+                      width: 100,
+                      height: 100,
+                      backgroundColor: GREEN_COLOR,
+                      position: 'absolute',
+                      left: -25,
+                      borderRadius: 100,
+                    }}></View>}
                     <Text
                       style={{ color: LIGHT_COLOR, fontFamily: LIGTH_FONT }}
                     >
                       {obj?.kcal}ккал {`(${obj?.grams} гр.)`}
                     </Text>
-                    <Text></Text>
                   </TouchableOpacity>
                 </Shadow>
               ))}

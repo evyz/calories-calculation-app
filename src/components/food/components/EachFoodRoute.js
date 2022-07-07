@@ -8,6 +8,7 @@ import {
   TextInput,
   Text,
   ScrollView,
+  Dimensions,
 } from "react-native";
 import { AppContext } from "../../../store";
 import {
@@ -17,17 +18,33 @@ import {
   GREY_COLOR,
   RED_COLOR,
 } from "../../../styles/colors";
-import { getCategories, getEachProduct } from "../../../http/product";
+import { calculateCaloriesToApi, getCategories, getEachProduct } from "../../../http/product";
 import { BOLD_FONT, LIGTH_FONT, MEDIUM_FONT } from "../../../styles/fonts";
 import { Shadow } from "react-native-shadow-2";
 import { shadowOpt } from "../../loader/Loader";
+import DatePicker from "react-native-datepicker";
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
+import dayjs from "dayjs";
 
 const EachFoodRoute = observer(({ navigation }) => {
   const [foodName, setFoodName] = useState([]);
   const { user } = useContext(AppContext);
 
+  const [date, setDate] = useState(new Date())
+  const [hours, setHours] = useState(null)
+  const [minutes, setMinutes] = useState(null)
+  const [grams, setGrams] = useState(0)
+
+  const calculateCalories = async () => {
+    let dateFormat = dayjs(`${date}T${hours}:${minutes}`).format()
+    // await calculateCaloriesToApi(user.isSelectedProduct.id, grams, dateFormat).then(data => {
+    //   console.log(data)
+    // })
+  }
+
   return (
     <View style={styles.main}>
+
       <TouchableOpacity
         style={{
           alignItems: "flex-start",
@@ -39,7 +56,6 @@ const EachFoodRoute = observer(({ navigation }) => {
       >
         <Text>Back</Text>
       </TouchableOpacity>
-      {/* <View style={{ width: "90%", height: "100%" }}> */}
       <Shadow {...shadowOpt} color={"black"}>
         <View style={styles.form}>
           <View style={styles.text}></View>
@@ -118,20 +134,27 @@ const EachFoodRoute = observer(({ navigation }) => {
                 </Text>
               </View>
             </Shadow>
-            {/* <Shadow {...shadowOpt} distance={5} startColor="#F3F3F3">
-              <View style={[styles.container, { backgroundColor: "#A2D9F7" }]}>
-                <Text style={{ fontFamily: MEDIUM_FONT }}>Вода</Text>
+
+            <View style={{ width: '90%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', marginTop: 10, }}>
+              <View style={{ width: '40%' }}>
+                <TextInput style={{ padding: 5, margin: 5, borderWidth: 1, borderColor: GREY_COLOR, borderRadius: 8, }} keyboardType="numeric" value={grams} onChangeText={setGrams} />
               </View>
-            </Shadow> */}
-            {/* <Shadow {...shadowOpt} distance={5} startColor="#F3F3F3">
-              <View style={[styles.container, { backgroundColor: "#B2B3B3" }]}>
-                <Text style={{ fontFamily: MEDIUM_FONT }}>Зола</Text>
+              <View style={{ width: '50%', display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                  <TextInput style={{ padding: 5, margin: 5, borderWidth: 1, borderColor: GREY_COLOR, borderRadius: 8, }} keyboardType="numeric" value={hours} onChangeText={setHours} placeholder="HH" />
+                  <Text>:</Text>
+                  <TextInput style={{ padding: 5, margin: 5, borderWidth: 1, borderColor: GREY_COLOR, borderRadius: 8, }} keyboardType="numeric" value={minutes} onChangeText={setMinutes} placeholder="MM" />
+                </View>
+
+                <DatePicker customStyles={{ dateIcon: { opacity: 0 } }} mode="date" date={date} onDateChange={date => setDate(date)} />
               </View>
-            </Shadow> */}
+            </View>
+            <TouchableOpacity onPress={() => calculateCalories()} style={{ paddingVertical: 18 / 2, paddingHorizontal: 32 / 2, backgroundColor: GREEN_COLOR, borderRadius: 8, }}>
+              <Text style={{ fontFamily: BOLD_FONT, fontSize: 16, color: LIGHT_COLOR }}>Расчитать калории</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Shadow>
-      {/* </View> */}
     </View>
   );
 });

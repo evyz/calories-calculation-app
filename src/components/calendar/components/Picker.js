@@ -26,7 +26,7 @@ dayjs.locale('ru')
 const Picker = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null)
-  const [activeDate, setActiveDate] = useState(dayjs(new Date()).format())
+  const [activeDate, setActiveDate] = useState(null)
 
   const [isRange, setIsRange] = useState(false)
 
@@ -125,7 +125,7 @@ const Picker = () => {
         </Animated.View>
       </Animated.View>
 
-      <Stats selectedDate={activeDate} setsetSelectedDate={setActiveDate} />
+      <Stats selectedDate={activeDate} setSelectedDate={setActiveDate} />
     </View>
   );
 };

@@ -44,3 +44,11 @@ export const createNewProduct = async ({
 
   return data;
 };
+
+export const calculateCaloriesToApi = async (id, grams, date) => {
+  const { data } = await $authHost.post(`/api/user-product/${id}`, {
+    date, grams
+  })
+
+  return data
+}
