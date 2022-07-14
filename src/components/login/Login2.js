@@ -124,14 +124,11 @@ export default LoginComponent = observer(({ navigation }) => {
   return (
     <View style={styles.main}>
       {isLoading && <ApiLoader focused={isLoading} />}
-
-      <TouchableOpacity
-        style={{ padding: 30 }}
-        onPress={() => navigation.navigate("title")}
-      >
-        <Text>Назад</Text>
-      </TouchableOpacity>
-
+      <View style={{ marginTop: 30, backgroundColor: "black" }}>
+        <TouchableOpacity onPress={() => navigation.navigate("title")}>
+          <Text style={{ textAlign: "center" }}>Назад</Text>
+        </TouchableOpacity>
+      </View>
       <View style={styles.text}>
         <Text style={{ fontSize: 24 }}>Войдите в аккаунт</Text>
         <Text style={{ fontSize: 16 }}>С возвращением!</Text>
@@ -214,7 +211,7 @@ export default LoginComponent = observer(({ navigation }) => {
       </View>
       <View style={styles.reg}>
         <Text>Нет аккаунта?</Text>
-        <TouchableOpacity onPress={() => navigation.navigate("register")}>
+        <TouchableOpacity onPress={() => navigation.navigate("registerStep1")}>
           <Text style={{ color: GREEN_COLOR }}>Зарегистрироваться</Text>
         </TouchableOpacity>
       </View>
@@ -227,6 +224,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     display: "flex",
+    flexDirection: "column",
     alignItems: "center",
     backgroundColor: LIGHT_COLOR,
   },
@@ -280,7 +278,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 1,
     borderRadius: 24,
-    marginTop: 80,
+    marginTop: 50,
     // marginLeft: 28,
     backgroundColor: GREEN_COLOR,
     borderColor: GREEN_COLOR,
