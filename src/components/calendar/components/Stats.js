@@ -19,16 +19,85 @@ const Stats = ({ selectedDate, setSelectedDate }) => {
       <Text style={{ fontFamily: BOLD_FONT }}>
         {dayjs(selectedDate).format("YYYY MMMM DD")}
       </Text>
-      <Text>Ваше потребление сегодня:</Text>
-      <Text>Количество продуктов:{data?.defaultsDate?.count}</Text>
-      <View style={{ width: '80%', display: 'flex', flexDirection: 'column' }}>
-        <Text style={{ fontFamily: BOLD_FONT }}>Общее количество:</Text>
-        <View style={{ marginLeft: 10, }}>
-          <Text style={{ fontFamily: LIGTH_FONT }}>Продукты:{data?.defaultsDate?.count}</Text>
-          <Text style={{ fontFamily: LIGTH_FONT }}>Калории:{data?.defaultsDate?.kcal}</Text>
-          <Text style={{ fontFamily: LIGTH_FONT }}>Жиры:{data?.defaultsDate?.fats}</Text>
-          <Text style={{ fontFamily: LIGTH_FONT }}>Белки:{data?.defaultsDate?.proteins}</Text>
-          <Text style={{ fontFamily: LIGTH_FONT }}>Углеводы:{data?.defaultsDate?.carbohydrates}</Text>
+      <View
+        style={{
+          width: "90%",
+          display: "flex",
+          flexDirection: "column",
+          marginTop: 30,
+        }}
+      >
+        <Text style={{ fontSize: 18, marginTop: 10 }}>
+          Ваше потребление сегодня:
+        </Text>
+      </View>
+      {/* <Text>Количество продуктов:{data?.defaultsDate?.count}</Text> */}
+      <View style={{ width: "90%", display: "flex", flexDirection: "column" }}>
+        {/* <Text style={{ fontFamily: BOLD_FONT }}>Общее количество:</Text> */}
+        <View style={{ marginLeft: 5 }}>
+          <Text style={{ fontFamily: LIGTH_FONT, fontSize: 16, marginTop: 10 }}>
+            Продукты:{data?.defaultsDate?.count}
+          </Text>
+          <Text style={{ fontFamily: LIGTH_FONT, fontSize: 16, marginTop: 10 }}>
+            Калории:{data?.defaultsDate?.kcal}
+          </Text>
+          <View
+            style={{ flexDirection: "row", display: "flex", marginTop: 60 }}
+          >
+            <View
+              style={{
+                width: 20,
+                height: 20,
+                borderRadius: 70,
+                backgroundColor: "purple",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            ></View>
+            <Text
+              style={{ fontFamily: LIGTH_FONT, fontSize: 16, marginLeft: 10 }}
+            >
+              Жиры:{data?.defaultsDate?.fats}
+            </Text>
+          </View>
+          <View
+            style={{ flexDirection: "row", display: "flex", marginTop: 20 }}
+          >
+            <View
+              style={{
+                width: 20,
+                height: 20,
+                borderRadius: 70,
+                backgroundColor: "skyblue",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            ></View>
+            <Text
+              style={{ fontFamily: LIGTH_FONT, fontSize: 16, marginLeft: 10 }}
+            >
+              Белки:{data?.defaultsDate?.proteins}
+            </Text>
+          </View>
+          <View
+            style={{ flexDirection: "row", display: "flex", marginTop: 20 }}
+          >
+            <View
+              style={{
+                width: 20,
+                height: 20,
+                borderRadius: 70,
+                backgroundColor: "orange",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            ></View>
+            <Text
+              style={{ fontFamily: LIGTH_FONT, fontSize: 16, marginLeft: 10 }}
+            >
+              Углеводы:{data?.defaultsDate?.carbohydrates}
+            </Text>
+          </View>
         </View>
       </View>
     </View>
