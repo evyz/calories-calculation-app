@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useState, useEffect, useContext } from "react";
 import {
   View,
@@ -7,6 +7,8 @@ import {
   TextInput,
   Text,
   Alert,
+  Animated,
+  Dimensions,
 } from "react-native";
 import { AppContext } from "../../store";
 import {
@@ -15,10 +17,17 @@ import {
   GREEN_COLOR,
   GREY_COLOR,
   RED_COLOR,
+  DARK_GREY_COLOR,
 } from "../../styles/colors";
 import { observer } from "mobx-react-lite";
 import { useRoute } from "@react-navigation/native";
 import { register } from "../../http/user";
+import {
+  BLACK_FONT,
+  BOLD_FONT,
+  LIGTH_FONT,
+  MEDIUM_FONT,
+} from "../../styles/fonts";
 
 export let symbols = /[0-9a-zA-Z!@#$%^&*]{8,}/g;
 
@@ -36,6 +45,27 @@ const Registration = observer(({ navigation }) => {
   const [passwordError, setPasswordError] = useState("");
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [shortPasswordError, setShortPasswordError] = useState("");
+
+  const height = Math.round(Dimensions.get("screen").height);
+  useEffect(() => {
+    console.log(height);
+  }, [height]);
+
+  const fadeAnim = useRef(new Animated.Value(height)).current;
+  const activeText = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    if (isConfirmed) {
+      setTimeout(() => {
+        Animated.timing(activeText, {
+          toValue: 1,
+          duration: 1500,
+          useNativeDriver: true,
+        }).start();
+      }, 3000);
+    }
+  }, [isConfirmed]);
+
   const shadowOpt = {
     width: 100,
     height: 100,
@@ -72,6 +102,11 @@ const Registration = observer(({ navigation }) => {
       if (data.status === 404) {
         return Alert.alert("Ошибка в регистрации", data.message);
       } else {
+        Animated.timing(fadeAnim, {
+          toValue: 0,
+          duration: 1000,
+          useNativeDriver: true,
+        }).start();
         setIsConfirmed(true);
       }
     });
@@ -79,30 +114,106 @@ const Registration = observer(({ navigation }) => {
 
   return (
     <View style={styles.main}>
+      <Animated.View
+        style={{
+          width: "100%",
+          height: "100%",
+          backgroundColor: GREEN_COLOR,
+          position: "absolute",
+          zIndex: 100,
+          transform: [{ translateY: fadeAnim }],
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <View>
+          <Text
+            style={{
+              fontSize: 20,
+              fontFamily: BLACK_FONT,
+              color: LIGHT_COLOR,
+            }}
+          >
+            Добро пожаловать, {value}
+          </Text>
+          <Text
+            style={{
+              fontSize: 16,
+              fontFamily: MEDIUM_FONT,
+              marginTop: 20,
+              color: LIGHT_COLOR,
+              width: 320,
+            }}
+          >
+            На Вашу почту {value1} пришло письмо с ссылкой для подтвеждения
+            аккаунта. Пожалуйста, подтвердите аккаунт, чтобы воспользоваться
+            своим аккаунтом.
+          </Text>
+          <Text
+            style={{
+              fontSize: 18,
+              fontFamily: LIGTH_FONT,
+              marginTop: 20,
+              color: LIGHT_COLOR,
+            }}
+          >
+            С уважением, команда LZSTUDIO
+          </Text>
+        </View>
+        <Animated.View
+          style={{
+            position: "absolute",
+            bottom: 180,
+            paddingHorizontal: 17,
+            paddingVertical: 10,
+            backgroundColor: LIGHT_COLOR,
+            borderRadius: 8,
+            opacity: activeText,
+          }}
+        >
+          <TouchableOpacity onPress={() => navigation.navigate("login")}>
+            <Text
+              style={{
+                color: DARK_GREY_COLOR,
+                fontSize: 24,
+                fontFamily: BOLD_FONT,
+              }}
+            >
+              Авторизация
+            </Text>
+          </TouchableOpacity>
+        </Animated.View>
+      </Animated.View>
+
       <View style={styles.mainTopBlock}>
         <TouchableOpacity onPress={() => navigation.navigate("title")}>
           <Text>Назад</Text>
         </TouchableOpacity>
-        <View style={styles.allblocks}>
+        {/* <View style={styles.allblocks}>
           <View style={[styles.basestatus, styles.activestatus]}></View>
           <View style={styles.basestatus}></View>
           <View style={styles.basestatus}></View>
-        </View>
+        </View> */}
       </View>
       <View style={styles.topText}>
-        <Text style={{ fontSize: 24 }}>Создайте свой аккаунт</Text>
-        <Text style={{ fontSize: 16 }}>Создайте аккаунт и получите</Text>
-        <Text style={{ fontSize: 16 }}>доступ к приложению</Text>
+        <Text style={{ fontSize: 24, fontFamily: BLACK_FONT }}>
+          Создайте свой аккаунт
+        </Text>
+        <Text style={{ fontSize: 16, width: 300 }}>
+          Создайте аккаунт и получите доступ к приложению
+        </Text>
       </View>
 
       <View style={styles.input}>
         <TextInput
           onChangeText={setValue}
           value={value}
-          placeholder="Ваше имя"
+          placeholder='Ваше имя'
           autoCorrect={false}
           autoCapitalize={"none"}
-          keyboardType="default"
+          keyboardType='default'
+          style={{ width: "100%" }}
         />
       </View>
 
@@ -110,10 +221,11 @@ const Registration = observer(({ navigation }) => {
         <TextInput
           onChangeText={setValue1}
           value={value1}
-          placeholder="Почта"
+          placeholder='Почта'
           autoCorrect={false}
           autoCapitalize={"none"}
-          keyboardType="default"
+          keyboardType='default'
+          style={{ width: "100%" }}
         />
       </View>
 
@@ -123,10 +235,11 @@ const Registration = observer(({ navigation }) => {
           value={password}
           secureTextEntry={security}
           onChangeText={setPassword}
-          placeholder="Пароль"
+          placeholder='Пароль'
           autoCorrect={false}
           autoCapitalize={"none"}
-          keyboardType="default"
+          keyboardType='default'
+          style={{ width: "100%" }}
         />
       </View>
       <View style={{ width: "90%", height: !shortPasswordDirty ? 0 : 70 }}>
@@ -152,10 +265,10 @@ const Registration = observer(({ navigation }) => {
           value={dublpassword}
           secureTextEntry={security}
           onChangeText={setDublPassword}
-          placeholder="Подтвердите пароль"
+          placeholder='Подтвердите пароль'
           autoCorrect={false}
           autoCapitalize={"none"}
-          keyboardType="default"
+          keyboardType='default'
         />
       </View>
       <View style={{ width: "90%" }}>
@@ -186,39 +299,6 @@ const Registration = observer(({ navigation }) => {
           <Text style={{ color: GREEN_COLOR }}>Войти</Text>
         </TouchableOpacity>
       </View>
-      {isConfirmed && (
-        <View style={styles.mainAlert}>
-          <View style={styles.alert}>
-            <Text style={{ fontSize: 18, marginTop: 52 }}>
-              Подтвердите свой аккаунт!
-            </Text>
-            <Text
-              style={{
-                fontSize: 13,
-                marginTop: 29,
-                marginLeft: 10,
-                marginRight: 10,
-              }}
-            >
-              На вашу почту ...@ пришёл код с подтверждением аккаунта.Введите
-              данный код в поле ниже, чтобы подтвердить аккаунт
-            </Text>
-            <TextInput
-              style={styles.inputCode}
-              placeholder="Введите код"
-              value={code}
-              onChangeText={setCode}
-            ></TextInput>
-            <View style={styles.confirm}>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("registerStep2")}
-              >
-                <Text style={{ color: LIGHT_COLOR }}>Подтвердить</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      )}
     </View>
   );
 });
