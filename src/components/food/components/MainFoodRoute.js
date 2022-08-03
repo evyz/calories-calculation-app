@@ -1,6 +1,7 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
 import { useState, useEffect, useContext } from "react";
+import CheckBox from "@react-native-community/checkbox";
 import {
   View,
   TouchableOpacity,
@@ -46,6 +47,7 @@ const MainFoodRoute = observer(({ navigation }) => {
 
   const [isOpenedFilters, setIsOpenedFilters] = useState(false);
   const isActiveFilters = useRef(new Animated.Value(1)).current;
+  const [toggleCheckBox, setToggleCheckBox] = useState(false);
 
   useEffect(() => {
     if (isActiveFilters) {
@@ -112,7 +114,12 @@ const MainFoodRoute = observer(({ navigation }) => {
           <TouchableOpacity activeOpacity={1}>
             <View style={styles.categories}>
               <View style={styles.allCat}>
-                {cats.map((obj) => (
+                <CheckBox
+                  disabled={false}
+                  value={toggleCheckBox}
+                  onValueChange={(newValue) => setToggleCheckBox(newValue)}
+                />
+                {/* {cats.map((obj) => (
                   <View key={obj.id}>
                     <TouchableOpacity
                       key={obj.id}
@@ -133,7 +140,7 @@ const MainFoodRoute = observer(({ navigation }) => {
                       </Text>
                     </TouchableOpacity>
                   </View>
-                ))}
+                ))} */}
               </View>
             </View>
           </TouchableOpacity>
@@ -181,7 +188,10 @@ const MainFoodRoute = observer(({ navigation }) => {
             {search &&
               search.map((obj) => (
                 <Shadow
-                  viewStyle={[styles.foodRow, search.length < 10 && { height: 100, borderRadius: 24, }]}
+                  viewStyle={[
+                    styles.foodRow,
+                    search.length < 10 && { height: 100, borderRadius: 24 },
+                  ]}
                   key={obj.id}
                   {...litleShadowOpt}
                   distance={0}
@@ -195,21 +205,28 @@ const MainFoodRoute = observer(({ navigation }) => {
                       user.setIsSelectedProduct(obj);
                       navigation.navigate("EachFoodRoute");
                     }}
-                    style={[styles.kcal, search.length < 10 && {
-                      width: "45%",
-                      height: 100,
-                      borderTopLeftRadius: 35,
-                      borderBottomLeftRadius: 35,
-                    }]}
+                    style={[
+                      styles.kcal,
+                      search.length < 10 && {
+                        width: "45%",
+                        height: 100,
+                        borderTopLeftRadius: 35,
+                        borderBottomLeftRadius: 35,
+                      },
+                    ]}
                   >
-                    {search.length < 10 && <View style={{
-                      width: 100,
-                      height: 100,
-                      backgroundColor: GREEN_COLOR,
-                      position: 'absolute',
-                      left: -25,
-                      borderRadius: 100,
-                    }}></View>}
+                    {search.length < 10 && (
+                      <View
+                        style={{
+                          width: 100,
+                          height: 100,
+                          backgroundColor: GREEN_COLOR,
+                          position: "absolute",
+                          left: -25,
+                          borderRadius: 100,
+                        }}
+                      ></View>
+                    )}
                     <Text
                       style={{ color: LIGHT_COLOR, fontFamily: LIGTH_FONT }}
                     >
