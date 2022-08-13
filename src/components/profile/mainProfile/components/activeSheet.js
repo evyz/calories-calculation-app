@@ -41,7 +41,7 @@ const ActiveSheet = ({ isActive, setIsActive }) => {
   const opacity = useSharedValue(0);
   const index = useSharedValue(-1);
   const isDragging = useSharedValue(false);
-  const translateY = useSharedValue(0);
+  const translateY = useSharedValue(-height / 1.25);
 
   const animatedStyles = useAnimatedStyle(() => {
     return {

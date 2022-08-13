@@ -143,6 +143,10 @@ const Page = ({ news, setNews }) => {
               </TouchableOpacity>}
             </TouchableOpacity>
           )} */}
+
+          {/* <View>
+            <Text>{data?.viewers_count}</Text>
+          </View> */}
         </ScrollView>
       </View>
     </View>
