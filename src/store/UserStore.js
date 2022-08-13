@@ -17,6 +17,7 @@ export default class UserStore {
         name: null,
       },
     };
+    this._todayCalories = {};
     this._isSelectedProduct = {};
     makeAutoObservable(this);
   }
@@ -35,6 +36,10 @@ export default class UserStore {
     this._isSelectedProduct = obj;
   }
 
+  setTodayCalories(obj) {
+    this._todayCalories = obj;
+  }
+
   get isAuth() {
     return this._isAuth;
   }
@@ -48,5 +53,9 @@ export default class UserStore {
 
   get isSelectedProduct() {
     return this._isSelectedProduct;
+  }
+
+  get todayCalories() {
+    return this._todayCalories;
   }
 }

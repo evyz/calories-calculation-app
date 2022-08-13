@@ -7,6 +7,7 @@ import {
   TextInput,
   Text,
   ScrollView,
+  Dimensions,
 } from "react-native";
 import { AppContext } from "../../store";
 import {
@@ -21,7 +22,7 @@ import { observer } from "mobx-react-lite";
 import { Shadow } from "react-native-shadow-2";
 import { shadowOpt } from "../loader/Loader";
 import { getNews } from "../../http/news";
-import { BOLD_FONT } from "../../styles/fonts";
+import { BOLD_FONT, MEDIUM_FONT } from "../../styles/fonts";
 import { LIGTH_FONT } from "../../styles/fonts";
 import { SvgUri, SvgCssUri } from "react-native-svg";
 import { url } from "../../http";
@@ -33,12 +34,13 @@ import "dayjs/locale/ru";
 dayjs().locale("ru");
 
 const Home = observer(({ navigation }) => {
-  const { newsStore } = useContext(AppContext);
+  const { newsStore, user } = useContext(AppContext);
 
   const [news, setNews] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const [selectedNews, setSelectedNews] = useState({});
+  const { width } = Dimensions.get("screen");
 
   useEffect(() => {
     if (newsStore.news.length < 1) {
@@ -61,22 +63,42 @@ const Home = observer(({ navigation }) => {
       )}
 
       <View style={styles.header}>
-        <View>
-          {/* <TouchableOpacity
-            style={{
-              alignItems: "flex-start",
-              position: "absolute",
-              top: 30,
-              left: 20,
+        {/* <TouchableOpacity
+      style={{
+        alignItems: "flex-start",
+        position: "absolute",
+        top: 30,
+        left: 20,
+      }}
+      onPress={() => navigation.navigate("TitleComponent")}
+    >
+      <Text>Back</Text>
+    </TouchableOpacity> */}
+        <Text style={styles.textHeader}>
+          С возвращением, {user.profile?.profile?.name}!
+        </Text>
+        <Text style={{ fontSize: 14, fontFamily: MEDIUM_FONT }}>
+          {user.todayCalories?.defaultsDate?.kcal
+            ? `На сегодня у Вас расчитано ${user.todayCalories?.defaultsDate?.kcal} ккал`
+            : "На сегодня у Вас не указаны калории"}
+        </Text>
+        {!user.todayCalories?.defaultsDate?.kcal && (
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("food");
             }}
-            onPress={() => navigation.navigate("TitleComponent")}
+            style={{
+              padding: 10,
+              backgroundColor: GREEN_COLOR,
+              borderRadius: 15,
+              marginTop: 10,
+            }}
           >
-            <Text>Back</Text>
-          </TouchableOpacity> */}
-        </View>
-        <Text style={styles.textHeader}>Что нового?</Text>
+            <Text style={{ color: LIGHT_COLOR }}>Расчитать</Text>
+          </TouchableOpacity>
+        )}
       </View>
-      <View style={styles.fakeIcon}></View>
+      {/* <View style={styles.fakeIcon}></View> */}
 
       <View style={styles.newsContainer}>
         <ScrollView contentContainerStyle={styles.newsScroller}>
@@ -89,7 +111,10 @@ const Home = observer(({ navigation }) => {
                   key={block.id}
                   style={[
                     styles.newsBlock,
-                    { backgroundColor: block.background },
+                    {
+                      backgroundColor: block.background,
+                      width: width / 2 - 35,
+                    },
                   ]}
                 >
                   <Text style={styles.newsHeader}>{block.name}</Text>
@@ -100,8 +125,8 @@ const Home = observer(({ navigation }) => {
                     {block?.ico && (
                       <SvgCssUri
                         uri={url + block?.ico}
-                        width="100%"
-                        height="100%"
+                        width='100%'
+                        height='100%'
                       />
                     )}
                   </View>
@@ -159,7 +184,8 @@ const styles = StyleSheet.create({
 
   newsContainer: {
     width: "100%",
-    height: "85%",
+    height: "65%",
+    marginTop: 20,
 
     display: "flex",
     alignItems: "center",
@@ -198,7 +224,6 @@ const styles = StyleSheet.create({
     marginTop: 18,
     marginBottom: 18,
     borderRadius: 25,
-
   },
 });
 export default Home;

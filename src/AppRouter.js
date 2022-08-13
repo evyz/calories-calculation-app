@@ -32,6 +32,11 @@ import AlphaLoader from "./components/loader/AlphaLoader";
 import { me, refreshToken } from "./http/user";
 import { getNews } from "./http/news";
 import { getLastsAuth, setLastsAuth } from "./storage/last.auth";
+import { getCaloriesFromDate } from "./http/product";
+import dayjs from "dayjs";
+import "dayjs/locale/ru";
+dayjs.locale("ru");
+
 // import NotificationIndex from "./components/Notifications";
 // import { w3cwebsocket as W3CWebSocket } from "websocket";
 
@@ -187,6 +192,9 @@ export default AppRouter = observer(() => {
               .then((data) => {
                 newsStore.setNews(data?.rows);
                 newsStore.setCount(data?.count);
+                getCaloriesFromDate({ date: dayjs().format() }).then((data) => {
+                  user.setTodayCalories(data);
+                });
               })
               .finally(() => setIsLoading(false));
           });
