@@ -1,12 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   View,
   StyleSheet,
   Text,
   TouchableOpacity,
-  Animated,
   Easing,
   Button,
+  Dimensions,
+  Animated,
 } from "react-native";
 import {
   DARK_GREY_COLOR,
@@ -17,21 +18,29 @@ import {
 } from "../../../styles/colors";
 import dayjs from "dayjs";
 import "dayjs/locale/ru";
-import { BLACK_FONT, BOLD_FONT, LIGTH_FONT, MEDIUM_FONT } from "../../../styles/fonts";
+import {
+  BLACK_FONT,
+  BOLD_FONT,
+  LIGTH_FONT,
+  MEDIUM_FONT,
+} from "../../../styles/fonts";
 import Stats from "./Stats";
 import CalendarPicker from "react-native-calendar-picker";
+import ScrollBottomSheet from "react-native-scroll-bottom-sheet";
+import { PanGestureHandler, ScrollView } from "react-native-gesture-handler";
+import ActionSheet from "./ActionSheet";
+import TestBall from "./TestBall";
 
-dayjs.locale('ru')
+dayjs.locale("ru");
 
 const Picker = () => {
   const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null)
-  const [activeDate, setActiveDate] = useState(null)
+  const [endDate, setEndDate] = useState(null);
+  const [activeDate, setActiveDate] = useState();
 
-  const [isRange, setIsRange] = useState(false)
+  const [isRange, setIsRange] = useState(false);
 
   const [isActive, setIsActive] = useState(false);
-
   const arrow = useRef(new Animated.Value(1)).current;
   const arrowSpin = arrow.interpolate({
     inputRange: [0, 1],
@@ -71,59 +80,79 @@ const Picker = () => {
     }
   }, [isActive]);
 
+  const { height } = Dimensions.get("screen");
   return (
     <View style={styles.main}>
-      <Animated.View
-        style={[
-          styles.calendarBlock,
-          { transform: [{ translateY: activeBlock }] },
-        ]}
-      >
-
-        <View style={styles.content}>
-          <View style={styles.calendar}>
-            <CalendarPicker
-              headerWrapperStyle={{ width: '70%', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}
-              startFromMonday={true}
-              selectedDayColor={"#3D4DAD"}
-              selectedDayTextColor={LIGHT_COLOR}
-              onDateChange={(date) => setActiveDate(date)}
-              allowRangeSelection={isRange}
-              minDate={(date) => setStartDate(date)}
-              maxDate={(date) => setEndDate(date)}
-              textStyle={{
-                fontFamily: LIGTH_FONT,
-                fontSize: 14,
-                color: DARK_GREY_COLOR
+      <ActionSheet
+        content={
+          <>
+            <View
+              style={{
+                backgroundColor: LIGHT_COLOR,
+                borderRadius: 10,
+                padding: 5,
               }}
-              todayBackgroundColor={LIGHT_COLOR}
-              todayTextStyle={DARK_GREY_COLOR}
-              months={['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']}
-              weekdays={['ПН', 'ВТ', 'CР', 'ЧТ', 'ПТ', 'СБ', 'ВС']}
-              customDayHeaderStyles={() => { return { style: { justifyContent: 'space-between' }, textStyle: { fontFamily: BLACK_FONT, fontSize: 12, } } }}
-              nextTitle={'>'}
-              previousTitle={'<'}
-            />
-          </View>
-
-          <Text
-            style={{ fontSize: 20, fontFamily: MEDIUM_FONT, marginTop: 20, marginBottom: 5, }}
-          >
-            Сегодня {dayjs(new Date).format('DD MMMM')}
-          </Text>
-        </View>
-
-        <Animated.View
-          style={{ marginTop: 20, transform: [{ rotate: arrowSpin }] }}
-        >
-          <TouchableOpacity
-            style={styles.touchButton}
-            onPress={() => rotateArrow()}
-          >
-            <Text style={styles.button}>></Text>
-          </TouchableOpacity>
-        </Animated.View>
-      </Animated.View>
+            >
+              <CalendarPicker
+                headerWrapperStyle={{
+                  width: "70%",
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-around",
+                }}
+                startFromMonday={true}
+                selectedDayColor={"#3D4DAD"}
+                selectedDayTextColor={LIGHT_COLOR}
+                onDateChange={(date) => setActiveDate(date)}
+                allowRangeSelection={isRange}
+                minDate={(date) => setStartDate(date)}
+                maxDate={(date) => setEndDate(date)}
+                textStyle={{
+                  fontFamily: LIGTH_FONT,
+                  fontSize: 14,
+                  color: DARK_GREY_COLOR,
+                }}
+                todayBackgroundColor={LIGHT_COLOR}
+                todayTextStyle={DARK_GREY_COLOR}
+                months={[
+                  "Январь",
+                  "Февраль",
+                  "Март",
+                  "Апрель",
+                  "Май",
+                  "Июнь",
+                  "Июль",
+                  "Август",
+                  "Сентябрь",
+                  "Октябрь",
+                  "Ноябрь",
+                  "Декабрь",
+                ]}
+                weekdays={["ПН", "ВТ", "CР", "ЧТ", "ПТ", "СБ", "ВС"]}
+                customDayHeaderStyles={() => {
+                  return {
+                    style: { justifyContent: "space-between" },
+                    textStyle: { fontFamily: BLACK_FONT, fontSize: 12 },
+                  };
+                }}
+                nextTitle={">"}
+                previousTitle={"<"}
+              />
+            </View>
+            <Text
+              style={{
+                fontFamily: MEDIUM_FONT,
+                fontSize: 20,
+                marginTop: 20,
+                color: LIGHT_COLOR,
+              }}
+            >
+              {dayjs(activeDate).format("DD MMMM")}
+            </Text>
+          </>
+        }
+      />
 
       <Stats selectedDate={activeDate} setSelectedDate={setActiveDate} />
     </View>
@@ -131,6 +160,34 @@ const Picker = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    zIndex: 10,
+  },
+  contentContainerStyle: {
+    padding: 16,
+    backgroundColor: "#F3F4F9",
+  },
+  header: {
+    alignItems: "center",
+    backgroundColor: "white",
+    paddingVertical: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
+  panelHandle: {
+    width: 40,
+    height: 2,
+    backgroundColor: "rgba(0,0,0,0.3)",
+    borderRadius: 4,
+  },
+  item: {
+    padding: 20,
+    justifyContent: "center",
+    backgroundColor: "white",
+    alignItems: "center",
+    marginVertical: 10,
+  },
   main: {
     width: "100%",
     height: "100%",
@@ -142,7 +199,7 @@ const styles = StyleSheet.create({
     height: 350,
 
     display: "flex",
-    flexDirection: 'column',
+    flexDirection: "column",
     alignItems: "center",
     justifyContent: "flex-start",
 

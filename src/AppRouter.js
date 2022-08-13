@@ -1,17 +1,31 @@
-import { View, Text, StyleSheet, Linking, Platform, Alert, Button } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Linking,
+  Platform,
+  Alert,
+  Button,
+} from "react-native";
 import { AuthComponents, PublicComponents } from "./utils/components";
 import { LoaderComponent } from "./components/loader/Loader";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNetInfo } from '@react-native-community/netinfo'
+import { useNetInfo } from "@react-native-community/netinfo";
 
-import * as Device from 'expo-device';
-import * as Notifications from 'expo-notifications';
+import * as Device from "expo-device";
+import * as Notifications from "expo-notifications";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import React, { useContext, useEffect, useState, useRef, useCallback } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useState,
+  useRef,
+  useCallback,
+} from "react";
 import { AppContext } from "./store";
 import { observer } from "mobx-react-lite";
 import AlphaLoader from "./components/loader/AlphaLoader";
@@ -76,21 +90,20 @@ import { getLastsAuth, setLastsAuth } from "./storage/last.auth";
 export default AppRouter = observer(() => {
   const { newsStore } = useContext(AppContext);
 
-  const [isPaused, setIsPaused] = useState(false)
-  const [expoPushToken, setExpoPushToken] = useState('');
+  const [isPaused, setIsPaused] = useState(false);
+  const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
 
-  const [mobileNotif, setMobileNotif] = useState(null)
-
+  const [mobileNotif, setMobileNotif] = useState(null);
 
   const Stack = createNativeStackNavigator();
   const AuthStack = createBottomTabNavigator();
 
   const { user } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(true);
-  const [tokenFromStorage, setToken] = useState('')
+  const [tokenFromStorage, setToken] = useState("");
 
   const netInfo = useNetInfo();
 
@@ -138,22 +151,23 @@ export default AppRouter = observer(() => {
 
   useEffect(() => {
     if (netInfo.isConnected === false) {
-      Alert.alert('Ошибка: Internet disconnected', "Ошибка в подключении к интернету. Перезапустите мобильное приложение или проверьте интернет-соединение.")
-      setIsLoading(true)
+      Alert.alert(
+        "Ошибка: Internet disconnected",
+        "Ошибка в подключении к интернету. Перезапустите мобильное приложение или проверьте интернет-соединение."
+      );
+      setIsLoading(true);
+    } else if (netInfo.isConnected) {
+      setIsLoading(false);
     }
-    else if (netInfo.isConnected) {
-      setIsLoading(false)
-    }
-  }, [netInfo])
-
+  }, [netInfo]);
 
   useEffect(() => {
-    setIsLoading(true)
+    setIsLoading(true);
     refreshToken()
       .then(async (data) => {
         if (data?.token) {
           await AsyncStorage.setItem("token", data?.token);
-          setToken(data?.token)
+          setToken(data?.token);
           me().then((data) => {
             const obj = {
               avatar: {
@@ -187,7 +201,6 @@ export default AppRouter = observer(() => {
 
   return (
     <View style={{ width: "100%", height: "100%" }}>
-
       {/* <NotificationIndex
         data={mobileNotif}
         setData={setMobileNotif}

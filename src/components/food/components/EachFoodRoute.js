@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import { observer } from "mobx-react-lite";
-import { useState, useEffect, useContext } from "react";
 import {
   View,
   TouchableOpacity,
@@ -18,33 +17,40 @@ import {
   GREY_COLOR,
   RED_COLOR,
 } from "../../../styles/colors";
-import { calculateCaloriesToApi, getCategories, getEachProduct } from "../../../http/product";
+import {
+  calculateCaloriesToApi,
+  getCategories,
+  getEachProduct,
+} from "../../../http/product";
 import { BOLD_FONT, LIGTH_FONT, MEDIUM_FONT } from "../../../styles/fonts";
 import { Shadow } from "react-native-shadow-2";
 import { shadowOpt } from "../../loader/Loader";
 import DatePicker from "react-native-datepicker";
-import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
+import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import dayjs from "dayjs";
+import ActiveBottomSheetProduct from "./bottomsheet/activeBottomSheet";
 
 const EachFoodRoute = observer(({ navigation }) => {
   const [foodName, setFoodName] = useState([]);
   const { user } = useContext(AppContext);
 
-  const [date, setDate] = useState(new Date())
-  const [hours, setHours] = useState(null)
-  const [minutes, setMinutes] = useState(null)
-  const [grams, setGrams] = useState(0)
+  const [date, setDate] = useState(new Date());
+  const [hours, setHours] = useState(null);
+  const [minutes, setMinutes] = useState(null);
+  const [grams, setGrams] = useState(0);
+
+  const [isOpened, setIsOpened] = useState(0);
 
   const calculateCalories = async () => {
-    let dateFormat = dayjs(`${date}T${hours}:${minutes}`).format()
+    let dateFormat = dayjs(`${date}T${hours}:${minutes}`).format();
     // await calculateCaloriesToApi(user.isSelectedProduct.id, grams, dateFormat).then(data => {
     //   console.log(data)
     // })
-  }
+  };
 
   return (
     <View style={styles.main}>
-
+      {/* <ActiveBottomSheetProduct status={isOpened} setStatus={setIsOpened} /> */}
       <TouchableOpacity
         style={{
           alignItems: "flex-start",
@@ -84,7 +90,7 @@ const EachFoodRoute = observer(({ navigation }) => {
               Калорийность
             </Text>
           </View>
-          <Shadow {...shadowOpt} startColor="#F3F3F3">
+          <Shadow {...shadowOpt} startColor='#F3F3F3'>
             <View style={[styles.kcal, { backgroundColor: LIGHT_COLOR }]}>
               <Text style={{ fontFamily: MEDIUM_FONT }}>Ккал: </Text>
               <Text>{user.isSelectedProduct?.kcal}</Text>
@@ -104,7 +110,7 @@ const EachFoodRoute = observer(({ navigation }) => {
                 Состав
               </Text>
             </View>
-            <Shadow {...shadowOpt} distance={5} startColor="#F3F3F3">
+            <Shadow {...shadowOpt} distance={5} startColor='#F3F3F3'>
               <View style={[styles.container, { backgroundColor: "#F7D921" }]}>
                 <Text style={{ fontFamily: BOLD_FONT, color: LIGHT_COLOR }}>
                   Жиры
@@ -114,7 +120,7 @@ const EachFoodRoute = observer(({ navigation }) => {
                 </Text>
               </View>
             </Shadow>
-            <Shadow {...shadowOpt} distance={5} startColor="#F3F3F3">
+            <Shadow {...shadowOpt} distance={5} startColor='#F3F3F3'>
               <View style={[styles.container, { backgroundColor: "#B0CB1F" }]}>
                 <Text style={{ fontFamily: BOLD_FONT, color: LIGHT_COLOR }}>
                   Белки
@@ -124,7 +130,7 @@ const EachFoodRoute = observer(({ navigation }) => {
                 </Text>
               </View>
             </Shadow>
-            <Shadow {...shadowOpt} distance={5} startColor="#F3F3F3">
+            <Shadow {...shadowOpt} distance={5} startColor='#F3F3F3'>
               <View style={[styles.container, { backgroundColor: "#5B5B5B" }]}>
                 <Text style={{ fontFamily: BOLD_FONT, color: LIGHT_COLOR }}>
                   Углеводы
@@ -135,22 +141,100 @@ const EachFoodRoute = observer(({ navigation }) => {
               </View>
             </Shadow>
 
-            <View style={{ width: '90%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', marginTop: 10, }}>
-              <View style={{ width: '40%' }}>
-                <TextInput style={{ padding: 5, margin: 5, borderWidth: 1, borderColor: GREY_COLOR, borderRadius: 8, }} keyboardType="numeric" value={grams} onChangeText={setGrams} />
+            <View
+              style={{
+                width: "90%",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginTop: 10,
+              }}
+            >
+              <View style={{ width: "40%" }}>
+                <TextInput
+                  style={{
+                    padding: 5,
+                    margin: 5,
+                    borderWidth: 1,
+                    borderColor: GREY_COLOR,
+                    borderRadius: 8,
+                  }}
+                  keyboardType='numeric'
+                  value={grams}
+                  onChangeText={setGrams}
+                />
               </View>
-              <View style={{ width: '50%', display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                  <TextInput style={{ padding: 5, margin: 5, borderWidth: 1, borderColor: GREY_COLOR, borderRadius: 8, }} keyboardType="numeric" value={hours} onChangeText={setHours} placeholder="HH" />
+              <View
+                style={{
+                  width: "50%",
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <TextInput
+                    style={{
+                      padding: 5,
+                      margin: 5,
+                      borderWidth: 1,
+                      borderColor: GREY_COLOR,
+                      borderRadius: 8,
+                    }}
+                    keyboardType='numeric'
+                    value={hours}
+                    onChangeText={setHours}
+                    placeholder='HH'
+                  />
                   <Text>:</Text>
-                  <TextInput style={{ padding: 5, margin: 5, borderWidth: 1, borderColor: GREY_COLOR, borderRadius: 8, }} keyboardType="numeric" value={minutes} onChangeText={setMinutes} placeholder="MM" />
+                  <TextInput
+                    style={{
+                      padding: 5,
+                      margin: 5,
+                      borderWidth: 1,
+                      borderColor: GREY_COLOR,
+                      borderRadius: 8,
+                    }}
+                    keyboardType='numeric'
+                    value={minutes}
+                    onChangeText={setMinutes}
+                    placeholder='MM'
+                  />
                 </View>
 
-                <DatePicker customStyles={{ dateIcon: { opacity: 0 } }} mode="date" date={date} onDateChange={date => setDate(date)} />
+                <DatePicker
+                  customStyles={{ dateIcon: { opacity: 0 } }}
+                  mode='date'
+                  date={date}
+                  onDateChange={(date) => setDate(date)}
+                />
               </View>
             </View>
-            <TouchableOpacity onPress={() => calculateCalories()} style={{ paddingVertical: 18 / 2, paddingHorizontal: 32 / 2, backgroundColor: GREEN_COLOR, borderRadius: 8, }}>
-              <Text style={{ fontFamily: BOLD_FONT, fontSize: 16, color: LIGHT_COLOR }}>Расчитать калории</Text>
+            <TouchableOpacity
+              onPress={() => calculateCalories()}
+              style={{
+                paddingVertical: 18 / 2,
+                paddingHorizontal: 32 / 2,
+                backgroundColor: GREEN_COLOR,
+                borderRadius: 8,
+              }}
+            >
+              <Text
+                style={{
+                  fontFamily: BOLD_FONT,
+                  fontSize: 16,
+                  color: LIGHT_COLOR,
+                }}
+              >
+                Расчитать калории
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -166,7 +250,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
 
-    paddingTop: 60,
+    paddingTop: 90,
     paddingBottom: 60,
 
     alignItems: "center",
@@ -178,6 +262,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     width: 370,
     height: "100%",
+    // marginTop: "5%",
     justifyContent: "flex-start",
     // backgroundColor: "#DCDCDC",
     backgroundColor: LIGHT_COLOR,

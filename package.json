@@ -29,6 +29,7 @@
     "expo-notifications": "^0.14.1",
     "expo-permissions": "^13.1.1",
     "expo-status-bar": "~1.2.0",
+    "expo-updates": "~0.11.7",
     "mobx": "^6.3.10",
     "mobx-react-lite": "^3.2.2",
     "react": "17.0.1",
@@ -44,8 +45,10 @@
     "react-native-render-html": "^6.3.4",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.10.1",
+    "react-native-scroll-bottom-sheet": "^0.7.0",
     "react-native-shadow-2": "^6.0.0",
     "react-native-svg": "^12.3.0",
+    "react-native-swipe-gestures": "^1.0.5",
     "react-native-web": "0.17.1",
     "use-calendar-matrix": "^1.0.0",
     "websocket": "^1.0.34"

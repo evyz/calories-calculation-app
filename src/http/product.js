@@ -17,7 +17,7 @@ export const getEachProduct = async ({ count, page, cats, name }) => {
 };
 
 export const getCaloriesFromDate = async ({ date }) => {
-  const { data } = await $authHost.get("/api/date/", {
+  const { data } = await $authHost.get("/api/date", {
     date,
   });
   return data;
@@ -47,8 +47,9 @@ export const createNewProduct = async ({
 
 export const calculateCaloriesToApi = async (id, grams, date) => {
   const { data } = await $authHost.post(`/api/user-product/${id}`, {
-    date, grams
-  })
+    date,
+    grams,
+  });
 
-  return data
-}
+  return data;
+};

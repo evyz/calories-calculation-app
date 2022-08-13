@@ -17,6 +17,7 @@ import {
   LIGHT_GREEN_COLOR,
   GREEN_COLOR,
   GREY_COLOR,
+  DARK_GREY_COLOR,
 } from "../../../styles/colors";
 import { getCategories, getEachProduct } from "../../../http/product";
 import { Shadow } from "react-native-shadow-2";
@@ -24,6 +25,7 @@ import { shadowOpt } from "../../loader/Loader";
 import ApiLoader from "../../loader/ApiLoader";
 import { useRef } from "react";
 import { BOLD_FONT, LIGTH_FONT } from "../../../styles/fonts";
+import { SvgXml } from "react-native-svg";
 
 export const litleShadowOpt = {
   startColor: "#f7f7f7",
@@ -48,6 +50,14 @@ const MainFoodRoute = observer(({ navigation }) => {
   const [isOpenedFilters, setIsOpenedFilters] = useState(false);
   const isActiveFilters = useRef(new Animated.Value(1)).current;
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
+
+  const [activePage, setActivePage] = useState(1);
+
+  const xml = `<svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1 1L10.5 10.5" stroke="white" stroke-linecap="round"/>
+<path d="M10.5 1L1 10.5" stroke="white" stroke-linecap="round"/>
+</svg>
+`;
 
   useEffect(() => {
     if (isActiveFilters) {
@@ -95,7 +105,12 @@ const MainFoodRoute = observer(({ navigation }) => {
 
   const getProducts = async () => {
     setIsLoading(true);
-    await getEachProduct({ count: 40, page: 1, cats: chosed, name: value })
+    await getEachProduct({
+      count: 40,
+      page: activePage,
+      cats: chosed,
+      name: value,
+    })
       .then((data) => {
         setSearch(data.rows);
       })
@@ -114,33 +129,43 @@ const MainFoodRoute = observer(({ navigation }) => {
           <TouchableOpacity activeOpacity={1}>
             <View style={styles.categories}>
               <View style={styles.allCat}>
-                <CheckBox
-                  disabled={false}
-                  value={toggleCheckBox}
-                  onValueChange={(newValue) => setToggleCheckBox(newValue)}
-                />
-                {/* {cats.map((obj) => (
-                  <View key={obj.id}>
+                <ScrollView
+                  style={styles.catsScroll}
+                  contentContainerStyle={{
+                    display: "flex",
+                    flexDirection: "row",
+                    flexWrap: "wrap",
+                  }}
+                >
+                  {cats.map((obj) => (
                     <TouchableOpacity
                       key={obj.id}
-                      style={[styles.eachCat]}
+                      style={{
+                        width: "100%",
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                      }}
                       onPress={() => updateSelection(obj.name)}
                     >
+                      <View key={obj.id} style={[styles.eachCat]}>
+                        {chosed.find((item) => item === obj.name) !==
+                          undefined && (
+                          <SvgXml xml={xml} width={"70%"} height={"70%"} />
+                        )}
+                      </View>
+
                       <Text
                         style={{
                           fontSize: 14,
-                          color:
-                            chosed.find((item) => item === obj.name) !==
-                              undefined
-                              ? "red"
-                              : "black",
+                          color: DARK_GREY_COLOR,
                         }}
                       >
                         {obj.name}
                       </Text>
                     </TouchableOpacity>
-                  </View>
-                ))} */}
+                  ))}
+                </ScrollView>
               </View>
             </View>
           </TouchableOpacity>
@@ -148,10 +173,10 @@ const MainFoodRoute = observer(({ navigation }) => {
       )}
 
       <View style={styles.outerInput}>
-        <Shadow {...litleShadowOpt} startColor="#f5f5f5">
+        <Shadow {...litleShadowOpt} startColor='#f5f5f5'>
           <View style={styles.search}>
             <TextInput
-              placeholder="Поиск"
+              placeholder='Поиск'
               value={value}
               onChangeText={setValue}
             />
@@ -164,7 +189,7 @@ const MainFoodRoute = observer(({ navigation }) => {
             </TouchableOpacity>
           </View>
         </Shadow>
-        <Shadow {...litleShadowOpt} distance={5} startColor="#f0f0f0">
+        <Shadow {...litleShadowOpt} distance={5} startColor='#f0f0f0'>
           <View style={styles.filterButton}>
             <TouchableOpacity
               onPress={() => setIsOpenedFilters(true)}
@@ -195,7 +220,7 @@ const MainFoodRoute = observer(({ navigation }) => {
                   key={obj.id}
                   {...litleShadowOpt}
                   distance={0}
-                  startColor="rgba(0,0,0,0)"
+                  startColor='rgba(0,0,0,0)'
                 >
                   <View style={{ width: "40%" }}>
                     <Text>{obj.name}</Text>
@@ -238,7 +263,7 @@ const MainFoodRoute = observer(({ navigation }) => {
             <Shadow
               {...litleShadowOpt}
               distance={0}
-              startColor="rgba(0,0,0,0)"
+              startColor='rgba(0,0,0,0)'
               viewStyle={[
                 styles.searchFood,
                 { justifyContent: "center", marginVertical: 10, width: 350 },
@@ -352,25 +377,29 @@ const styles = StyleSheet.create({
   },
   eachCat: {
     display: "flex",
-    width: 75,
-    height: 60,
+    width: 20,
+    height: 20,
     margin: 10,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: GREEN_COLOR,
-    borderRadius: 30,
+    borderRadius: 3,
   },
   allCat: {
     display: "flex",
     width: "90%",
     height: 300,
     marginLeft: 7,
-    flexDirection: "row",
+    flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
     flexWrap: "wrap",
     paddingLeft: 20,
+  },
+  catsScroll: {
+    width: "100%",
+    height: "100%",
   },
   categories: {
     // marginTop: 40,

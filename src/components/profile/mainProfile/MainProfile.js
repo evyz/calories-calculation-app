@@ -8,7 +8,7 @@ import {
   Alert,
   TouchableOpacity,
   Touchable,
-  Image
+  Image,
 } from "react-native";
 import { Shadow } from "react-native-shadow-2";
 import { AppContext } from "../../../store";
@@ -26,97 +26,146 @@ import { url } from "../../../http";
 import { TextComponent } from "../../Functional/Text/TextComponent";
 import { BOLD_FONT, LIGTH_FONT } from "../../../styles/fonts";
 import { getRole } from "../../../utils/roles";
+import ActiveSheet from "./components/activeSheet";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const MainProfileComponent = observer(({ navigation }) => {
   const { user } = useContext(AppContext);
 
-  const [email, setEmail] = useState("")
+  const [email, setEmail] = useState("");
   // ЗАДАЧА: Сверстать по макету профиль здесь.
   //          Ссылка - https://www.figma.com/file/vdoWbzCxWCbAnRcUBaNmJS/LZ-calories-(MAIN)?node-id=0%3A1
   //          Стили разрабатывать ниже в styles
 
   const [isBanner, setIsBanner] = useState(true);
-  const [isAvatar, setIsAvatar] = useState(false)
+  const [isAvatar, setIsAvatar] = useState(false);
 
   useEffect(() => {
-    setEmail(user.profile.profile.email)
-  }, [])
+    setEmail(user.profile.profile.email);
+  }, []);
 
   return (
-    <View
-      style={{
-        ...containerStyles.container,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
+    <GestureHandlerRootView>
+      <View
+        style={{
+          ...containerStyles.container,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <ActiveSheet isActive={isAvatar} setIsActive={setIsAvatar} />
 
-      {isAvatar && <Avatar isActive={isAvatar} setIsActive={setIsAvatar} user={user.profile} setUser={user.setProfile} />}
-
-      {isBanner && (
-        <TouchableOpacity
-          style={styles.notif}
-          onPress={() => setIsBanner(false)}
-        >
-          <View style={styles.warn}>
-            <Text style={styles.warnText}>!</Text>
-          </View>
-          <Text style={styles.notifText}>Оцените наш видеоролик о проекте</Text>
-          <TouchableOpacity
-            style={styles.ico}
-            onPress={() => Alert.alert("Данная функция временно не робит(")}
-          ></TouchableOpacity>
-        </TouchableOpacity>
-      )}
-
-      <Shadow {...shadowOpt}>
-        <View style={styles.block}>
-
-          <TouchableOpacity onPress={() => navigation.navigate('settings')} style={{ width: 40, height: 40, position: 'absolute', right: 10, top: 10 }}>
-            <Image source={require('../../../assets/icos/settings.png')} style={{ width: 40, height: 40 }} />
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => setIsAvatar(true)} style={styles.avatar}>
-            <View style={[styles.innerAvatar, { backgroundColor: user.profile?.avatar?.color }]}>
-              <SvgUri width={140} height={140} uri={url + user.profile?.avatar?.ico?.path} />
-            </View>
-          </TouchableOpacity>
-
-          <TextComponent
-            text={user.profile.profile.name ? user.profile.profile.name : "Никнейм"}
-            bold={BOLD_FONT}
-            size={18}
+        {/* {isAvatar && (
+          <Avatar
+            isActive={isAvatar}
+            setIsActive={setIsAvatar}
+            user={user.profile}
+            setUser={user.setProfile}
           />
-          <Text>
-            <TextComponent size={14} text={"Ваш статус:"} />
-            <TextComponent size={14} bold={LIGTH_FONT} text={getRole(user.profile.role, 'ru')} />
-          </Text>
+        )} */}
 
-          <View style={styles.emailView}>
-            <Shadow {...shadowOpt} startColor="#F3F3F3">
-              <TextInput value={email} style={styles.emailInput} placeholder="Ваша почта" />
-            </Shadow>
-          </View>
+        {isBanner && (
+          <TouchableOpacity
+            style={styles.notif}
+            onPress={() => setIsBanner(false)}
+          >
+            <View style={styles.warn}>
+              <Text style={styles.warnText}>!</Text>
+            </View>
+            <Text style={styles.notifText}>
+              Оцените наш видеоролик о проекте
+            </Text>
+            <TouchableOpacity
+              style={styles.ico}
+              onPress={() => Alert.alert("Данная функция временно не робит(")}
+            ></TouchableOpacity>
+          </TouchableOpacity>
+        )}
 
-          <View style={styles.options}>
-            {/* <TouchableOpacity onPress={() => navigation.navigate('settings')}>
+        <Shadow {...shadowOpt}>
+          <View style={styles.block}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("settings")}
+              style={{
+                width: 40,
+                height: 40,
+                position: "absolute",
+                right: 10,
+                top: 10,
+              }}
+            >
+              <Image
+                source={require("../../../assets/icos/settings.png")}
+                style={{ width: 40, height: 40 }}
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => setIsAvatar(true)}
+              style={styles.avatar}
+            >
+              <View
+                style={[
+                  styles.innerAvatar,
+                  { backgroundColor: user.profile?.avatar?.color },
+                ]}
+              >
+                <SvgUri
+                  width={140}
+                  height={140}
+                  uri={url + user.profile?.avatar?.ico?.path}
+                />
+              </View>
+            </TouchableOpacity>
+
+            <TextComponent
+              text={
+                user.profile.profile.name
+                  ? user.profile.profile.name
+                  : "Никнейм"
+              }
+              bold={BOLD_FONT}
+              size={18}
+            />
+            <Text>
+              <TextComponent size={14} text={"Ваш статус:"} />
+              <TextComponent
+                size={14}
+                bold={LIGTH_FONT}
+                text={getRole(user.profile.role, "ru")}
+              />
+            </Text>
+
+            <View style={styles.emailView}>
+              <Shadow {...shadowOpt} startColor='#F3F3F3'>
+                <TextInput
+                  value={email}
+                  style={styles.emailInput}
+                  placeholder='Ваша почта'
+                />
+              </Shadow>
+            </View>
+
+            <View style={styles.options}>
+              {/* <TouchableOpacity onPress={() => navigation.navigate('settings')}>
               <Text>Настройки</Text>
             </TouchableOpacity> */}
-          </View>
-
-          {user.profile.role === 'admin' &&
-            <View>
-              <TouchableOpacity onPress={() => navigation.navigate('admin')}>
-                <Text>Admin man</Text>
-              </TouchableOpacity>
             </View>
-          }
 
-          <Buttons />
-        </View>
-      </Shadow>
-    </View>
+            {user.profile.role === "admin" && (
+              <View>
+                <TouchableOpacity onPress={() => navigation.navigate("admin")}>
+                  <Text>Admin man</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+
+            <Buttons />
+          </View>
+        </Shadow>
+      </View>
+    </GestureHandlerRootView>
   );
 });
 
@@ -171,23 +220,23 @@ const styles = StyleSheet.create({
   },
 
   options: {
-    width: '90%',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    width: "90%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
 
   innerAvatar: {
-    width: '90%',
-    height: '90%',
+    width: "90%",
+    height: "90%",
 
     borderRadius: 100,
     padding: 10,
 
-    overflow: 'hidden',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    overflow: "hidden",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   notif: {

@@ -1,24 +1,23 @@
 import axios from "axios";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const url = 'https://lzcalories.ru'
+export const url = "https://lzcalories.ru";
 
 const $host = axios.create({
-  baseURL: url
-})
+  baseURL: url,
+});
 
 const $authHost = axios.create({
-  baseURL: url
-})
+  baseURL: url,
+});
 
-const authInterceptor = async config => {
-  config.headers.authorization = `Bearer ${await AsyncStorage.getItem('token')}`
-  return config
-}
+const authInterceptor = async (config) => {
+  config.headers.authorization = `Bearer ${await AsyncStorage.getItem(
+    "token"
+  )}`;
+  return config;
+};
 
-$authHost.interceptors.request.use(authInterceptor)
+$authHost.interceptors.request.use(authInterceptor);
 
-export {
-  $host,
-  $authHost
-}
+export { $host, $authHost };
