@@ -1,6 +1,6 @@
 import { he } from "date-fns/locale";
 import React, { useEffect } from "react";
-import { Dimensions, StyleSheet, View } from "react-native";
+import { Dimensions, StyleSheet, TouchableOpacity, View } from "react-native";
 import {
   Gesture,
   GestureDetector,
@@ -13,7 +13,12 @@ import Animated, {
   withSpring,
   withTiming,
 } from "react-native-reanimated";
-import { GREEN_COLOR, LIGHT_COLOR } from "../../../../styles/colors";
+import {
+  DARK_GREY_COLOR,
+  GREEN_COLOR,
+  GREY_COLOR,
+  LIGHT_COLOR,
+} from "../../../../styles/colors";
 import Avatar from "./Avatar";
 
 const ActiveSheet = ({ isActive, setIsActive }) => {
@@ -150,6 +155,17 @@ const ActiveSheet = ({ isActive, setIsActive }) => {
           <View style={{ width: "100%", height: "100%", overflow: "hidden" }}>
             <Avatar isActive={isActive} setIsActive={setIsActive} />
           </View>
+          <TouchableOpacity
+            style={{
+              width: "80%",
+              height: 5,
+              borderRadius: 10,
+              backgroundColor: DARK_GREY_COLOR,
+              position: "absolute",
+              bottom: 20,
+            }}
+            onPress={() => setIsActive(!isActive)}
+          ></TouchableOpacity>
         </Animated.View>
         <Animated.View
           style={[
@@ -177,6 +193,9 @@ const styles = StyleSheet.create({
     left: 0,
 
     zIndex: 10,
+
+    display: "flex",
+    alignItems: "center",
 
     borderBottomEndRadius: 25,
     borderBottomLeftRadius: 25,
