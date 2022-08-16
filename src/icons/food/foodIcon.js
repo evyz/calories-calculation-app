@@ -13,7 +13,7 @@ const FoodIcon = ({ focused }) => {
     >
       {focused ? (
         <Svg
-          width="34"
+          width="28"
           height="25"
           viewBox="0 0 34 25"
           fill="none"
@@ -34,7 +34,7 @@ const FoodIcon = ({ focused }) => {
         </Svg>
       ) : (
         <Svg
-          width="34"
+          width="28"
           height="25"
           viewBox="0 0 34 25"
           fill="none"

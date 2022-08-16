@@ -13,7 +13,7 @@ const ProfileIcon = ({ focused }) => {
     >
       {focused ? (
         <Svg
-          width="32"
+          width="25"
           height="35"
           viewBox="0 0 32 35"
           fill="none"
@@ -30,7 +30,7 @@ const ProfileIcon = ({ focused }) => {
         </Svg>
       ) : (
         <Svg
-          width="32"
+          width="25"
           height="35"
           viewBox="0 0 32 35"
           fill="none"
