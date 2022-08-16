@@ -12,6 +12,8 @@ import { LoaderComponent } from "./components/loader/Loader";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNetInfo } from "@react-native-community/netinfo";
 
+import AppLoading from "expo-app-loading";
+
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 
@@ -207,13 +209,12 @@ export default AppRouter = observer(() => {
       .finally(() => setIsLoading(false));
   }, [user]);
 
+  if (isLoading) {
+    return <AppLoading />;
+  }
+
   return (
     <View style={{ width: "100%", height: "100%" }}>
-      {/* <NotificationIndex
-        data={mobileNotif}
-        setData={setMobileNotif}
-      /> */}
-
       {user.isLoading && <AlphaLoader />}
       {isLoading && <AlphaLoader />}
 
@@ -224,7 +225,7 @@ export default AppRouter = observer(() => {
               <AuthStack.Screen
                 options={{
                   tabBarStyle: {
-                    height: i.name !== "page" && 75,
+                    height: i.name !== "page" && 60,
                   },
                   headerShown: false,
                   headerTitle: null,
