@@ -76,11 +76,16 @@ const MainFoodRoute = observer(({ navigation }) => {
   }, [isOpenedFilters]);
 
   useEffect(() => {
-    getCategories()
-      .then((data) => {
-        setCats(data.rows);
-      })
-      .finally(() => setIsLoading(false));
+    if (!user.categories.length) {
+      getCategories()
+        .then((data) => {
+          setCats(data.rows);
+        })
+        .finally(() => setIsLoading(false));
+    } else {
+      setIsLoading(false);
+      setCats(user.categories);
+    }
   }, []);
 
   const updateSelection = (name) => {
@@ -208,6 +213,7 @@ const MainFoodRoute = observer(({ navigation }) => {
               width: "100%",
               alignItems: "center",
               display: "flex",
+              marginBottom: 100,
             }}
           >
             {search &&
@@ -222,6 +228,7 @@ const MainFoodRoute = observer(({ navigation }) => {
                   distance={0}
                   startColor='rgba(0,0,0,0)'
                 >
+                  {/* <View style={[styles.foodRow]}> */}
                   <View style={{ width: "40%" }}>
                     <Text>{obj.name}</Text>
                   </View>
@@ -258,6 +265,7 @@ const MainFoodRoute = observer(({ navigation }) => {
                       {obj?.kcal}ккал {`(${obj?.grams} гр.)`}
                     </Text>
                   </TouchableOpacity>
+                  {/* </View> */}
                 </Shadow>
               ))}
             <Shadow
@@ -266,7 +274,12 @@ const MainFoodRoute = observer(({ navigation }) => {
               startColor='rgba(0,0,0,0)'
               viewStyle={[
                 styles.searchFood,
-                { justifyContent: "center", marginVertical: 10, width: 350 },
+                {
+                  justifyContent: "center",
+                  marginVertical: 10,
+                  width: 350,
+                  marginBottom: 50,
+                },
               ]}
             >
               <Text>Не нашли нужный продукт?</Text>
@@ -284,6 +297,38 @@ const MainFoodRoute = observer(({ navigation }) => {
                 </Text>
               </TouchableOpacity>
             </Shadow>
+            <TouchableOpacity>
+              <Text>A</Text>
+            </TouchableOpacity>
+            {/* <Shadow
+              {...litleShadowOpt}
+              distance={0}
+              startColor='rgba(0,0,0,0)'
+              viewStyle={[
+                styles.searchFood,
+                {
+                  justifyContent: "center",
+                  marginVertical: 10,
+                  width: 350,
+                  marginBottom: 50,
+                },
+              ]}
+            >
+              <Text>Не нашли нужный продукт?</Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("NewFoodRoute")}
+              >
+                <Text
+                  style={{
+                    color: GREEN_COLOR,
+                    textDecorationColor: GREEN_COLOR,
+                    textDecorationLine: "underline",
+                  }}
+                >
+                  Добавьте его.
+                </Text>
+              </TouchableOpacity>
+            </Shadow> */}
           </View>
           <View
             style={{ display: "flex", alignItems: "center", width: "100%" }}
@@ -328,6 +373,7 @@ const styles = StyleSheet.create({
   scroll: {
     width: "100%",
     height: "100%",
+
     paddingTop: 20,
 
     // alignItems: "center",

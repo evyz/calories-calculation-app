@@ -1,6 +1,10 @@
 import { $authHost } from ".";
-export const getCategories = async () => {
-  const { data } = await $authHost.get("api/category");
+export const getCategories = async ({ page, count }) => {
+  page = page || 1;
+  count = count || 20;
+  const { data } = await $authHost.get(
+    `api/category?page=${page}&count=${count}`
+  );
   return data;
 };
 export const getEachProduct = async ({ count, page, cats, name }) => {
