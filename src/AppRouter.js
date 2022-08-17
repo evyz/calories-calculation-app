@@ -170,60 +170,58 @@ export default AppRouter = observer(() => {
 
   useEffect(() => {
     setIsLoading(true);
-    refreshToken()
-      .then(async (data) => {
-        if (data?.token) {
-          await AsyncStorage.setItem("token", data?.token);
-          setToken(data?.token);
-          me().then((data) => {
-            const obj = {
-              avatar: {
-                color: data["Avatars_Back"]?.color,
-                ico: data["Avatars_Ico"],
-              },
-              role: data["Role"]?.name,
-              profile: {
-                createdAt: data?.createdAt,
-                email: data?.email,
-                id: data?.id,
-                name: data?.name,
-              },
-            };
-            user.setProfile(obj);
-            getNews()
-              .then((data) => {
-                newsStore.setNews(data?.rows);
-                newsStore.setCount(data?.count);
-                getCaloriesFromDate({ date: dayjs().format() })
-                  .then((data) => {
-                    user.setTodayCalories(data);
-                  })
-                  .then((data) => {
-                    getCategories({ page: 1, count: 20 }).then((data) => {
-                      user.setCategories(data.rows);
-                    });
-                  });
-              })
-              .finally(() => setIsLoading(false));
-          });
+    refreshToken().then(async (data) => {
+      if (data?.token) {
+        await AsyncStorage.setItem("token", data?.token);
+        setToken(data?.token);
+        me().then((data) => {
+          const obj = {
+            avatar: {
+              color: data["Avatars_Back"]?.color,
+              ico: data["Avatars_Ico"],
+            },
+            role: data["Role"]?.name,
+            profile: {
+              createdAt: data?.createdAt,
+              email: data?.email,
+              id: data?.id,
+              name: data?.name,
+            },
+          };
           user.setIsAuth(true);
+          user.setProfile(obj);
+          getNews().then((data) => {
+            newsStore.setNews(data?.rows);
+            newsStore.setCount(data?.count);
+            getCaloriesFromDate({ date: dayjs().format() })
+              .then((data) => {
+                user.setTodayCalories(data);
+              })
+              .then((data) => {
+                getCategories({ page: 1, count: 20 }).then((data) => {
+                  user.setCategories(data.rows);
+                });
+              })
+              .then(() => {
+                setIsLoading(false);
+              });
+          });
+        });
 
-          return;
-        }
-        return user.setIsAuth(false);
-      })
-      .finally(() => setIsLoading(false));
+        return;
+      }
+      setIsLoading(false);
+      return user.setIsAuth(false);
+    });
+    // .finally(() => setIsLoading(false));
   }, [user]);
 
-  if (isLoading) {
+  if (isLoading || user.isLoading) {
     return <AppLoading />;
   }
 
   return (
     <View style={{ width: "100%", height: "100%" }}>
-      {user.isLoading && <AlphaLoader />}
-      {isLoading && <AlphaLoader />}
-
       <NavigationContainer>
         {user.isAuth ? (
           <AuthStack.Navigator>
