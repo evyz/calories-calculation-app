@@ -297,9 +297,6 @@ const MainFoodRoute = observer(({ navigation }) => {
                 </Text>
               </TouchableOpacity>
             </Shadow>
-            <TouchableOpacity>
-              <Text>A</Text>
-            </TouchableOpacity>
             {/* <Shadow
               {...litleShadowOpt}
               distance={0}
