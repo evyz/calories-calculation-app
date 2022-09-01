@@ -168,6 +168,7 @@ const MainProfileComponent = observer(({ navigation }) => {
             ]}
           >
             <TouchableOpacity
+              onPress={() => navigation.navigate("settings")}
               style={{
                 width: 170,
                 height: 200,
@@ -357,11 +358,11 @@ const MainProfileComponent = observer(({ navigation }) => {
             </Text>
 
             <View style={styles.emailView}>
-              <Shadow {...shadowOpt} startColor='#F3F3F3'>
+              <Shadow {...shadowOpt} startColor="#F3F3F3">
                 <TextInput
                   value={email}
                   style={styles.emailInput}
-                  placeholder='Ваша почта'
+                  placeholder="Ваша почта"
                 />
               </Shadow>
             </View>
