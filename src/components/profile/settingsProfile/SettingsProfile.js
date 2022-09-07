@@ -10,6 +10,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import ArrowLeft from "../../Arrows/ArrowLeft";
 import {
   DARK_GREY_COLOR,
+  GREEN_COLOR,
   GREY_COLOR,
   LIGHT_COLOR,
 } from "../../../styles/colors";
@@ -20,7 +21,7 @@ import { shadowOpt } from "../../loader/Loader";
 // import {LIGHT_COLOR} from '../../'
 
 const SettingsProfileComponent = ({ navigation }) => {
-  const settings = [{ id: "password", component: <PasswordSetting /> }];
+  // const settings = [{ id: "password", component: <PasswordSetting /> }];
 
   return (
     <View style={styles.main}>
@@ -44,17 +45,31 @@ const SettingsProfileComponent = ({ navigation }) => {
               Редактируйте своё имя, почту, пароль и аватар аккаунта{" "}
             </Text>
           </View>
-          <View style={styles.avatar}></View>
+          {/* <View style={styles.avatar}></View> */}
 
           <View style={{ width: "100%" }}>
-            <PasswordSetting />
+            <View style={styles.navToSet}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("changePassword")}
+              >
+                <Text>Сменить пароль</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.navToSet}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("changeName")}
+              >
+                <Text>Имя пользователя</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-          <Button
+          {/* <Button
             title="Сбросить параметры"
             onPress={async () => {
               await AsyncStorage.setItem("isWellcome", "true");
             }}
-          />
+          /> */}
         </ScrollView>
       </View>
     </View>
@@ -70,6 +85,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     // backgroundColor: LIGHT_COLOR,
+  },
+  navToSet: {
+    display: "flex",
+    width: "30%",
+    height: "30%",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: GREEN_COLOR,
+    marginTop: 40,
   },
   avatar: {
     width: "60%",
@@ -119,6 +143,7 @@ const styles = StyleSheet.create({
   },
   settings: {
     width: "90%",
+    backgroundColor: "red",
     display: "flex",
   },
 });
