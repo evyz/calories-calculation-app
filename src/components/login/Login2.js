@@ -28,11 +28,12 @@ import { setLastsAuth } from "../../storage/last.auth";
 let symbols = /[0-9a-zA-Z!@#$%^&*]{6,}/g;
 
 export default LoginComponent = observer(({ navigation }) => {
+  const { user } = useContext(AppContext);
+
   const [value, setValue] = useState("");
   const [value1, setValue1] = useState("");
   const [isRemember, setIsRemember] = useState(false);
   const [security, setSecurity] = useState(true);
-  const { user } = useContext(AppContext);
   const [password, setPassword] = useState("");
   const [passwordDirty, setPasswordDirty] = useState(false);
   const [passwordError, setPasswordError] = useState(
@@ -121,6 +122,12 @@ export default LoginComponent = observer(({ navigation }) => {
     }
   };
 
+  useEffect(() => {
+    if (user.authInput) {
+      setValue(user.authInput);
+    }
+  }, [user.authInput]);
+
   return (
     <View style={styles.main}>
       {isLoading && <ApiLoader focused={isLoading} />}
@@ -144,10 +151,10 @@ export default LoginComponent = observer(({ navigation }) => {
           onEndEditing={(e) => blurHandlerMail(e)}
           onChangeText={setValue}
           value={value}
-          placeholder="Почта"
+          placeholder='Почта'
           autoCorrect={false}
           autoCapitalize={"none"}
-          keyboardType="default"
+          keyboardType='default'
           style={styles.innerInput}
         />
       </View>
@@ -169,10 +176,10 @@ export default LoginComponent = observer(({ navigation }) => {
           value={value1}
           onChangeText={setValue1}
           secureTextEntry={isSecurity}
-          placeholder="Пароль"
+          placeholder='Пароль'
           autoCorrect={false}
           autoCapitalize={"none"}
-          keyboardType="default"
+          keyboardType='default'
           style={[styles.innerInput]}
         />
         <TouchableOpacity

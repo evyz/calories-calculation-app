@@ -23,8 +23,6 @@ export const getEachProduct = async ({ count, page, cats, name }) => {
 
 export const getCaloriesFromDate = async ({ date, type }) => {
   date = dayjs(date).format("YYYY-MM-DDThh:mm:ss") || dayjs().format();
-  console.log("beforesend", date);
-
   const { data } = await $authHost.get("/api/date" + "?" + "date=" + date, {
     date: dayjs(date).format(),
   });

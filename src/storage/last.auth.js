@@ -29,3 +29,7 @@ export const setLastsAuth = async (value) => {
 
   console.log(await getLastsAuth());
 };
+
+export const getAuths = async () => {
+  return await AsyncStorage.getItem("calories@auth_users");
+};

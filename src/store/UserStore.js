@@ -20,6 +20,7 @@ export default class UserStore {
     this._todayCalories = {};
     this._isSelectedProduct = {};
     this._categories = [];
+    this._authInput = null;
     makeAutoObservable(this);
   }
 
@@ -45,6 +46,10 @@ export default class UserStore {
     this._categories = arr;
   }
 
+  setAuthInput(str) {
+    this._authInput = str;
+  }
+
   get isAuth() {
     return this._isAuth;
   }
@@ -66,5 +71,9 @@ export default class UserStore {
 
   get categories() {
     return this._categories;
+  }
+
+  get authInput() {
+    return this._authInput;
   }
 }

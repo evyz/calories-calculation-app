@@ -5,6 +5,7 @@ import { GREEN_COLOR, GREY_COLOR, LIGHT_COLOR } from "../../styles/colors";
 import { BOLD_FONT, MEDIUM_FONT } from "../../styles/fonts";
 
 import { getLastsAuth } from "../../storage/last.auth";
+import LastAuth from "./lastAuth";
 
 export default TitleComponent = ({ navigation }) => {
   const [isLoginAlert, setIsLoginAlert] = useState(false);
@@ -74,7 +75,9 @@ export default TitleComponent = ({ navigation }) => {
             </Text>
           </View>
         </View>
+        <LastAuth navigation={navigation} />
       </View>
+
       <View style={styles.positionObjs}>
         <View style={styles.buttons}>
           <TouchableOpacity

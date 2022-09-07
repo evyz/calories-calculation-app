@@ -33,7 +33,7 @@ import { observer } from "mobx-react-lite";
 import AlphaLoader from "./components/loader/AlphaLoader";
 import { me, refreshToken } from "./http/user";
 import { getNews } from "./http/news";
-import { getLastsAuth, setLastsAuth } from "./storage/last.auth";
+import { getAuths, getLastsAuth, setLastsAuth } from "./storage/last.auth";
 import { getCaloriesFromDate, getCategories } from "./http/product";
 import dayjs from "dayjs";
 import "dayjs/locale/ru";
@@ -181,51 +181,78 @@ export default AppRouter = observer(() => {
 
   useEffect(() => {
     setIsLoading(true);
-    refreshToken().then(async (data) => {
-      if (data?.token) {
-        await AsyncStorage.setItem("token", data?.token);
-        setToken(data?.token);
-        me().then((data) => {
-          const obj = {
-            avatar: {
-              color: data["Avatars_Back"]?.color,
-              ico: data["Avatars_Ico"],
-            },
-            role: data["Role"]?.name,
-            profile: {
-              createdAt: data?.createdAt,
-              email: data?.email,
-              id: data?.id,
-              name: data?.name,
-            },
-          };
-          user.setIsAuth(true);
-          user.setProfile(obj);
-          getNews().then((data) => {
-            newsStore.setNews(data?.rows);
-            newsStore.setCount(data?.count);
-            getCaloriesFromDate({ date: dayjs().format() })
-              .then((data) => {
-                user.setTodayCalories(data);
-              })
-              .then((data) => {
+    AsyncStorage.getItem("token").then((data) => {
+      if (data) {
+        refreshToken().then(async (data) => {
+          if (data?.token) {
+            console.log(1);
+            await AsyncStorage.setItem("token", data?.token);
+            setToken(data?.token);
+            me().then(async (data) => {
+              console.log(2);
+
+              const obj = {
+                avatar: {
+                  color: data["Avatars_Back"]?.color,
+                  ico: data["Avatars_Ico"],
+                },
+                role: data["Role"]?.name,
+                profile: {
+                  createdAt: data?.createdAt,
+                  email: data?.email,
+                  id: data?.id,
+                  name: data?.name,
+                },
+              };
+
+              await AsyncStorage.setItem(
+                "calories@auth_users",
+                JSON.stringify({
+                  name: obj?.profile?.name,
+                  email: obj?.profile?.email,
+                  avatar: obj?.avatar,
+                })
+              );
+
+              user.setIsAuth(true);
+              user.setProfile(obj);
+              getNews().then((data) => {
+                console.log(3);
+
+                newsStore.setNews(data?.rows);
+                newsStore.setCount(data?.count);
                 getCategories({ page: 1, count: 20 }).then((data) => {
+                  console.log(5);
+
                   user.setCategories(data.rows);
                 });
-              })
-              .then(() => {
-                setIsLoading(false);
-              });
-          });
-        });
+                // getCaloriesFromDate({ date: dayjs().format() })
+                //   .then((data) => {
+                //     console.log(4);
 
-        return;
+                //     user.setTodayCalories(data);
+                //   })
+                //   .then((data) => {
+
+                //   })
+                //   .then(() => {
+                //     setIsLoading(false);
+                //   });
+              });
+            });
+
+            return setIsLoading(false);
+          }
+          setIsLoading(false);
+          return user.setIsAuth(false);
+        });
+      } else {
+        setIsLoading(false);
       }
-      setIsLoading(false);
-      return user.setIsAuth(false);
     });
+
     // .finally(() => setIsLoading(false));
-  }, [user]);
+  }, []);
 
   if (isLoading || user.isLoading) {
     return <AppLoading />;
