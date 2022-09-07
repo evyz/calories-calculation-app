@@ -37,6 +37,8 @@ import { getLastsAuth, setLastsAuth } from "./storage/last.auth";
 import { getCaloriesFromDate, getCategories } from "./http/product";
 import dayjs from "dayjs";
 import "dayjs/locale/ru";
+import { iconsContent } from "./utils/header/food/foodIconsContent";
+import { LIGHT_COLOR } from "./styles/colors";
 dayjs.locale("ru");
 
 // import NotificationIndex from "./components/Notifications";
@@ -156,6 +158,15 @@ export default AppRouter = observer(() => {
   //   };
   // }, []);
 
+  function randomInteger(min, max) {
+    let rand = min + Math.random() * (max - min);
+    return Math.round(rand);
+  }
+
+  const foods = ["cheeze", "cherry", "bread", "cake", "pizza"];
+
+  const foodName = foods[randomInteger(0, foods.length - 1)];
+
   useEffect(() => {
     if (netInfo.isConnected === false) {
       Alert.alert(
@@ -230,12 +241,17 @@ export default AppRouter = observer(() => {
                 options={{
                   tabBarStyle: {
                     height: i.name !== "page" && 60,
+                    borderTopLeftRadius: 25,
+                    borderTopRightRadius: 25,
+                    overflow: "hidden",
                   },
                   headerShown: false,
                   headerTitle: null,
 
                   tabBarIcon: ({ focused }) =>
-                    i.name !== "page" && <i.icon focused={focused} />,
+                    i.name !== "page" && (
+                      <i.icon focused={focused} name={foodName} />
+                    ),
                   tabBarLabel: () => {
                     return null;
                   },

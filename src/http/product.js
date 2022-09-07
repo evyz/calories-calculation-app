@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { $authHost } from ".";
 export const getCategories = async ({ page, count }) => {
   page = page || 1;
@@ -20,9 +21,12 @@ export const getEachProduct = async ({ count, page, cats, name }) => {
   return result.data;
 };
 
-export const getCaloriesFromDate = async ({ date }) => {
-  const { data } = await $authHost.get("/api/date", {
-    date,
+export const getCaloriesFromDate = async ({ date, type }) => {
+  date = dayjs(date).format("YYYY-MM-DDThh:mm:ss") || dayjs().format();
+  console.log("beforesend", date);
+
+  const { data } = await $authHost.get("/api/date" + "?" + "date=" + date, {
+    date: dayjs(date).format(),
   });
   return data;
 };

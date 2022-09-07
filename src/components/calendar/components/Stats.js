@@ -74,6 +74,10 @@ const Stats = ({ selectedDate, setSelectedDate }) => {
   // ];
 
   useEffect(() => {
+    console.log(selectedDate);
+    if (!selectedDate) {
+      setSelectedDate(dayjs().format());
+    }
     getCaloriesFromDate({ date: selectedDate }).then((data) => {
       setData(data);
       console.log(data);

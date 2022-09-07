@@ -1,13 +1,21 @@
-import React from "react";
-import { Text, TouchableOpacity, View, ScrollView, TextInput, StyleSheet, Animated } from "react-native";
+import React, { useContext } from "react";
+import {
+  Text,
+  TouchableOpacity,
+  View,
+  ScrollView,
+  TextInput,
+  StyleSheet,
+  Animated,
+} from "react-native";
 import { BOLD_FONT, LIGTH_FONT, MEDIUM_FONT } from "../../../../styles/fonts";
 import { observer } from "mobx-react-lite";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { createNewProduct, getCategories } from "../../../../http/product";
 
 import { GREEN_COLOR, LIGHT_COLOR } from "../../../../styles/colors";
-import MainFoodRoute from "../MainFoodRoute";
 import ApiLoader from "../../../loader/ApiLoader";
+import { AppContext } from "../../../../store";
 // import { getCategories, getEachProduct } from "../../../../http/product";
 // import { Shadow } from "react-native-shadow-2";
 // import { shadowOpt } from "../../../loader/Loader";
@@ -15,10 +23,12 @@ import ApiLoader from "../../../loader/ApiLoader";
 // import { useRef } from "react";
 // import { Colors } from "react-native/Libraries/NewAppScreen";
 
-const NewFood = ({ navigation }) => {
+const NewFood = observer(({ navigation }) => {
   const NewProdCats = async () => {
     setGetCategoryOf(true);
   };
+
+  const { user } = useContext(AppContext);
 
   const [getCategoryOf, setGetCategoryOf] = useState(false);
   const [categoryList, setCaregoryList] = useState([]);
@@ -37,10 +47,13 @@ const NewFood = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    getCategories().then((data) => {
-      console.log(data);
-      setCaregoryList(data.rows);
-    });
+    if (user.categories) {
+      setCaregoryList(user.categories);
+    } else {
+      getCategories({ page: 1, count: 40 }).then((data) => {
+        setCaregoryList(data.rows);
+      });
+    }
   }, []);
 
   useEffect(() => {
@@ -65,10 +78,9 @@ const NewFood = ({ navigation }) => {
   }, [typed, name, ccal, belk, jiry, ugl]);
 
   const CheckOut = async () => {
-
     if (!/^\d+$/.test(ccal)) {
-      alert('Калории должны быть указаны строго целым числом')
-      return setInputError3(true)
+      alert("Калории должны быть указаны строго целым числом");
+      return setInputError3(true);
     }
 
     if (typed.length === 0) {
@@ -90,6 +102,8 @@ const NewFood = ({ navigation }) => {
       return setInputError6(true);
     }
     setIsLoading(true);
+    setIsLoading(false);
+    return null;
     await createNewProduct({
       name,
       category: typed,
@@ -224,7 +238,6 @@ const NewFood = ({ navigation }) => {
       )}
       <ScrollView>
         {isLoading && <ApiLoader />}
-
 
         <TouchableOpacity
           style={{ paddingTop: 30 }}
@@ -415,7 +428,7 @@ const NewFood = ({ navigation }) => {
       </ScrollView>
     </View>
   );
-};
+});
 const styles = StyleSheet.create({
   typeArea: {
     marginTop: 10,

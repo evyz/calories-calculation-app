@@ -8,6 +8,7 @@ import LoaderComponent from "./src/components/loader/Loader";
 import WellcomeComponent from "./src/components/wellcome/Wellcome";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { StatusBar } from "react-native";
 
 async function loadAppAplication() {
   await Font.loadAsync({
