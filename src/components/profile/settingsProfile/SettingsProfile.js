@@ -46,8 +46,7 @@ const SettingsProfileComponent = ({ navigation }) => {
             </Text>
           </View>
           {/* <View style={styles.avatar}></View> */}
-
-          <View style={{ width: "100%" }}>
+          <View style={{ width: "100%", height: 350 }}>
             <View style={styles.navToSet}>
               <TouchableOpacity
                 onPress={() => navigation.navigate("changePassword")}
@@ -56,11 +55,25 @@ const SettingsProfileComponent = ({ navigation }) => {
               </TouchableOpacity>
             </View>
 
-            <View style={styles.navToSet}>
+            <View style={styles.navToName}>
               <TouchableOpacity
                 onPress={() => navigation.navigate("changeName")}
               >
                 <Text>Имя пользователя</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.navToName}>
+              <TouchableOpacity
+              // onPress={() => navigation.navigate("changeName")}
+              >
+                <Text>Эл. адрес</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.navToName}>
+              <TouchableOpacity
+              // onPress={() => navigation.navigate("changeName")}
+              >
+                <Text>Система безопасности</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -83,17 +96,28 @@ const styles = StyleSheet.create({
 
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-between",
     // backgroundColor: LIGHT_COLOR,
   },
   navToSet: {
     display: "flex",
-    width: "30%",
-    height: "30%",
+    width: "40%",
+    height: "10%",
     alignItems: "center",
-    justifyContent: "space-between",
+    borderRadius: 50,
     backgroundColor: GREEN_COLOR,
     marginTop: 40,
+    justifyContent: "center",
+  },
+  navToName: {
+    display: "flex",
+    width: "40%",
+    height: "10%",
+    alignItems: "center",
+    borderRadius: 50,
+    backgroundColor: GREEN_COLOR,
+    marginTop: 40,
+    justifyContent: "center",
   },
   avatar: {
     width: "60%",
@@ -120,6 +144,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: DARK_GREY_COLOR,
     marginVertical: 10,
+    justifyContent: "flex-start",
   },
   back: {
     padding: 10,

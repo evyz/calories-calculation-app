@@ -33,9 +33,9 @@ const ChangeName = observer(({ navigation }) => {
         <View>
           <Text>Поменяйте имя</Text>
         </View>
-        <View style={StyleSheet.button}>
+        <View style={styles.button}>
           <TouchableOpacity onPress={() => navigation.navigate("settings")}>
-            <Text>Назад</Text>
+            <Text style={{ backgroundColor: "black" }}>Назад</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -46,13 +46,15 @@ export default ChangeName;
 
 const styles = StyleSheet.create({
   main: {
+    flexDirection: "column",
+    display: "flex",
     width: "100%",
     height: "100%",
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
   },
   button: {
-    width: "30%",
+    width: "20%",
     height: "30%",
     backgroundColor: GREEN_COLOR,
     alignItems: "center",

@@ -32,7 +32,7 @@ const ChangePass = observer(({ navigation }) => {
       <View>
         <Text>Смена пароля</Text>
       </View>
-      <View style={StyleSheet.button}>
+      <View style={styles.button}>
         <TouchableOpacity onPress={() => navigation.navigate("settings")}>
           <Text>Назад</Text>
         </TouchableOpacity>
