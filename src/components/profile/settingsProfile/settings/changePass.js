@@ -9,6 +9,7 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  StatusBar,
 } from "react-native";
 import { AppContext } from "../../../../store";
 import { useRoute } from "@react-navigation/native";
@@ -28,7 +29,7 @@ import { changePassword } from "../../../../http/user";
 
 const ChangePass = observer(({ navigation }) => {
   return (
-    <View>
+    <View style={[{ paddingTop: StatusBar.currentHeight }]}>
       <View>
         <Text>Смена пароля</Text>
       </View>

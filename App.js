@@ -56,6 +56,7 @@ export default function App() {
 
   return (
     <AppProvider>
+      <StatusBar hidden={false} barStyle='default' />
       <AppRouter />
     </AppProvider>
   );

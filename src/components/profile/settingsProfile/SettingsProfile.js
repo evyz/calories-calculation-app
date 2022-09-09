@@ -5,6 +5,8 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  Dimensions,
+  StatusBar,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ArrowLeft from "../../Arrows/ArrowLeft";
@@ -26,7 +28,7 @@ const SettingsProfileComponent = ({ navigation }) => {
   return (
     <View style={styles.main}>
       <View style={styles.innerMain}>
-        <View style={styles.back}>
+        <View style={[styles.back, { marginTop: StatusBar.currentHeight }]}>
           <TouchableOpacity
             style={styles.backButton}
             onPress={() => navigation.navigate("main")}

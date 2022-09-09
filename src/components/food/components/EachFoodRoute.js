@@ -29,6 +29,7 @@ import DatePicker from "react-native-datepicker";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import dayjs from "dayjs";
 import ActiveBottomSheetProduct from "./bottomsheet/activeBottomSheet";
+import BottomSheetProduct from "./bottomsheet/bottomSheetProduct";
 
 const EachFoodRoute = observer(({ navigation }) => {
   const [foodName, setFoodName] = useState([]);
@@ -39,10 +40,11 @@ const EachFoodRoute = observer(({ navigation }) => {
   const [minutes, setMinutes] = useState(null);
   const [grams, setGrams] = useState(0);
 
-  const [isOpened, setIsOpened] = useState(0);
+  const [isOpened, setIsOpened] = useState(false);
 
   const calculateCalories = async () => {
-    let dateFormat = dayjs(`${date}T${hours}:${minutes}`).format();
+    setIsOpened(true);
+    // let dateFormat = dayjs(`${date}T${hours}:${minutes}`).format();
     // await calculateCaloriesToApi(user.isSelectedProduct.id, grams, dateFormat).then(data => {
     //   console.log(data)
     // })
@@ -50,7 +52,7 @@ const EachFoodRoute = observer(({ navigation }) => {
 
   return (
     <View style={styles.main}>
-      {/* <ActiveBottomSheetProduct status={isOpened} setStatus={setIsOpened} /> */}
+      <BottomSheetProduct isOpened={isOpened} setIsOpened={setIsOpened} />
       <TouchableOpacity
         style={{
           alignItems: "flex-start",
@@ -141,82 +143,6 @@ const EachFoodRoute = observer(({ navigation }) => {
               </View>
             </Shadow>
 
-            <View
-              style={{
-                width: "90%",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "space-between",
-                marginTop: 10,
-              }}
-            >
-              <View style={{ width: "40%" }}>
-                <TextInput
-                  style={{
-                    padding: 5,
-                    margin: 5,
-                    borderWidth: 1,
-                    borderColor: GREY_COLOR,
-                    borderRadius: 8,
-                  }}
-                  keyboardType='numeric'
-                  value={grams}
-                  onChangeText={setGrams}
-                />
-              </View>
-              <View
-                style={{
-                  width: "50%",
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-              >
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                  }}
-                >
-                  <TextInput
-                    style={{
-                      padding: 5,
-                      margin: 5,
-                      borderWidth: 1,
-                      borderColor: GREY_COLOR,
-                      borderRadius: 8,
-                    }}
-                    keyboardType='numeric'
-                    value={hours}
-                    onChangeText={setHours}
-                    placeholder='HH'
-                  />
-                  <Text>:</Text>
-                  <TextInput
-                    style={{
-                      padding: 5,
-                      margin: 5,
-                      borderWidth: 1,
-                      borderColor: GREY_COLOR,
-                      borderRadius: 8,
-                    }}
-                    keyboardType='numeric'
-                    value={minutes}
-                    onChangeText={setMinutes}
-                    placeholder='MM'
-                  />
-                </View>
-
-                <DatePicker
-                  customStyles={{ dateIcon: { opacity: 0 } }}
-                  mode='date'
-                  date={date}
-                  onDateChange={(date) => setDate(date)}
-                />
-              </View>
-            </View>
             <TouchableOpacity
               onPress={() => calculateCalories()}
               style={{
@@ -224,6 +150,7 @@ const EachFoodRoute = observer(({ navigation }) => {
                 paddingHorizontal: 32 / 2,
                 backgroundColor: GREEN_COLOR,
                 borderRadius: 8,
+                marginTop: 30,
               }}
             >
               <Text

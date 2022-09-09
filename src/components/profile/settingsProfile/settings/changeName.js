@@ -9,6 +9,7 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  StatusBar,
 } from "react-native";
 import { AppContext } from "../../../../store";
 import { useRoute } from "@react-navigation/native";
@@ -28,7 +29,7 @@ import { changePassword } from "../../../../http/user";
 
 const ChangeName = observer(({ navigation }) => {
   return (
-    <View style={styles.main}>
+    <View style={[styles.main, { paddingTop: StatusBar.currentHeight }]}>
       <View>
         <View>
           <Text>Поменяйте имя</Text>
