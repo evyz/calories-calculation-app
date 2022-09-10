@@ -31,6 +31,7 @@ import dayjs from "dayjs";
 import ActiveBottomSheetProduct from "./bottomsheet/activeBottomSheet";
 import BottomSheetProduct from "./bottomsheet/bottomSheetProduct";
 import ArrowLeft from "../../Arrows/ArrowLeft";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const EachFoodRoute = observer(({ navigation }) => {
   const [foodName, setFoodName] = useState([]);
@@ -41,7 +42,7 @@ const EachFoodRoute = observer(({ navigation }) => {
   const [minutes, setMinutes] = useState(null);
   const [grams, setGrams] = useState(0);
 
-  const [isOpened, setIsOpened] = useState(false);
+  const [isOpened, setIsOpened] = useState(true);
 
   const calculateCalories = async () => {
     setIsOpened(true);
@@ -52,126 +53,134 @@ const EachFoodRoute = observer(({ navigation }) => {
   };
 
   return (
-    <View style={styles.main}>
-      <BottomSheetProduct
-        product={user.isSelectedProduct}
-        isOpened={isOpened}
-        setIsOpened={setIsOpened}
-      />
-      <TouchableOpacity
-        style={{
-          alignItems: "flex-start",
-          position: "absolute",
-          top: 30,
-          left: 20,
-        }}
-        onPress={() => navigation.navigate("mainFoodRoute")}
-      >
-        <ArrowLeft />
-      </TouchableOpacity>
-      <Shadow {...shadowOpt} color={"black"}>
-        <View style={styles.form}>
-          <View style={styles.text}></View>
-          <View style={{ width: "100%" }}>
-            <Text
-              style={{
-                fontSize: 24,
-                color: "black",
-                paddingLeft: 20,
-                alignItems: "flex-start",
-                fontFamily: BOLD_FONT,
-              }}
-            >
-              {user.isSelectedProduct.name}
-            </Text>
-            <Text
-              style={{
-                fontSize: 18,
-                marginTop: 20,
-                color: "black",
-                paddingLeft: 20,
-                alignItems: "flex-start",
-                fontFamily: LIGTH_FONT,
-              }}
-            >
-              Калорийность
-            </Text>
-          </View>
-          <Shadow {...shadowOpt} startColor='#F3F3F3'>
-            <View style={[styles.kcal, { backgroundColor: LIGHT_COLOR }]}>
-              <Text style={{ fontFamily: MEDIUM_FONT }}>Ккал: </Text>
-              <Text>{user.isSelectedProduct?.kcal}</Text>
-            </View>
-          </Shadow>
-          <View style={styles.mainContainer}>
+    <GestureHandlerRootView>
+      <View style={styles.main}>
+        <BottomSheetProduct
+          product={user.isSelectedProduct}
+          isOpened={isOpened}
+          setIsOpened={setIsOpened}
+        />
+        <TouchableOpacity
+          style={{
+            alignItems: "flex-start",
+            position: "absolute",
+            top: 30,
+            left: 20,
+          }}
+          onPress={() => navigation.navigate("mainFoodRoute")}
+        >
+          <ArrowLeft />
+        </TouchableOpacity>
+        <Shadow {...shadowOpt} color={"black"}>
+          <View style={styles.form}>
+            <View style={styles.text}></View>
             <View style={{ width: "100%" }}>
               <Text
                 style={{
-                  fontSize: 18,
+                  fontSize: 24,
                   color: "black",
-                  paddingLeft: 5,
+                  paddingLeft: 20,
+                  alignItems: "flex-start",
+                  fontFamily: BOLD_FONT,
+                }}
+              >
+                {user.isSelectedProduct.name}
+              </Text>
+              <Text
+                style={{
+                  fontSize: 18,
+                  marginTop: 20,
+                  color: "black",
+                  paddingLeft: 20,
                   alignItems: "flex-start",
                   fontFamily: LIGTH_FONT,
                 }}
               >
-                Состав
+                Калорийность
               </Text>
             </View>
-            <Shadow {...shadowOpt} distance={5} startColor='#F3F3F3'>
-              <View style={[styles.container, { backgroundColor: "#F7D921" }]}>
-                <Text style={{ fontFamily: BOLD_FONT, color: LIGHT_COLOR }}>
-                  Жиры
-                </Text>
-                <Text style={{ color: LIGHT_COLOR, fontFamily: BOLD_FONT }}>
-                  {user.isSelectedProduct.fats} г
-                </Text>
+            <Shadow {...shadowOpt} startColor='#F3F3F3'>
+              <View style={[styles.kcal, { backgroundColor: LIGHT_COLOR }]}>
+                <Text style={{ fontFamily: MEDIUM_FONT }}>Ккал: </Text>
+                <Text>{user.isSelectedProduct?.kcal}</Text>
               </View>
             </Shadow>
-            <Shadow {...shadowOpt} distance={5} startColor='#F3F3F3'>
-              <View style={[styles.container, { backgroundColor: "#B0CB1F" }]}>
-                <Text style={{ fontFamily: BOLD_FONT, color: LIGHT_COLOR }}>
-                  Белки
-                </Text>
-                <Text style={{ color: LIGHT_COLOR, fontFamily: BOLD_FONT }}>
-                  {user.isSelectedProduct.proteins} г
-                </Text>
-              </View>
-            </Shadow>
-            <Shadow {...shadowOpt} distance={5} startColor='#F3F3F3'>
-              <View style={[styles.container, { backgroundColor: "#5B5B5B" }]}>
-                <Text style={{ fontFamily: BOLD_FONT, color: LIGHT_COLOR }}>
-                  Углеводы
-                </Text>
-                <Text style={{ color: LIGHT_COLOR, fontFamily: BOLD_FONT }}>
-                  {user.isSelectedProduct.carbohydrates} г
+            <View style={styles.mainContainer}>
+              <View style={{ width: "100%" }}>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    color: "black",
+                    paddingLeft: 5,
+                    alignItems: "flex-start",
+                    fontFamily: LIGTH_FONT,
+                  }}
+                >
+                  Состав
                 </Text>
               </View>
-            </Shadow>
+              <Shadow {...shadowOpt} distance={5} startColor='#F3F3F3'>
+                <View
+                  style={[styles.container, { backgroundColor: "#F7D921" }]}
+                >
+                  <Text style={{ fontFamily: BOLD_FONT, color: LIGHT_COLOR }}>
+                    Жиры
+                  </Text>
+                  <Text style={{ color: LIGHT_COLOR, fontFamily: BOLD_FONT }}>
+                    {user.isSelectedProduct.fats} г
+                  </Text>
+                </View>
+              </Shadow>
+              <Shadow {...shadowOpt} distance={5} startColor='#F3F3F3'>
+                <View
+                  style={[styles.container, { backgroundColor: "#B0CB1F" }]}
+                >
+                  <Text style={{ fontFamily: BOLD_FONT, color: LIGHT_COLOR }}>
+                    Белки
+                  </Text>
+                  <Text style={{ color: LIGHT_COLOR, fontFamily: BOLD_FONT }}>
+                    {user.isSelectedProduct.proteins} г
+                  </Text>
+                </View>
+              </Shadow>
+              <Shadow {...shadowOpt} distance={5} startColor='#F3F3F3'>
+                <View
+                  style={[styles.container, { backgroundColor: "#5B5B5B" }]}
+                >
+                  <Text style={{ fontFamily: BOLD_FONT, color: LIGHT_COLOR }}>
+                    Углеводы
+                  </Text>
+                  <Text style={{ color: LIGHT_COLOR, fontFamily: BOLD_FONT }}>
+                    {user.isSelectedProduct.carbohydrates} г
+                  </Text>
+                </View>
+              </Shadow>
 
-            <TouchableOpacity
-              onPress={() => calculateCalories()}
-              style={{
-                paddingVertical: 18 / 2,
-                paddingHorizontal: 32 / 2,
-                backgroundColor: GREEN_COLOR,
-                borderRadius: 8,
-                marginTop: 30,
-              }}
-            >
-              <Text
+              <TouchableOpacity
+                onPress={() => calculateCalories()}
                 style={{
-                  fontFamily: BOLD_FONT,
-                  fontSize: 16,
-                  color: LIGHT_COLOR,
+                  paddingVertical: 18 / 2,
+                  paddingHorizontal: 32 / 2,
+                  backgroundColor: GREEN_COLOR,
+                  borderRadius: 8,
+                  marginTop: 30,
                 }}
               >
-                Расчитать калории
-              </Text>
-            </TouchableOpacity>
+                <Text
+                  style={{
+                    fontFamily: BOLD_FONT,
+                    fontSize: 16,
+                    color: LIGHT_COLOR,
+                  }}
+                >
+                  Расчитать калории
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      </Shadow>
-    </View>
+        </Shadow>
+      </View>
+    </GestureHandlerRootView>
   );
 });
 const styles = StyleSheet.create({
