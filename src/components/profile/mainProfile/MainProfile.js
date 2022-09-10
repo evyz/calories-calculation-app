@@ -109,6 +109,7 @@ const MainProfileComponent = observer(({ navigation }) => {
             display: "flex",
             alignItems: "center",
             marginTop: 70,
+            marginBottom: 55,
           }}
         >
           <View
@@ -358,11 +359,11 @@ const MainProfileComponent = observer(({ navigation }) => {
             </Text>
 
             <View style={styles.emailView}>
-              <Shadow {...shadowOpt} startColor="#F3F3F3">
+              <Shadow {...shadowOpt} startColor='#F3F3F3'>
                 <TextInput
                   value={email}
                   style={styles.emailInput}
-                  placeholder="Ваша почта"
+                  placeholder='Ваша почта'
                 />
               </Shadow>
             </View>

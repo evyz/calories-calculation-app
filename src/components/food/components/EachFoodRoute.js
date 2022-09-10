@@ -30,6 +30,7 @@ import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import dayjs from "dayjs";
 import ActiveBottomSheetProduct from "./bottomsheet/activeBottomSheet";
 import BottomSheetProduct from "./bottomsheet/bottomSheetProduct";
+import ArrowLeft from "../../Arrows/ArrowLeft";
 
 const EachFoodRoute = observer(({ navigation }) => {
   const [foodName, setFoodName] = useState([]);
@@ -52,7 +53,11 @@ const EachFoodRoute = observer(({ navigation }) => {
 
   return (
     <View style={styles.main}>
-      <BottomSheetProduct isOpened={isOpened} setIsOpened={setIsOpened} />
+      <BottomSheetProduct
+        product={user.isSelectedProduct}
+        isOpened={isOpened}
+        setIsOpened={setIsOpened}
+      />
       <TouchableOpacity
         style={{
           alignItems: "flex-start",
@@ -62,7 +67,7 @@ const EachFoodRoute = observer(({ navigation }) => {
         }}
         onPress={() => navigation.navigate("mainFoodRoute")}
       >
-        <Text>Back</Text>
+        <ArrowLeft />
       </TouchableOpacity>
       <Shadow {...shadowOpt} color={"black"}>
         <View style={styles.form}>

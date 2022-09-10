@@ -17,6 +17,8 @@ import {
   GREY_COLOR,
   RED_COLOR,
   DARK_GREY_COLOR,
+  LIGTH_GREY_COLOR,
+  LIGTH_BG_COLOR,
 } from "../../styles/colors";
 import { observer } from "mobx-react-lite";
 import { Shadow } from "react-native-shadow-2";
@@ -146,7 +148,7 @@ const styles = StyleSheet.create({
     height: "100%",
     display: "flex",
     alignItems: "center",
-    backgroundColor: LIGHT_COLOR,
+    backgroundColor: LIGTH_BG_COLOR,
   },
   time: {
     fontFamily: LIGTH_FONT,

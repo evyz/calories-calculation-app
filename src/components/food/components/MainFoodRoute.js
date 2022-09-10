@@ -18,6 +18,7 @@ import {
   GREEN_COLOR,
   GREY_COLOR,
   DARK_GREY_COLOR,
+  LIGTH_BG_COLOR,
 } from "../../../styles/colors";
 import { getCategories, getEachProduct } from "../../../http/product";
 import { Shadow } from "react-native-shadow-2";
@@ -278,7 +279,7 @@ const MainFoodRoute = observer(({ navigation }) => {
                   justifyContent: "center",
                   marginVertical: 10,
                   width: 350,
-                  marginBottom: 50,
+                  marginBottom: 50 + 55,
                 },
               ]}
             >
@@ -346,7 +347,7 @@ const styles = StyleSheet.create({
     height: "100%",
     alignItems: "center",
     justifyContent: "flex-start",
-    backgroundColor: "#f5f5f5",
+    backgroundColor: LIGTH_BG_COLOR,
   },
   mainAlert: {
     width: "100%",

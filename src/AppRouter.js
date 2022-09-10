@@ -205,12 +205,35 @@ export default AppRouter = observer(() => {
                 },
               };
 
+              Alert.alert(
+                "Доверять этому устройству?",
+                "Если Вы разрешите доверять этому устройству, то в случае выхода из аккаунта вы сможете быстро зайти заново на аккаунт",
+                [
+                  {
+                    text: "Да",
+                    onPress: async () => {
+                      await AsyncStorage.setItem(
+                        "calories@auth_users",
+                        JSON.stringify({
+                          name: obj?.profile?.name,
+                          email: obj?.profile?.email,
+                          avatar: obj?.avatar,
+                          password: value1,
+                        })
+                      );
+                    },
+                  },
+                  { text: "Нет" },
+                ]
+              );
+
               await AsyncStorage.setItem(
                 "calories@auth_users",
                 JSON.stringify({
                   name: obj?.profile?.name,
                   email: obj?.profile?.email,
                   avatar: obj?.avatar,
+                  // password: value1
                 })
               );
 
@@ -271,6 +294,9 @@ export default AppRouter = observer(() => {
                     borderTopLeftRadius: 25,
                     borderTopRightRadius: 25,
                     overflow: "hidden",
+                    zIndex: 3,
+                    position: "absolute",
+                    maxHeight: 55,
                   },
                   headerShown: false,
                   headerTitle: null,

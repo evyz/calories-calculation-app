@@ -7,6 +7,7 @@ import {
   Dimensions,
   TouchableOpacity,
   TextInput,
+  Keyboard,
 } from "react-native";
 import CalendarPicker from "react-native-calendar-picker";
 import { SvgXml } from "react-native-svg";
@@ -17,29 +18,53 @@ import {
 } from "../../../../styles/colors";
 import { BLACK_FONT, BOLD_FONT, LIGTH_FONT } from "../../../../styles/fonts";
 import { iconsContent } from "../../../../utils/header/food/foodIconsContent";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { calculateCaloriesToApi } from "../../../../http/product";
 
-const BottomSheetProduct = ({ isOpened, setIsOpened }) => {
+const BottomSheetProduct = ({ product, isOpened, setIsOpened }) => {
   const height = Dimensions.get("window").height;
 
   const [isOpenedCal, setIsOpenedCal] = useState(false);
   const [activeDate, setActiveDate] = useState(null);
-  const [hours, setHours] = useState("00");
-  const [minutes, setMinutes] = useState("00");
   const [grams, setGrams] = useState(100);
+  const [dateTime, setDateTime] = useState(new Date());
+  const [isOpenedTimer, setIsOpenedTimer] = useState(false);
 
   const calculateMethod = () => {
-    setActiveDate(null);
-    setHours("00");
-    setMinutes("00");
-    setGrams(100);
-    setIsOpened(false);
+    // if()
+    try {
+      parseFloat(grams);
+    } catch (e) {
+      console.log(e);
+    }
+    if (typeof parseFloat(grams) === "number" || activeDate !== null) {
+      let finalDate =
+        dayjs(activeDate).format("YYYY-MM-DD") +
+        "T" +
+        dayjs(dateTime).format("HH:mm:ss");
+      calculateCaloriesToApi(product.id, grams, finalDate).then((data) => {
+        setActiveDate(null);
+        setGrams(100);
+        setDateTime(new Date());
+        setIsOpened(false);
+        Keyboard.dismiss();
+        alert(
+          `Продукт расчитан на ${dayjs(data.date).format(
+            "DD MMMM YYYY в HH:mm"
+          )}`
+        );
+      });
+    } else {
+      alert("Введите число");
+    }
+    return;
   };
 
-  useEffect(() => {
-    if (Number(minutes) >= 60) {
-      setHours(59);
-    }
-  }, [minutes]);
+  const onChangeTimer = (event, selectedDate) => {
+    const currentDate = selectedDate || dateTime;
+    setIsOpenedTimer(false);
+    setDateTime(currentDate);
+  };
 
   return (
     <View
@@ -56,12 +81,15 @@ const BottomSheetProduct = ({ isOpened, setIsOpened }) => {
         style={[
           styles.sheet,
           {
-            height: height / 1.7,
+            height: height / 1.7 + 55,
             transform: [{ translateY: isOpened ? 0 : height / 1.7 }],
           },
         ]}
       >
-        <TouchableOpacity style={[styles.buttonSheet]}></TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => setIsOpened(false)}
+          style={[styles.buttonSheet]}
+        ></TouchableOpacity>
 
         {isOpenedCal && (
           <View
@@ -146,22 +174,22 @@ const BottomSheetProduct = ({ isOpened, setIsOpened }) => {
 </svg>`}
               />
             </TouchableOpacity>
-            <View style={[styles.sheetButtonContent]}>
-              {/* <Text>19:00</Text> */}
-              <TextInput
-                maxLength={2}
-                value={hours}
-                onChangeText={setHours}
-                keyboardType='numeric'
+
+            {isOpenedTimer && (
+              <DateTimePicker
+                value={dateTime}
+                onChange={onChangeTimer}
+                is24Hour={true}
+                mode='time'
+                display='default'
               />
-              <Text style={{ marginRight: 5, fontFamily: BOLD_FONT }}>:</Text>
-              <TextInput
-                maxLength={2}
-                value={minutes}
-                onChangeText={setMinutes}
-                keyboardType='numeric'
-              />
-            </View>
+            )}
+            <TouchableOpacity
+              onPress={() => setIsOpenedTimer(true)}
+              style={[styles.sheetButtonContent]}
+            >
+              <Text>{dayjs(dateTime).format("HH:mm")}</Text>
+            </TouchableOpacity>
           </View>
           <Text style={[styles.titleSheet, { marginTop: 30 }]}>
             Укажите граммы

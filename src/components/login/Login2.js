@@ -54,6 +54,9 @@ export default LoginComponent = observer(({ navigation }) => {
     y: 3,
     style: { marginVertical: 5 },
   };
+
+  const [isTrusted, setIsTrusted] = useState(false);
+
   const authChangeHandler = () => {
     if (passwordDirty) {
       user.setIsAuth(false);
@@ -75,7 +78,8 @@ export default LoginComponent = observer(({ navigation }) => {
           }
           if (data?.token) {
             AsyncStorage.setItem("token", data?.token);
-            me().then((data) => {
+
+            me().then(async (data) => {
               const obj = {
                 avatar: {
                   color: data["Avatars_Back"]?.color,
@@ -89,6 +93,27 @@ export default LoginComponent = observer(({ navigation }) => {
                   name: data?.name,
                 },
               };
+
+              // Alert.alert(
+              //   "Доверять этому устройству?",
+              //   "Если Вы разрешите доверять этому устройству, то в случае выхода из аккаунта вы сможете быстро зайти заново на аккаунт",
+              //   [
+              //     {
+              //       text: "Да",
+              //       onPress: () => setIsTrusted(true),
+              //     },
+              //     { text: "Нет" },
+              //   ]
+              // );
+
+              await AsyncStorage.setItem(
+                "calories@auth_users",
+                JSON.stringify({
+                  name: obj?.profile?.name,
+                  email: obj?.profile?.email,
+                  avatar: obj?.avatar,
+                })
+              );
 
               user.setProfile(obj);
               setTimeout(() => setIsLoading(false), 500);
