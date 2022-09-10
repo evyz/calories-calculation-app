@@ -6,8 +6,12 @@ import { BOLD_FONT, MEDIUM_FONT } from "../../styles/fonts";
 
 import { getLastsAuth } from "../../storage/last.auth";
 import LastAuth from "./lastAuth";
+import { observer } from "mobx-react-lite";
+import { useContext } from "react";
+import { AppContext } from "../../store";
 
-export default TitleComponent = ({ navigation }) => {
+export default TitleComponent = observer(({ navigation }) => {
+  const { user } = useContext(AppContext);
   const [isLoginAlert, setIsLoginAlert] = useState(false);
 
   const getArr = async () => {
@@ -87,17 +91,17 @@ export default TitleComponent = ({ navigation }) => {
               alignItems: "center",
               justifyContent: "center",
             }}
-            onPress={() => navigation.navigate("login")}
+            onPress={() => {
+              user.setAuthInput(null);
+              user.setAuthPass(null);
+              navigation.navigate("login");
+            }}
           >
             <Text
               style={{
                 fontSize: 18,
                 fontFamily: MEDIUM_FONT,
                 color: LIGHT_COLOR,
-                // width: "100%",
-                // height: "100%",
-                // alignItems: "center",
-                // justifyContent: "center",
               }}
             >
               Авторизация
@@ -129,7 +133,7 @@ export default TitleComponent = ({ navigation }) => {
       </View>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   main: {

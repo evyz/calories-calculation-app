@@ -185,12 +185,9 @@ export default AppRouter = observer(() => {
       if (data) {
         refreshToken().then(async (data) => {
           if (data?.token) {
-            console.log(1);
             await AsyncStorage.setItem("token", data?.token);
             setToken(data?.token);
             me().then(async (data) => {
-              console.log(2);
-
               const obj = {
                 avatar: {
                   color: data["Avatars_Back"]?.color,
@@ -205,48 +202,27 @@ export default AppRouter = observer(() => {
                 },
               };
 
-              Alert.alert(
-                "Доверять этому устройству?",
-                "Если Вы разрешите доверять этому устройству, то в случае выхода из аккаунта вы сможете быстро зайти заново на аккаунт",
-                [
-                  {
-                    text: "Да",
-                    onPress: async () => {
-                      await AsyncStorage.setItem(
-                        "calories@auth_users",
-                        JSON.stringify({
-                          name: obj?.profile?.name,
-                          email: obj?.profile?.email,
-                          avatar: obj?.avatar,
-                          password: value1,
-                        })
-                      );
-                    },
-                  },
-                  { text: "Нет" },
-                ]
-              );
-
-              await AsyncStorage.setItem(
-                "calories@auth_users",
-                JSON.stringify({
-                  name: obj?.profile?.name,
-                  email: obj?.profile?.email,
-                  avatar: obj?.avatar,
-                  // password: value1
-                })
-              );
+              let calObj = await AsyncStorage.getItem("calories@auth_users");
+              if (calObj) {
+                await AsyncStorage.setItem("calories@auth_users", calObj);
+              } else {
+                await AsyncStorage.setItem(
+                  "calories@auth_users",
+                  JSON.stringify({
+                    name: obj?.profile?.name,
+                    email: obj?.profile?.email,
+                    avatar: obj?.avatar,
+                    // password: value1
+                  })
+                );
+              }
 
               user.setIsAuth(true);
               user.setProfile(obj);
               getNews().then((data) => {
-                console.log(3);
-
                 newsStore.setNews(data?.rows);
                 newsStore.setCount(data?.count);
                 getCategories({ page: 1, count: 20 }).then((data) => {
-                  console.log(5);
-
                   user.setCategories(data.rows);
                 });
                 // getCaloriesFromDate({ date: dayjs().format() })

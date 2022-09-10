@@ -24,6 +24,7 @@ import VisibleIcon from "../../icons/visible/visibleIcon";
 import ApiLoader from "../loader/ApiLoader";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { setLastsAuth } from "../../storage/last.auth";
+import ArrowLeft from "../Arrows/ArrowLeft";
 
 let symbols = /[0-9a-zA-Z!@#$%^&*]{6,}/g;
 
@@ -94,25 +95,39 @@ export default LoginComponent = observer(({ navigation }) => {
                 },
               };
 
-              // Alert.alert(
-              //   "Доверять этому устройству?",
-              //   "Если Вы разрешите доверять этому устройству, то в случае выхода из аккаунта вы сможете быстро зайти заново на аккаунт",
-              //   [
-              //     {
-              //       text: "Да",
-              //       onPress: () => setIsTrusted(true),
-              //     },
-              //     { text: "Нет" },
-              //   ]
-              // );
-
-              await AsyncStorage.setItem(
-                "calories@auth_users",
-                JSON.stringify({
-                  name: obj?.profile?.name,
-                  email: obj?.profile?.email,
-                  avatar: obj?.avatar,
-                })
+              Alert.alert(
+                "Доверять этому устройству?",
+                "Если Вы разрешите доверять этому устройству, то в случае выхода из аккаунта вы сможете быстро зайти заново на аккаунт",
+                [
+                  {
+                    text: "Да",
+                    onPress: async () => {
+                      await AsyncStorage.setItem(
+                        "calories@auth_users",
+                        JSON.stringify({
+                          name: obj?.profile?.name,
+                          email: obj?.profile?.email,
+                          avatar: obj?.avatar,
+                          password: value1,
+                        })
+                      );
+                    },
+                  },
+                  {
+                    text: "Нет",
+                    onPress: async () => {
+                      user.setAuthPass(null);
+                      await AsyncStorage.setItem(
+                        "calories@auth_users",
+                        JSON.stringify({
+                          name: obj?.profile?.name,
+                          email: obj?.profile?.email,
+                          avatar: obj?.avatar,
+                        })
+                      );
+                    },
+                  },
+                ]
               );
 
               user.setProfile(obj);
@@ -151,16 +166,17 @@ export default LoginComponent = observer(({ navigation }) => {
     if (user.authInput) {
       setValue(user.authInput);
     }
+    if (user.authPass) {
+      setValue1(user.authPass);
+    }
   }, [user.authInput]);
 
   return (
     <View style={styles.main}>
       {isLoading && <ApiLoader focused={isLoading} />}
-      <View style={{ marginTop: 30, backgroundColor: "black" }}>
-        <TouchableOpacity onPress={() => navigation.navigate("title")}>
-          <Text style={{ textAlign: "center" }}>Назад</Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity onPress={() => navigation.navigate("title")}>
+        <ArrowLeft />
+      </TouchableOpacity>
       <View style={styles.text}>
         <Text style={{ fontSize: 24 }}>Войдите в аккаунт</Text>
         <Text style={{ fontSize: 16 }}>С возвращением!</Text>

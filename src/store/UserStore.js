@@ -21,6 +21,7 @@ export default class UserStore {
     this._isSelectedProduct = {};
     this._categories = [];
     this._authInput = null;
+    this._authPassword = null;
     makeAutoObservable(this);
   }
 
@@ -49,6 +50,9 @@ export default class UserStore {
   setAuthInput(str) {
     this._authInput = str;
   }
+  setAuthPass(str) {
+    this._authPassword = str;
+  }
 
   get isAuth() {
     return this._isAuth;
@@ -75,5 +79,9 @@ export default class UserStore {
 
   get authInput() {
     return this._authInput;
+  }
+
+  get authPass() {
+    return this._authPassword;
   }
 }

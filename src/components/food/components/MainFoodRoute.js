@@ -78,7 +78,7 @@ const MainFoodRoute = observer(({ navigation }) => {
 
   useEffect(() => {
     if (!user.categories.length) {
-      getCategories()
+      getCategories({ page: 1, count: 40 })
         .then((data) => {
           setCats(data.rows);
         })

@@ -2,9 +2,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect, useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Alert } from "react-native";
 import { SvgUri } from "react-native-svg";
 import { url } from "../../http";
+import { login, me } from "../../http/user";
 import { AppContext } from "../../store";
 import { DARK_GREY_COLOR, LIGHT_COLOR } from "../../styles/colors";
 import { BOLD_FONT } from "../../styles/fonts";
@@ -62,7 +63,49 @@ const LastAuth = observer(({ navigation }) => {
             borderRadius: 8,
           }}
           onPress={() => {
+            getArr().then((data) => {
+              setAuth(data);
+            });
+            if (auth?.email && auth?.password) {
+              login(auth?.email, auth?.password).then((data) => {
+                if (data?.status === 404) {
+                  if (data?.message === "Неверный пароль") {
+                    alert(data?.message);
+                  }
+                  if (data?.message === "Неверная почта") {
+                    alert(data?.message);
+                  }
+                  Alert.alert("Ошибка авторизации", data?.message);
+                }
+                if (data?.token) {
+                  AsyncStorage.setItem("token", data?.token);
+
+                  me().then(async (data) => {
+                    const obj = {
+                      avatar: {
+                        color: data["Avatars_Back"]?.color,
+                        ico: data["Avatars_Ico"],
+                      },
+                      role: data["Role"]?.name,
+                      profile: {
+                        createdAt: data?.createdAt,
+                        email: data?.email,
+                        id: data?.id,
+                        name: data?.name,
+                      },
+                    };
+
+                    user.setProfile(obj);
+
+                    user.setIsAuth(true);
+                  });
+                }
+              });
+
+              return;
+            }
             user.setAuthInput(auth?.email);
+            user.setAuthPass(auth?.password);
             navigation.navigate("login");
           }}
         >
