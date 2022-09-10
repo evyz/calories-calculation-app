@@ -42,7 +42,7 @@ const EachFoodRoute = observer(({ navigation }) => {
   const [minutes, setMinutes] = useState(null);
   const [grams, setGrams] = useState(0);
 
-  const [isOpened, setIsOpened] = useState(true);
+  const [isOpened, setIsOpened] = useState(false);
 
   const calculateCalories = async () => {
     setIsOpened(true);
