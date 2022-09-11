@@ -59,6 +59,7 @@ const EachFoodRoute = observer(({ navigation }) => {
           product={user.isSelectedProduct}
           isOpened={isOpened}
           setIsOpened={setIsOpened}
+          user={user}
         />
         <TouchableOpacity
           style={{
@@ -73,7 +74,6 @@ const EachFoodRoute = observer(({ navigation }) => {
         </TouchableOpacity>
         <Shadow {...shadowOpt} color={"black"}>
           <View style={styles.form}>
-            <View style={styles.text}></View>
             <View style={{ width: "100%" }}>
               <Text
                 style={{
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     width: 370,
-    height: "100%",
+    height: "95%",
     // marginTop: "5%",
     justifyContent: "flex-start",
     // backgroundColor: "#DCDCDC",

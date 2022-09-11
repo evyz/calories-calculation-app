@@ -2,11 +2,11 @@ import { View, Text } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Picker from "./components/Picker";
 
-const CalendarComponent = () => {
+const CalendarComponent = ({ navigation }) => {
   return (
     <GestureHandlerRootView>
       <View>
-        <Picker />
+        <Picker navigation={navigation} />
       </View>
     </GestureHandlerRootView>
   );

@@ -130,6 +130,15 @@ export default LoginComponent = observer(({ navigation }) => {
                 ]
               );
 
+              getCaloriesFromDate({ date: dayjs().format() })
+                .then((data) => {
+                  user.setTodayCalories(data);
+                })
+                .then((data) => {})
+                .then(() => {
+                  setIsLoading(false);
+                });
+
               user.setProfile(obj);
               setTimeout(() => setIsLoading(false), 500);
               user.setIsAuth(true);

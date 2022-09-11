@@ -33,7 +33,7 @@ import TestBall from "./TestBall";
 
 dayjs.locale("ru");
 
-const Picker = () => {
+const Picker = ({ navigation }) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [activeDate, setActiveDate] = useState();
@@ -154,7 +154,11 @@ const Picker = () => {
         }
       />
 
-      <Stats selectedDate={activeDate} setSelectedDate={setActiveDate} />
+      <Stats
+        selectedDate={activeDate}
+        setSelectedDate={setActiveDate}
+        navigation={navigation}
+      />
     </View>
   );
 };

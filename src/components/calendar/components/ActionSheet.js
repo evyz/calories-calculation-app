@@ -32,6 +32,7 @@ const ActionSheet = ({ content }) => {
   const opacity = useSharedValue(0);
   const isDragging = useSharedValue(false);
   const translateY = useSharedValue(0);
+  const zIndexPos = useSharedValue(7);
 
   const longPressGesture = Gesture.LongPress()
     .onStart(() => {
@@ -48,6 +49,7 @@ const ActionSheet = ({ content }) => {
   const opacityStyles = useAnimatedStyle(() => {
     return {
       opacity: opacity.value,
+      zIndex: zIndexPos.value,
     };
   });
 
@@ -102,9 +104,11 @@ const ActionSheet = ({ content }) => {
       if (translateY.value < start.value.y) {
         translateY.value = withSpring(-height / 1.5 + 170);
         opacity.value = withSpring(0);
+        zIndexPos.value = withTiming(-1);
       } else {
         translateY.value = withSpring(0 - 50);
         opacity.value = withSpring(1);
+        zIndexPos.value = withTiming(7);
       }
       start.value = {
         x: offset.value.x,
@@ -156,7 +160,6 @@ const ActionSheet = ({ content }) => {
               height: "100%",
               backgroundColor: "rgba(0,0,0,0.4)",
               position: "absolute",
-              zIndex: 7,
             },
             opacityStyles,
           ]}

@@ -225,18 +225,14 @@ export default AppRouter = observer(() => {
                 getCategories({ page: 1, count: 20 }).then((data) => {
                   user.setCategories(data.rows);
                 });
-                // getCaloriesFromDate({ date: dayjs().format() })
-                //   .then((data) => {
-                //     console.log(4);
-
-                //     user.setTodayCalories(data);
-                //   })
-                //   .then((data) => {
-
-                //   })
-                //   .then(() => {
-                //     setIsLoading(false);
-                //   });
+                getCaloriesFromDate({ date: dayjs().format() })
+                  .then((data) => {
+                    user.setTodayCalories(data);
+                  })
+                  .then((data) => {})
+                  .then(() => {
+                    setIsLoading(false);
+                  });
               });
             });
 

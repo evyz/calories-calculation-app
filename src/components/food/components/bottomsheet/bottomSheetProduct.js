@@ -19,7 +19,10 @@ import {
 import { BLACK_FONT, BOLD_FONT, LIGTH_FONT } from "../../../../styles/fonts";
 import { iconsContent } from "../../../../utils/header/food/foodIconsContent";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { calculateCaloriesToApi } from "../../../../http/product";
+import {
+  calculateCaloriesToApi,
+  getCaloriesFromDate,
+} from "../../../../http/product";
 import Animated, {
   runOnJS,
   useAnimatedStyle,
@@ -33,7 +36,7 @@ import {
   GestureHandlerRootView,
 } from "react-native-gesture-handler";
 
-const BottomSheetProduct = ({ product, isOpened, setIsOpened }) => {
+const BottomSheetProduct = ({ product, isOpened, setIsOpened, user }) => {
   const height = Dimensions.get("window").height;
 
   const [isOpenedCal, setIsOpenedCal] = useState(false);
@@ -91,16 +94,19 @@ const BottomSheetProduct = ({ product, isOpened, setIsOpened }) => {
         "T" +
         dayjs(dateTime).format("HH:mm:ss");
       calculateCaloriesToApi(product.id, grams, finalDate).then((data) => {
+        if (
+          dayjs(activeDate).format("YYYY-MM-DD") ===
+          dayjs().format("YYYY-MM-DD")
+        ) {
+          getCaloriesFromDate({ date: dayjs().format() }).then((data) => {
+            user.setTodayCalories(data);
+          });
+        }
         setActiveDate(null);
         setGrams(100);
         setDateTime(new Date());
         setIsOpened(false);
         Keyboard.dismiss();
-        alert(
-          `Продукт расчитан на ${dayjs(data.date).format(
-            "DD MMMM YYYY в HH:mm"
-          )}`
-        );
       });
     } else {
       alert("Введите число");
