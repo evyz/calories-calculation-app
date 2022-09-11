@@ -7,3 +7,7 @@ export const LIGHT_COLOR = "#FFFFFF";
 export const GREY_GREEN_COLOR = "#91B9AB";
 export const LIGTH_GREY_COLOR = "#C4C4C4";
 export const LIGTH_BG_COLOR = "#f5f5f5";
+export const YELLOW_COLOR = "#F7D921";
+export const ORANGE_COLOR = "#F49845";
+export const BLUE_COLOR = "#31AEEE";
+export const PURPLE_COLOR = "#988FD1";

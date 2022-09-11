@@ -111,12 +111,15 @@ const MainFoodRoute = observer(({ navigation }) => {
 
   const getProducts = async () => {
     setIsLoading(true);
-    await getEachProduct({
+    let filter = {
       count: 40,
       page: activePage,
-      cats: chosed,
       name: value,
-    })
+    };
+    if (chosed.length) {
+      filter.cats = chosed;
+    }
+    await getEachProduct(filter)
       .then((data) => {
         setSearch(data.rows);
       })

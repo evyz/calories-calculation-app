@@ -16,6 +16,7 @@ import { createNewProduct, getCategories } from "../../../../http/product";
 import { GREEN_COLOR, LIGHT_COLOR } from "../../../../styles/colors";
 import ApiLoader from "../../../loader/ApiLoader";
 import { AppContext } from "../../../../store";
+import ArrowLeft from "../../../Arrows/ArrowLeft";
 // import { getCategories, getEachProduct } from "../../../../http/product";
 // import { Shadow } from "react-native-shadow-2";
 // import { shadowOpt } from "../../../loader/Loader";
@@ -240,10 +241,10 @@ const NewFood = observer(({ navigation }) => {
         {isLoading && <ApiLoader />}
 
         <TouchableOpacity
-          style={{ paddingTop: 30 }}
+          style={{ paddingTop: 30, paddingLeft: "5%" }}
           onPress={() => navigation.navigate("mainFoodRoute")}
         >
-          <Text>Назад</Text>
+          <ArrowLeft />
         </TouchableOpacity>
         <Text
           style={{
@@ -252,7 +253,7 @@ const NewFood = observer(({ navigation }) => {
             alignItems: "center",
             justifyContent: "flex-start",
             marginLeft: 20,
-            fontStyle: BOLD_FONT,
+            fontFamily: BOLD_FONT,
           }}
         >
           Добавление продукта

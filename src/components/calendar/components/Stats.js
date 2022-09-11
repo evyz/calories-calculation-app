@@ -7,10 +7,18 @@ import { getCaloriesFromDate } from "../../../http/product";
 import { PieChart } from "react-native-chart-kit";
 import { SvgUri, SvgXml } from "react-native-svg";
 import bootsplashFirst from "../../../assets/icos/bootsplashs/first.svg";
+import {
+  BLUE_COLOR,
+  GREEN_COLOR,
+  ORANGE_COLOR,
+  PURPLE_COLOR,
+  YELLOW_COLOR,
+} from "../../../styles/colors";
 
 const Stats = ({ selectedDate, setSelectedDate }) => {
   const [data, setData] = useState({});
-  const { height } = Dimensions.get("screen");
+  const { height, width } = Dimensions.get("screen");
+  const [diagram, setDiagram] = useState([]);
 
   console.log("bootsplashFirst ->", bootsplashFirst);
 
@@ -25,54 +33,6 @@ const Stats = ({ selectedDate, setSelectedDate }) => {
   </svg>
   `;
 
-  // const chartConfig = {
-  //   backgroundGradientFrom: "#1E2923",
-  //   backgroundGradientFromOpacity: 0,
-  //   backgroundGradientTo: "#08130D",
-  //   backgroundGradientToOpacity: 0.5,
-  //   color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
-  //   strokeWidth: 2, // optional, default 3
-  //   barPercentage: 0.5,
-  //   useShadowColorFromDataset: false, // optional
-  // };
-  // const diagram = [
-  //   {
-  //     name: "Seoul",
-  //     population: 21500000,
-  //     color: "rgba(131, 167, 234, 1)",
-  //     legendFontColor: "#7F7F7F",
-  //     legendFontSize: 15,
-  //   },
-  //   {
-  //     name: "Toronto",
-  //     population: 2800000,
-  //     color: "#F00",
-  //     legendFontColor: "#7F7F7F",
-  //     legendFontSize: 15,
-  //   },
-  //   {
-  //     name: "Beijing",
-  //     population: 527612,
-  //     color: "red",
-  //     legendFontColor: "#7F7F7F",
-  //     legendFontSize: 15,
-  //   },
-  //   {
-  //     name: "New York",
-  //     population: 8538000,
-  //     color: "#ffffff",
-  //     legendFontColor: "#7F7F7F",
-  //     legendFontSize: 15,
-  //   },
-  //   {
-  //     name: "Moscow",
-  //     population: 11920000,
-  //     color: "rgb(0, 0, 255)",
-  //     legendFontColor: "#7F7F7F",
-  //     legendFontSize: 15,
-  //   },
-  // ];
-
   useEffect(() => {
     console.log(selectedDate);
     if (!selectedDate) {
@@ -80,7 +40,30 @@ const Stats = ({ selectedDate, setSelectedDate }) => {
     }
     getCaloriesFromDate({ date: selectedDate }).then((data) => {
       setData(data);
-      console.log(data);
+      let params = [
+        {
+          name: `Жиры (${data?.defaultsDate?.fats} г.)`,
+          population: data?.defaultsDate?.fats,
+          color: PURPLE_COLOR,
+          legendFontColor: "#7F7F7F",
+          legendFontSize: 10,
+        },
+        {
+          name: `Углеводы (${data?.defaultsDate?.carbohydrates} г.)`,
+          population: data?.defaultsDate?.carbohydrates,
+          color: ORANGE_COLOR,
+          legendFontColor: "#7F7F7F",
+          legendFontSize: 10,
+        },
+        {
+          name: `Белки (${data?.defaultsDate?.proteins} г.)`,
+          population: data?.defaultsDate?.proteins,
+          color: BLUE_COLOR,
+          legendFontColor: "#7F7F7F",
+          legendFontSize: 10,
+        },
+      ];
+      setDiagram(params);
     });
   }, [selectedDate]);
 
@@ -101,109 +84,70 @@ const Stats = ({ selectedDate, setSelectedDate }) => {
           {dayjs(selectedDate).format("DD MMMM YYYY")}
         </Text>
       </View>
-      {/* <Text>Количество продуктов:{data?.defaultsDate?.count}</Text> */}
 
       {data?.defaultsDate?.kcal ? (
         <View
           style={{
             width: "100%",
-            marginTop: 50,
             paddingLeft: 10,
+            paddingRight: 10,
             display: "flex",
             flexDirection: "column",
           }}
         >
+          <Text style={{ fontFamily: LIGTH_FONT, fontSize: 16, marginTop: 10 }}>
+            Продукты: {data?.defaultsDate?.count}
+          </Text>
+          <Text style={{ fontFamily: LIGTH_FONT, fontSize: 16, marginTop: 10 }}>
+            Общее количество калорий: {data?.defaultsDate?.kcal}
+          </Text>
           {/* <Text style={{ fontFamily: BOLD_FONT }}>Общее количество:</Text> */}
-          <View style={{ marginLeft: 5 }}>
-            <Text
-              style={{ fontFamily: LIGTH_FONT, fontSize: 16, marginTop: 10 }}
-            >
-              Продукты: {data?.defaultsDate?.count}
-            </Text>
-            <Text
-              style={{ fontFamily: LIGTH_FONT, fontSize: 16, marginTop: 10 }}
-            >
-              Общее количество калорий: {data?.defaultsDate?.kcal}
-            </Text>
-            <View
-              style={{ flexDirection: "row", display: "flex", marginTop: 60 }}
-            >
-              <View
-                style={{
-                  width: 20,
-                  height: 20,
-                  borderRadius: 70,
-                  backgroundColor: "purple",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              ></View>
-              <Text
-                style={{ fontFamily: LIGTH_FONT, fontSize: 16, marginLeft: 10 }}
-              >
-                Жиры: {data?.defaultsDate?.fats}
-              </Text>
-            </View>
-            <View
-              style={{ flexDirection: "row", display: "flex", marginTop: 20 }}
-            >
-              <View
-                style={{
-                  width: 20,
-                  height: 20,
-                  borderRadius: 70,
-                  backgroundColor: "skyblue",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              ></View>
-              <Text
-                style={{ fontFamily: LIGTH_FONT, fontSize: 16, marginLeft: 10 }}
-              >
-                Белки: {data?.defaultsDate?.proteins}
-              </Text>
-            </View>
-            <View
-              style={{ flexDirection: "row", display: "flex", marginTop: 20 }}
-            >
-              <View
-                style={{
-                  width: 20,
-                  height: 20,
-                  borderRadius: 70,
-                  backgroundColor: "orange",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              ></View>
-              <Text
-                style={{ fontFamily: LIGTH_FONT, fontSize: 16, marginLeft: 10 }}
-              >
-                Углеводы: {data?.defaultsDate?.carbohydrates}
-              </Text>
-            </View>
+          <View
+            style={{
+              marginLeft: 5,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <View
               style={{
-                flexDirection: "row",
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "flex-end",
-                backgroundColor: "red",
+                justifyContent: "center",
+                width: width - 20,
               }}
             >
-              {/* <PieChart
-              diagram={diagram}
-              width={screenWidth}
-              height={220}
-              chartConfig={chartConfig}
-              accessor={"population"}
-              backgroundColor={"transparent"}
-              paddingLeft={"15"}
-              center={[10, 50]}
-              absolute
-            /> */}
+              <PieChart
+                data={diagram}
+                width={width - 60}
+                height={200}
+                chartConfig={{
+                  backgroundGradientFrom: "#1E2923",
+                  backgroundGradientFromOpacity: 0,
+                  backgroundGradientTo: "#08130D",
+                  backgroundGradientToOpacity: 0.5,
+                  color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
+                  strokeWidth: 2, // optional, default 3
+                  barPercentage: 0.5,
+                  useShadowColorFromDataset: false, // optional
+                }}
+                accessor={"population"}
+                backgroundColor={"transparent"}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              />
             </View>
           </View>
+          {/* <View
+            style={{ width: "100%", height: "20%", backgroundColor: "red" }}
+          >
+            <Text>AAAAAAAAAAAAAA</Text>
+          </View> */}
         </View>
       ) : (
         <View
