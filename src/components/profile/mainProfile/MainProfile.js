@@ -112,6 +112,8 @@ const MainProfileComponent = observer(({ navigation }) => {
             marginBottom: 55,
           }}
         >
+          {/* <ActiveSheet isActive={isAvatar} setIsActive={setIsAvatar} /> */}
+
           <View
             style={{
               width: 360,

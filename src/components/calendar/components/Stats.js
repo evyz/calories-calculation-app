@@ -66,7 +66,6 @@ const Stats = ({ selectedDate, setSelectedDate, navigation }) => {
           color: ORANGE_COLOR,
           legendFontColor: "#7F7F7F",
           legendFontSize: 10,
-          zo,
         },
         {
           name: `Белки (${rounded(data?.defaultsDate?.proteins)} г.)`,
