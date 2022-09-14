@@ -65,7 +65,7 @@ const EachFoodRoute = observer(({ navigation }) => {
           style={{
             alignItems: "flex-start",
             position: "absolute",
-            top: 30,
+            top: 40,
             left: 20,
           }}
           onPress={() => navigation.navigate("mainFoodRoute")}
@@ -99,7 +99,7 @@ const EachFoodRoute = observer(({ navigation }) => {
                 Калорийность
               </Text>
             </View>
-            <Shadow {...shadowOpt} startColor='#F3F3F3'>
+            <Shadow {...shadowOpt} startColor="#F3F3F3">
               <View style={[styles.kcal, { backgroundColor: LIGHT_COLOR }]}>
                 <Text style={{ fontFamily: MEDIUM_FONT }}>Ккал: </Text>
                 <Text>{user.isSelectedProduct?.kcal}</Text>
@@ -119,7 +119,7 @@ const EachFoodRoute = observer(({ navigation }) => {
                   Состав
                 </Text>
               </View>
-              <Shadow {...shadowOpt} distance={5} startColor='#F3F3F3'>
+              <Shadow {...shadowOpt} distance={5} startColor="#F3F3F3">
                 <View
                   style={[styles.container, { backgroundColor: "#F7D921" }]}
                 >
@@ -131,7 +131,7 @@ const EachFoodRoute = observer(({ navigation }) => {
                   </Text>
                 </View>
               </Shadow>
-              <Shadow {...shadowOpt} distance={5} startColor='#F3F3F3'>
+              <Shadow {...shadowOpt} distance={5} startColor="#F3F3F3">
                 <View
                   style={[styles.container, { backgroundColor: "#B0CB1F" }]}
                 >
@@ -143,7 +143,7 @@ const EachFoodRoute = observer(({ navigation }) => {
                   </Text>
                 </View>
               </Shadow>
-              <Shadow {...shadowOpt} distance={5} startColor='#F3F3F3'>
+              <Shadow {...shadowOpt} distance={5} startColor="#F3F3F3">
                 <View
                   style={[styles.container, { backgroundColor: "#5B5B5B" }]}
                 >

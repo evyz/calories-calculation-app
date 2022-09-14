@@ -20,7 +20,6 @@ import {
   LIGHT_COLOR,
   RED_COLOR,
 } from "../../../../styles/colors";
-import { BOLD_FONT, MEDIUM_FONT } from "../../../../styles/fonts";
 import { login, me } from "../../../../http/user";
 import VisibleIcon from "../../../../icons/visible/visibleIcon";
 import ApiLoader from "../../../loader/ApiLoader";
@@ -29,9 +28,9 @@ import { setLastsAuth } from "../../../../storage/last.auth";
 import { changePassword } from "../../../../http/user";
 import ArrowLeft from "../../../Arrows/ArrowLeft";
 
-const ChangePass = observer(({ navigation }) => {
+const Security = observer(({ navigation }) => {
   return (
-    <View style={[{ paddingTop: StatusBar.currentHeight }]}>
+    <View style={[styles.main, { paddingTop: StatusBar.currentHeight }]}>
       <View>
         <TouchableOpacity
           onPress={() => navigation.navigate("settings")}
@@ -39,32 +38,28 @@ const ChangePass = observer(({ navigation }) => {
         >
           <ArrowLeft />
         </TouchableOpacity>
+        <Text style={{ fontSize: 18, backgroundColor: "black" }}>
+          Смените пароль
+        </Text>
       </View>
     </View>
   );
 });
-
-export default ChangePass;
-
 const styles = StyleSheet.create({
   main: {
+    flexDirection: "column",
+    display: "flex",
     width: "100%",
     height: "100%",
-    alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: LIGHT_COLOR,
+    alignItems: "center",
   },
   backButton: {
     width: 100,
     display: "flex",
     flexDirection: "row",
     marginLeft: 10,
-    marginTop: 40,
-  },
-  backTitle: {
-    paddingLeft: 10,
-    fontFamily: MEDIUM_FONT,
-    fontSize: 14,
-    marginBottom: 20,
   },
 });
+
+export default Security;

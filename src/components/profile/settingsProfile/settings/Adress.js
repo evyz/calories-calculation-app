@@ -29,9 +29,9 @@ import { setLastsAuth } from "../../../../storage/last.auth";
 import { changePassword } from "../../../../http/user";
 import ArrowLeft from "../../../Arrows/ArrowLeft";
 
-const ChangePass = observer(({ navigation }) => {
+const Adress = observer(({ navigation }) => {
   return (
-    <View style={[{ paddingTop: StatusBar.currentHeight }]}>
+    <View style={[styles.main, { paddingTop: StatusBar.currentHeight }]}>
       <View>
         <TouchableOpacity
           onPress={() => navigation.navigate("settings")}
@@ -43,28 +43,18 @@ const ChangePass = observer(({ navigation }) => {
     </View>
   );
 });
-
-export default ChangePass;
-
 const styles = StyleSheet.create({
   main: {
     width: "100%",
-    height: "100%",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: LIGHT_COLOR,
+    display: "flex",
   },
   backButton: {
     width: 100,
     display: "flex",
     flexDirection: "row",
     marginLeft: 10,
-    marginTop: 40,
-  },
-  backTitle: {
-    paddingLeft: 10,
-    fontFamily: MEDIUM_FONT,
-    fontSize: 14,
-    marginBottom: 20,
   },
 });
+export default Adress;

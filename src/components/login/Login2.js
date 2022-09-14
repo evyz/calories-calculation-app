@@ -95,40 +95,40 @@ export default LoginComponent = observer(({ navigation }) => {
                 },
               };
 
-              Alert.alert(
-                "Доверять этому устройству?",
-                "Если Вы разрешите доверять этому устройству, то в случае выхода из аккаунта вы сможете быстро зайти заново на аккаунт",
-                [
-                  {
-                    text: "Да",
-                    onPress: async () => {
-                      await AsyncStorage.setItem(
-                        "calories@auth_users",
-                        JSON.stringify({
-                          name: obj?.profile?.name,
-                          email: obj?.profile?.email,
-                          avatar: obj?.avatar,
-                          password: value1,
-                        })
-                      );
-                    },
-                  },
-                  {
-                    text: "Нет",
-                    onPress: async () => {
-                      user.setAuthPass(null);
-                      await AsyncStorage.setItem(
-                        "calories@auth_users",
-                        JSON.stringify({
-                          name: obj?.profile?.name,
-                          email: obj?.profile?.email,
-                          avatar: obj?.avatar,
-                        })
-                      );
-                    },
-                  },
-                ]
-              );
+              // Alert.alert(
+              //   "Доверять этому устройству?",
+              //   "Если Вы разрешите доверять этому устройству, то в случае выхода из аккаунта вы сможете быстро зайти заново на аккаунт",
+              //   [
+              //     {
+              //       text: "Да",
+              //       onPress: async () => {
+              //         await AsyncStorage.setItem(
+              //           "calories@auth_users",
+              //           JSON.stringify({
+              //             name: obj?.profile?.name,
+              //             email: obj?.profile?.email,
+              //             avatar: obj?.avatar,
+              //             password: value1,
+              //           })
+              //         );
+              //       },
+              //     },
+              //     {
+              //       text: "Нет",
+              //       onPress: async () => {
+              //         user.setAuthPass(null);
+              //         await AsyncStorage.setItem(
+              //           "calories@auth_users",
+              //           JSON.stringify({
+              //             name: obj?.profile?.name,
+              //             email: obj?.profile?.email,
+              //             avatar: obj?.avatar,
+              //           })
+              //         );
+              //       },
+              //     },
+              //   ]
+              // );
 
               getCaloriesFromDate({ date: dayjs().format() })
                 .then((data) => {
@@ -201,10 +201,10 @@ export default LoginComponent = observer(({ navigation }) => {
           onEndEditing={(e) => blurHandlerMail(e)}
           onChangeText={setValue}
           value={value}
-          placeholder='Почта'
+          placeholder="Почта"
           autoCorrect={false}
           autoCapitalize={"none"}
-          keyboardType='default'
+          keyboardType="default"
           style={styles.innerInput}
         />
       </View>
@@ -226,10 +226,10 @@ export default LoginComponent = observer(({ navigation }) => {
           value={value1}
           onChangeText={setValue1}
           secureTextEntry={isSecurity}
-          placeholder='Пароль'
+          placeholder="Пароль"
           autoCorrect={false}
           autoCapitalize={"none"}
-          keyboardType='default'
+          keyboardType="default"
           style={[styles.innerInput]}
         />
         <TouchableOpacity

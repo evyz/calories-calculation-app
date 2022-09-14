@@ -34,7 +34,7 @@ const SettingsProfileComponent = ({ navigation }) => {
             onPress={() => navigation.navigate("main")}
           >
             <ArrowLeft />
-            <Text style={styles.backTitle}>Назад </Text>
+            {/* <Text style={styles.backTitle}>Назад </Text> */}
           </TouchableOpacity>
         </View>
         <ScrollView
@@ -48,7 +48,9 @@ const SettingsProfileComponent = ({ navigation }) => {
             </Text>
           </View>
           {/* <View style={styles.avatar}></View> */}
-          <View style={{ width: "100%", height: 350 }}>
+          <View
+            style={{ width: "100%", height: 500, justifyContent: "center" }}
+          >
             <View style={styles.navToSet}>
               <TouchableOpacity
                 onPress={() => navigation.navigate("changePassword")}
@@ -57,24 +59,20 @@ const SettingsProfileComponent = ({ navigation }) => {
               </TouchableOpacity>
             </View>
 
-            <View style={styles.navToName}>
+            <View style={styles.navToSet}>
               <TouchableOpacity
                 onPress={() => navigation.navigate("changeName")}
               >
                 <Text>Имя пользователя</Text>
               </TouchableOpacity>
             </View>
-            <View style={styles.navToName}>
-              <TouchableOpacity
-              // onPress={() => navigation.navigate("changeName")}
-              >
+            <View style={styles.navToSet}>
+              <TouchableOpacity onPress={() => navigation.navigate("adress")}>
                 <Text>Эл. адрес</Text>
               </TouchableOpacity>
             </View>
-            <View style={styles.navToName}>
-              <TouchableOpacity
-              // onPress={() => navigation.navigate("changeName")}
-              >
+            <View style={styles.navToSet}>
+              <TouchableOpacity onPress={() => navigation.navigate("security")}>
                 <Text>Система безопасности</Text>
               </TouchableOpacity>
             </View>
@@ -95,16 +93,16 @@ const styles = StyleSheet.create({
   main: {
     width: "100%",
     height: "100%",
-
+    flexDirection: "column",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    // backgroundColor: LIGHT_COLOR,
+    backgroundColor: LIGHT_COLOR,
   },
   navToSet: {
     display: "flex",
-    width: "40%",
-    height: "10%",
+    width: "50%",
+    height: "12%",
     alignItems: "center",
     borderRadius: 50,
     backgroundColor: GREEN_COLOR,
@@ -138,7 +136,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "flex-start",
+    justifyContent: "center",
   },
 
   title: {
@@ -169,8 +167,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   settings: {
-    width: "90%",
-    backgroundColor: "red",
+    width: "100%",
+    backgroundColor: LIGHT_COLOR,
     display: "flex",
   },
 });

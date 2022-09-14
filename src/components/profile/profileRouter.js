@@ -5,6 +5,8 @@ import SettingsProfileComponent from "./settingsProfile/SettingsProfile";
 import SettingsProfile from "./settingsProfile/SettingsProfile";
 import ChangePass from "./settingsProfile/settings/changePass";
 import ChangeName from "./settingsProfile/settings/changeName";
+import Adress from "./settingsProfile/settings/Adress";
+import Security from "./settingsProfile/settings/securitySystem";
 
 export const profileRouter = [
   { name: "main", component: MainProfile },
@@ -12,4 +14,6 @@ export const profileRouter = [
   { name: "admin", component: AdminProfile },
   { name: "changePassword", component: ChangePass },
   { name: "changeName", component: ChangeName },
+  { name: "adress", component: Adress },
+  { name: "security", component: Security },
 ];

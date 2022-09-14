@@ -26,19 +26,21 @@ import ApiLoader from "../../../loader/ApiLoader";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { setLastsAuth } from "../../../../storage/last.auth";
 import { changePassword } from "../../../../http/user";
+import ArrowLeft from "../../../Arrows/ArrowLeft";
 
 const ChangeName = observer(({ navigation }) => {
   return (
     <View style={[styles.main, { paddingTop: StatusBar.currentHeight }]}>
       <View>
-        <View>
-          <Text>Поменяйте имя</Text>
-        </View>
-        <View style={styles.button}>
-          <TouchableOpacity onPress={() => navigation.navigate("settings")}>
-            <Text style={{ backgroundColor: "black" }}>Назад</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("settings")}
+          style={styles.backButton}
+        >
+          <ArrowLeft />
+        </TouchableOpacity>
+        <Text style={{ fontSize: 18, backgroundColor: "black" }}>
+          Смените пароль
+        </Text>
       </View>
     </View>
   );
@@ -54,11 +56,10 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  button: {
-    width: "20%",
-    height: "30%",
-    backgroundColor: GREEN_COLOR,
-    alignItems: "center",
-    justifyContent: "space-between",
+  backButton: {
+    width: 100,
+    display: "flex",
+    flexDirection: "row",
+    marginLeft: 10,
   },
 });
