@@ -25,6 +25,8 @@ import ApiLoader from "../loader/ApiLoader";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { setLastsAuth } from "../../storage/last.auth";
 import ArrowLeft from "../Arrows/ArrowLeft";
+import { getCaloriesFromDate } from "../../http/product";
+import dayjs from "dayjs";
 
 let symbols = /[0-9a-zA-Z!@#$%^&*]{6,}/g;
 
@@ -201,10 +203,10 @@ export default LoginComponent = observer(({ navigation }) => {
           onEndEditing={(e) => blurHandlerMail(e)}
           onChangeText={setValue}
           value={value}
-          placeholder="Почта"
+          placeholder='Почта'
           autoCorrect={false}
           autoCapitalize={"none"}
-          keyboardType="default"
+          keyboardType='default'
           style={styles.innerInput}
         />
       </View>
@@ -226,10 +228,10 @@ export default LoginComponent = observer(({ navigation }) => {
           value={value1}
           onChangeText={setValue1}
           secureTextEntry={isSecurity}
-          placeholder="Пароль"
+          placeholder='Пароль'
           autoCorrect={false}
           autoCapitalize={"none"}
-          keyboardType="default"
+          keyboardType='default'
           style={[styles.innerInput]}
         />
         <TouchableOpacity

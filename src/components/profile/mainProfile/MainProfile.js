@@ -263,6 +263,14 @@ const MainProfileComponent = observer(({ navigation }) => {
             ></View>
           </View>
 
+          {user.profile.role === "admin" && (
+            <View>
+              <TouchableOpacity onPress={() => navigation.navigate("admin")}>
+                <Text>Admin man</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
           <Buttons />
         </View>
       </ScrollView>
@@ -375,14 +383,6 @@ const MainProfileComponent = observer(({ navigation }) => {
               <Text>Настройки</Text>
             </TouchableOpacity> */}
             </View>
-
-            {user.profile.role === "admin" && (
-              <View>
-                <TouchableOpacity onPress={() => navigation.navigate("admin")}>
-                  <Text>Admin man</Text>
-                </TouchableOpacity>
-              </View>
-            )}
 
             <Buttons />
           </View>

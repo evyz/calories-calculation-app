@@ -81,28 +81,28 @@ const ChangePass = observer(({ navigation }) => {
       <TextInput
         onChangeText={setCurrentPassword}
         value={currentPassword}
-        placeholder="Введите текущий пароль"
+        placeholder='Введите текущий пароль'
         autoCorrect={false}
         autoCapitalize={"none"}
-        keyboardType="default"
+        keyboardType='default'
         style={styles.input}
       />
       <TextInput
         onChangeText={setNewPassword}
         value={newPassword}
-        placeholder="Введите новый пароль"
+        placeholder='Введите новый пароль'
         autoCorrect={false}
         autoCapitalize={"none"}
-        keyboardType="default"
+        keyboardType='default'
         style={styles.input}
       />
       <TextInput
         onChangeText={setConfirmNewPassword}
         value={confirmNewPassword}
-        placeholder="Подтвердите новый пароль"
+        placeholder='Подтвердите новый пароль'
         autoCorrect={false}
         autoCapitalize={"none"}
-        keyboardType="default"
+        keyboardType='default'
         style={styles.input}
       />
       <View style={styles.login}>
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginLeft: 10,
     position: "absolute",
-    top: left,
+    top: 60,
   },
   backTitle: {
     paddingLeft: 10,
