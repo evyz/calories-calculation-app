@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   Alert,
   StatusBar,
+  Dimensions,
 } from "react-native";
 import { AppContext } from "../../../../store";
 import { useRoute } from "@react-navigation/native";
@@ -35,26 +36,26 @@ const ChangePass = observer(({ navigation }) => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const { width } = Dimensions.get("screen");
   return (
     <View style={[styles.main, { paddingTop: StatusBar.currentHeight }]}>
-      <View>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("settings")}
-          style={styles.backButton}
-        >
-          <ArrowLeft />
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("settings")}
+        style={[styles.backButton, { marginTop: StatusBar.currentHeight }]}
+      >
+        <ArrowLeft />
+      </TouchableOpacity>
+
       <View>
         <Text
           style={{
-            fontFamily: MEDIUM_FONT,
-            fontSize: 20,
+            fontFamily: BOLD_FONT,
+            fontSize: 24,
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "row",
             marginLeft: 20,
-            marginTop: 10,
+            marginTop: 20,
           }}
         >
           Смена пароля
@@ -63,7 +64,7 @@ const ChangePass = observer(({ navigation }) => {
       <View
         style={{
           fontFamily: MEDIUM_FONT,
-          fontSize: 30,
+          fontSize: 12,
           justifyContent: "center",
           alignItems: "center",
           flexDirection: "row",
@@ -73,7 +74,6 @@ const ChangePass = observer(({ navigation }) => {
         }}
       >
         <Text>
-          {" "}
           Пароль должен включать в себя восемь или более символов латинского
           алфавита, а также содержать заглавные и строчные буквы, цифры.
         </Text>
@@ -81,31 +81,31 @@ const ChangePass = observer(({ navigation }) => {
       <TextInput
         onChangeText={setCurrentPassword}
         value={currentPassword}
-        placeholder='Введите текущий пароль'
+        placeholder="Введите текущий пароль"
         autoCorrect={false}
         autoCapitalize={"none"}
-        keyboardType='default'
-        style={styles.input}
+        keyboardType="default"
+        style={[styles.input, { marginTop: 60 }]}
       />
       <TextInput
         onChangeText={setNewPassword}
         value={newPassword}
-        placeholder='Введите новый пароль'
+        placeholder="Введите новый пароль"
         autoCorrect={false}
         autoCapitalize={"none"}
-        keyboardType='default'
+        keyboardType="default"
         style={styles.input}
       />
       <TextInput
         onChangeText={setConfirmNewPassword}
         value={confirmNewPassword}
-        placeholder='Подтвердите новый пароль'
+        placeholder="Подтвердите новый пароль"
         autoCorrect={false}
         autoCapitalize={"none"}
-        keyboardType='default'
+        keyboardType="default"
         style={styles.input}
       />
-      <View style={styles.login}>
+      <View style={[styles.login, { width: width - 40 }]}>
         <TouchableOpacity
           style={{
             width: "100%",
@@ -115,7 +115,13 @@ const ChangePass = observer(({ navigation }) => {
           }}
           onPress={() => navigation.navigate("main")}
         >
-          <Text style={{ fontSize: 18, color: LIGHT_COLOR }}>
+          <Text
+            style={{
+              fontSize: 18,
+              color: LIGHT_COLOR,
+              fontFamily: MEDIUM_FONT,
+            }}
+          >
             Сменить пароль
           </Text>
         </TouchableOpacity>
@@ -130,17 +136,17 @@ const styles = StyleSheet.create({
   main: {
     width: "100%",
     height: "100%",
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
     backgroundColor: LIGHT_COLOR,
   },
   backButton: {
     width: 100,
     display: "flex",
     flexDirection: "row",
-    marginLeft: 10,
-    position: "absolute",
-    top: 60,
+    marginLeft: 20,
+    // position: "absolute",
+    // top: 60,
   },
   backTitle: {
     paddingLeft: 10,
@@ -152,31 +158,31 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     height: 50,
-    width: "80%",
-    // margin: 5,
+    width: "100%",
+    marginTop: 45,
+    marginLeft: 20,
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,
     borderRadius: 24,
-    // marginTop: 50,
-    // marginLeft: 40,
     backgroundColor: GREEN_COLOR,
     borderColor: GREEN_COLOR,
   },
   input: {
-    width: "80%",
+    width: "85%",
     paddingLeft: 10,
     borderStyle: "solid",
     borderWidth: 3,
     borderColor: 0,
     borderBottomColor: GREY_COLOR,
-    marginTop: 20,
     fontSize: 12,
     alignItems: "center",
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 30,
+    marginTop: 40,
     marginLeft: 20,
+    fontSize: 14,
+    fontFamily: MEDIUM_FONT,
   },
 });

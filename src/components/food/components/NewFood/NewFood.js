@@ -422,7 +422,13 @@ const NewFood = observer(({ navigation }) => {
             marginLeft: 20,
           }}
         >
-          <Text style={{ fontSize: 16, fontFamily: MEDIUM_FONT }}>
+          <Text
+            style={{
+              fontSize: 16,
+              fontFamily: MEDIUM_FONT,
+              color: LIGHT_COLOR,
+            }}
+          >
             Создать продукт
           </Text>
         </TouchableOpacity>
