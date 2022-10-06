@@ -37,6 +37,74 @@ const ChangePass = observer(({ navigation }) => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const { width } = Dimensions.get("screen");
+  const [passwordDirty, setPasswordDirty] = useState(false);
+  const [password, setPassword] = useState("");
+  const [dublpassword, setDublPassword] = useState("");
+  const [shortPasswordError, setShortPasswordError] = useState("");
+  const [shortPasswordDirty, setShortPasswordDirty] = useState(false);
+  const [passwordError, setPasswordError] = useState(
+    "Пароль не может быть пустым"
+  );
+  const blurHandler = (e) => {
+    setPassword(e.nativeEvent.text);
+    if (e.nativeEvent?.text.length === 0) {
+      setPasswordError("Укажите пароль");
+      setPasswordDirty(true);
+    } else {
+      setPasswordError("");
+      setPasswordDirty(false);
+    }
+  };
+  // const blurHandlerNew = (e) => {
+  //   setPassword(e.nativeEvent.text);
+  //   if (e.nativeEvent?.text.length === 0) {
+  //     setPasswordError("Укажите пароль");
+  //     setPasswordDirty(true);
+  //   } else {
+  //     setPasswordError("");
+  //     setPasswordDirty(false);
+  //   }
+  // };
+  // const blurHandlerNewConfirm = (e) => {
+  //   setPassword(e.nativeEvent.text);
+  //   if (e.nativeEvent?.text.length === 0) {
+  //     setPasswordError("Укажите пароль");
+  //     setPasswordDirty(true);
+  //   } else {
+  //     setPasswordError("");
+  //     setPasswordDirty(false);
+  //   }
+  // };
+  const comparePassword = () => {
+    console.log(1);
+    if (newPassword === confirmNewPassword) {
+      setPasswordError("Пароли совпадают");
+      setPasswordDirty(false);
+    } else {
+      setPasswordError("Пароли не совпадают");
+      setPasswordDirty(true);
+    }
+  };
+  const shortPassword = () => {
+    console.log(2);
+    let isConfirm = symbols.test(newPassword);
+    if (!isConfirm) {
+      setShortPasswordError("Пароль ненадежный");
+      setShortPasswordDirty(true);
+    } else {
+      setShortPasswordDirty(false);
+    }
+  };
+  // const blurHandlerMail = (e) => {
+  //   if (e.nativeEvent?.text.length === 0) {
+  //     setEmailError("Укажите пароль");
+  //     setEmailDirty(true);
+  //   } else {
+  //     setEmailError("");
+  //     setEmailDirty(false);
+  //   }
+  // };
+
   return (
     <View style={[styles.main, { paddingTop: StatusBar.currentHeight }]}>
       <TouchableOpacity
@@ -79,6 +147,7 @@ const ChangePass = observer(({ navigation }) => {
         </Text>
       </View>
       <TextInput
+        onEndEditing={(e) => blurHandler(e)}
         onChangeText={setCurrentPassword}
         value={currentPassword}
         placeholder="Введите текущий пароль"
@@ -88,6 +157,7 @@ const ChangePass = observer(({ navigation }) => {
         style={[styles.input, { marginTop: 60 }]}
       />
       <TextInput
+        onEndEditing={(e) => shortPassword(e)}
         onChangeText={setNewPassword}
         value={newPassword}
         placeholder="Введите новый пароль"
@@ -96,7 +166,24 @@ const ChangePass = observer(({ navigation }) => {
         keyboardType="default"
         style={styles.input}
       />
+      {shortPasswordDirty ? (
+        <>
+          <Text
+            style={{
+              color: RED_COLOR,
+              fontSize: 14,
+              marginTop: 10,
+              marginLeft: 20,
+            }}
+          >
+            {shortPasswordError}
+          </Text>
+        </>
+      ) : (
+        <Text style={{ padding: 0, margin: 0 }}></Text>
+      )}
       <TextInput
+        onEndEditing={(e) => comparePassword(e)}
         onChangeText={setConfirmNewPassword}
         value={confirmNewPassword}
         placeholder="Подтвердите новый пароль"
@@ -105,6 +192,22 @@ const ChangePass = observer(({ navigation }) => {
         keyboardType="default"
         style={styles.input}
       />
+      {passwordDirty ? (
+        <>
+          <Text
+            style={{
+              color: RED_COLOR,
+              fontSize: 14,
+              marginTop: 10,
+              marginLeft: 20,
+            }}
+          >
+            {passwordError}
+          </Text>
+        </>
+      ) : (
+        <Text style={{ padding: 0, margin: 0 }}></Text>
+      )}
       <View style={[styles.login, { width: width - 40 }]}>
         <TouchableOpacity
           style={{
