@@ -156,6 +156,22 @@ const ChangePass = observer(({ navigation }) => {
         keyboardType="default"
         style={[styles.input, { marginTop: 60 }]}
       />
+      {passwordDirty ? (
+        <>
+          <Text
+            style={{
+              color: RED_COLOR,
+              fontSize: 14,
+              marginTop: 10,
+              marginLeft: 20,
+            }}
+          >
+            {passwordError}
+          </Text>
+        </>
+      ) : (
+        <Text style={{ padding: 0, margin: 0 }}></Text>
+      )}
       <TextInput
         onEndEditing={(e) => shortPassword(e)}
         onChangeText={setNewPassword}
